@@ -7,7 +7,7 @@ type Graph(width:int, height:int, minX:double, maxX:double, minY:double, maxY:do
 
     let mapPointToPixelPoint (p:PointD) =
         let mappedX = GraphHelpers.mapToPixelValue minX maxX (float width) p.X
-        let mappedY = GraphHelpers.mapToPixelValue minX maxY (float width) p.Y
+        let mappedY = GraphHelpers.mapToPixelValue maxY minX (float width) p.Y
         {PointD.X=mappedX; Y=mappedY}
 
     let insideBitmap (p:Point) =

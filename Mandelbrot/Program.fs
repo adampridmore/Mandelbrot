@@ -14,7 +14,7 @@ let main argv =
     let graph = new Graph.Graph(picutureBox.Size.Width, picutureBox.Size.Height,-10.,10.,-10.,10.);
     graph.DrawAxes()
 
-    seq{(-50.)..(0.1)..(50.)}
+    seq{(-10.)..(0.01)..(10.)}
     |> Seq.map(fun x -> x, x*x)
     |> Seq.iter (fun (x,y) -> graph.DrawPoint({X=x; Y=y}))
     
