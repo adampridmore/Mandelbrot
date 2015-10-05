@@ -1,6 +1,7 @@
 ﻿module Graph
 open System.Drawing
 open PointD
+open Microsoft.FSharp.Collections
 
 type Graph(width:int, height:int, minX:double, maxX:double, minY:double, maxY:double) =
     let bitmap = new Bitmap(width, height)
@@ -56,7 +57,7 @@ type Graph(width:int, height:int, minX:double, maxX:double, minY:double, maxY:do
                 for y in 0..this.Height do
                     yield new Point(x,y)
         }
-        |> Seq.map (fun (pixel) ->  (pixel, {PointD.X=(pixel.X|>pixelMaperX);Y=(pixel.Y|>pixelMaperY)}))
-        |> Seq.map (fun (pixel,point) -> (pixel, fn point.X point.Y))
-        |> Seq.filter (fun (_,v) -> v)
+        |> PSeq.map (fun (pixel) ->  (pixel, {PointD.X=(pixel.X|>pixelMaperX);Y=(pixel.Y|>pixelMaperY)}))
+        |> PSeq.map (fun (pixel,point) -> (pixel, fn point.X point.Y))
+        |> PSeq.filter (fun (_,v) -> v)
         |> Seq.iter (fun (pixel,_) -> this.DrawPointAtPixel(pixel))

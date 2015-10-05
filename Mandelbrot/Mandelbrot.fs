@@ -6,12 +6,14 @@ open System.Numerics
 let sqr (x:Complex) = x*x
 
 let inSet (v:Complex) = 
+    let iterationsToCheck = 500
+
     let fn currentValue = 
         (currentValue |> sqr) + v
     
     Seq.unfold (fun state -> let nextValue = fn state
                              Some(nextValue, nextValue)) v
-    |> Seq.take 100
+    |> Seq.take iterationsToCheck
     |> Seq.exists (fun (x:Complex) -> (Complex.Abs(x) > 2.))
     |> not
 
