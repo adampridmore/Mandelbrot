@@ -7,7 +7,7 @@ type Graph(width:int, height:int, minX:double, maxX:double, minY:double, maxY:do
 
     let mapPointToPixelPoint (p:PointD) =
         let mappedX = GraphHelpers.mapToPixelValue minX maxX (float width) p.X
-        let mappedY = GraphHelpers.mapToPixelValue maxY minX (float width) p.Y
+        let mappedY = GraphHelpers.mapToPixelValue maxY minX (float height) p.Y
         {PointD.X=mappedX; Y=mappedY}
 
     let insideBitmap (p:Point) =
@@ -16,6 +16,7 @@ type Graph(width:int, height:int, minX:double, maxX:double, minY:double, maxY:do
     member this.Width = width
     member this.Height = height
     member this.MinX = minX
+    member this.MaxX = maxX
     member this.MinY = minY
     member this.MaxY = maxY
     member this.Bitmap = bitmap
@@ -24,10 +25,12 @@ type Graph(width:int, height:int, minX:double, maxX:double, minY:double, maxY:do
         let p = new Pen(new SolidBrush(Color.Red),5.f);
         graphics.DrawLine(p, 0,0, this.Width, this.Height)
 
-    member this.DrawPoint(p:PointD) =
-        let mappedPoint = (p |> mapPointToPixelPoint).ToPoint
-        if insideBitmap(mappedPoint) 
-        then this.Bitmap.SetPixel((mappedPoint.X) ,(mappedPoint.Y),Color.Black)
+    member this.DrawPoint (p:PointD) =
+        (p |> mapPointToPixelPoint).ToPoint |> this.DrawPointAtPixel 
+
+    member this.DrawPointAtPixel (p:Point) =
+        if insideBitmap(p) 
+        then this.Bitmap.SetPixel((p.X) ,(p.Y),Color.Black)
         else ()
 
     member this.DrawAxes() = 
@@ -44,3 +47,16 @@ type Graph(width:int, height:int, minX:double, maxX:double, minY:double, maxY:do
         let p4 = ({X=(-axesLength);Y=0.} |> mapPointToPixelPoint)
         graphics.DrawLine(p, p3.ToPointF, p4.ToPointF)
 
+    member this.IterateGraph fn = 
+        let pixelMaperX = GraphHelpers.pixelToValue this.MinX this.MaxX width
+        let pixelMaperY = GraphHelpers.pixelToValue this.MaxY this.MinY height
+
+        seq{
+            for x in 0..this.Width do 
+                for y in 0..this.Height do
+                    yield new Point(x,y)
+        }
+        |> Seq.map (fun (pixel) ->  (pixel, {PointD.X=(pixel.X|>pixelMaperX);Y=(pixel.Y|>pixelMaperY)}))
+        |> Seq.map (fun (pixel,point) -> (pixel, fn point.X point.Y))
+        |> Seq.filter (fun (_,v) -> v)
+        |> Seq.iter (fun (pixel,_) -> this.DrawPointAtPixel(pixel))
