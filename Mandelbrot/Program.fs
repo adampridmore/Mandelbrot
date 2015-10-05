@@ -11,14 +11,23 @@ let main argv =
     let form = new Form()
     form.Controls.Add(picutureBox)
 
-    let graph = new Graph.Graph(picutureBox.Size.Width, picutureBox.Size.Height,-10.,10.,-10.,10.);
-    graph.DrawAxes()
+    let renderGraph() = 
+        let graph = new Graph.Graph(picutureBox.Size.Width, picutureBox.Size.Height,-5.,5.,-10.,10.);
+        graph.DrawAxes()
 
-    seq{(-10.)..(0.01)..(10.)}
-    |> Seq.map(fun x -> x, x*x)
-    |> Seq.iter (fun (x,y) -> graph.DrawPoint({X=x; Y=y}))
+        seq{(-10.)..(0.01)..(10.)}
+        |> Seq.map(fun x -> x, x*x)
+        //|> Seq.map(fun x -> x, System.Math.Sin(x) )
+        |> Seq.iter (fun (x,y) -> graph.DrawPoint({X=x; Y=y}))
+        
+        graph.Bitmap
     
-    picutureBox.Image <- graph.Bitmap
+    picutureBox.Image <- renderGraph()
+
+    let formSizeChanged _ =  
+        picutureBox.Image <- renderGraph()
+
+    form.SizeChanged.Add(formSizeChanged)
 
     form.ShowDialog() |> ignore
           
