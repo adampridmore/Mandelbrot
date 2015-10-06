@@ -56,8 +56,10 @@
   <ItemGroup>
     <Compile Include="AssemblyInfo.fs" />
     <Compile Include="Mandelbrot.fs" />
+    <Compile Include="MandelbrotTests.fs" />
     <Compile Include="PointD.fs" />
     <Compile Include="GraphHelpers.fs" />
+    <Compile Include="GraphHelpersTests.fs" />
     <Compile Include="Graph.fs" />
     <Compile Include="Program.fs" />
     <None Include="App.config" />

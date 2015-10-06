@@ -19,10 +19,8 @@ let main argv =
         
         let sqr x = x*x
         //let fn x y = (System.Math.Sqrt (x*x + y*y)) < 1.
-//        let fn (x:float) (y:float) = ((x |> sqr) + ( ( ( (5.*y) / 4.) - Math.Sqrt(Math.Abs(x))) |> sqr) ) < 1.
-        let fn x y = 
-            let c = new Complex(x,y)
-            MandelbrotCalc.inSet c
+        //let fn (x:float) (y:float) = ((x |> sqr) + ( ( ( (5.*y) / 4.) - Math.Sqrt(Math.Abs(x))) |> sqr) ) < 1.
+        let fn x y = new Complex(x,y) |> (MandelbrotCalc.inSet MandelbrotCalc.defaultIterationsToCheck)
 
         graph.IterateGraph fn
         
@@ -30,9 +28,8 @@ let main argv =
     
     picutureBox.Image <- renderGraph()
 
-    let formSizeChanged _ = picutureBox.Image <- renderGraph()
+    form.SizeChanged.Add(fun _ -> picutureBox.Image <- renderGraph())
 
-    form.SizeChanged.Add(formSizeChanged)
     form.ShowDialog() |> ignore
           
     0

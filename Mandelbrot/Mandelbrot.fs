@@ -1,28 +1,36 @@
 ﻿module MandelbrotCalc
-open NUnit.Framework
-open FsUnit
 open System.Numerics
 
 let sqr (x:Complex) = x*x
 
-let inSet (v:Complex) = 
-    let iterationsToCheck = 500
+let defaultIterationsToCheck = 100
 
+type InSetResult = 
+    | NotInSet 
+    | InSet of value : int
+
+let inSet (iterationsToCheck:int) (v:Complex) = 
     let fn currentValue = 
         (currentValue |> sqr) + v
     
     Seq.unfold (fun state -> let nextValue = fn state
                              Some(nextValue, nextValue)) v
     |> Seq.take iterationsToCheck
-    |> Seq.exists (fun (x:Complex) -> (Complex.Abs(x) > 2.))
+    |> Seq.exists(fun (x:Complex) -> (Complex.Abs(x) > 2.))
     |> not
 
-[<Test>]
-let ``outside set``()=
-    let v = new Complex(100.,100.)
-    let x = v |> inSet
-    x |> should equal false
-
-[<Test>]
-let ``inside set``()=
-    new Complex(0.,0.) |> inSet |> should equal true
+//let inSetWithResult(iterationsToCheck:int) (v:Complex) = 
+//    let fn currentValue = 
+//        (currentValue |> sqr) + v
+//    
+//    Seq.unfold (fun state -> let nextValue = fn state
+//                             Some(nextValue, nextValue)) v
+//    |> Seq.take iterationsToCheck
+//    //|> Seq.takeWhile (fun (x:Complex) -> (Complex.Abs(x) > 2.))
+//    |> Seq.mapi (fun i x -> i)
+//    |> Seq.last
+//    |> (fun (i) -> match i with 
+//                   | i when i = iterationsToCheck -> NotInSet
+//                   | i -> InSet(i))
+//
+//   

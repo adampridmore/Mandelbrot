@@ -8,7 +8,7 @@ type Graph(width:int, height:int, minX:double, maxX:double, minY:double, maxY:do
 
     let mapPointToPixelPoint (p:PointD) =
         let mappedX = GraphHelpers.mapToPixelValue minX maxX (float width) p.X
-        let mappedY = GraphHelpers.mapToPixelValue maxY minX (float height) p.Y
+        let mappedY = GraphHelpers.mapToPixelValue maxY minY (float height) p.Y
         {PointD.X=mappedX; Y=mappedY}
 
     let insideBitmap (p:Point) =
@@ -60,4 +60,4 @@ type Graph(width:int, height:int, minX:double, maxX:double, minY:double, maxY:do
         |> PSeq.map (fun (pixel) ->  (pixel, {PointD.X=(pixel.X|>pixelMaperX);Y=(pixel.Y|>pixelMaperY)}))
         |> PSeq.map (fun (pixel,point) -> (pixel, fn point.X point.Y))
         |> PSeq.filter (fun (_,v) -> v)
-        |> Seq.iter (fun (pixel,_) -> this.DrawPointAtPixel(pixel))
+        |> Seq.iter (fun (pixel,_) -> this.DrawPointAtPixel pixel)
