@@ -2,6 +2,7 @@
 open System.Drawing
 open System
 open System.Numerics
+open MandelbrotCalc
 
 [<EntryPoint>]
 let main argv = 
@@ -16,14 +17,7 @@ let main argv =
     let renderGraph() = 
         let graph = new Graph.Graph(picutureBox.Size.Width, picutureBox.Size.Height,-2.,2.,-2.,2.);
         graph.DrawAxes()
-        
-        let sqr x = x*x
-        //let fn x y = (System.Math.Sqrt (x*x + y*y)) < 1.
-        //let fn (x:float) (y:float) = ((x |> sqr) + ( ( ( (5.*y) / 4.) - Math.Sqrt(Math.Abs(x))) |> sqr) ) < 1.
-        let fn x y = new Complex(x,y) |> (MandelbrotCalc.inSet MandelbrotCalc.defaultIterationsToCheck)
-
-        graph.IterateGraph fn
-        
+        graph.RenderSet()
         graph.Bitmap
     
     picutureBox.Image <- renderGraph()

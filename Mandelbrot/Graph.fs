@@ -2,6 +2,7 @@
 open System.Drawing
 open PointD
 open Microsoft.FSharp.Collections
+open MandelbrotCalc
 
 type Graph(width:int, height:int, minX:double, maxX:double, minY:double, maxY:double) =
     let bitmap = new Bitmap(width, height)
@@ -13,6 +14,9 @@ type Graph(width:int, height:int, minX:double, maxX:double, minY:double, maxY:do
 
     let insideBitmap (p:Point) =
         p.X < bitmap.Size.Width && p.Y < bitmap.Height && p.X > 0 && p.Y > 0
+
+    let pixelMaperX = GraphHelpers.pixelToValue minX maxX width
+    let pixelMaperY = GraphHelpers.pixelToValue maxY minY height
 
     member this.Width = width
     member this.Height = height
@@ -29,9 +33,15 @@ type Graph(width:int, height:int, minX:double, maxX:double, minY:double, maxY:do
     member this.DrawPoint (p:PointD) =
         (p |> mapPointToPixelPoint).ToPoint |> this.DrawPointAtPixel 
 
-    member this.DrawPointAtPixel (p:Point) =
+    member this.DrawPointAtPixel (p:Point) = this.DrawPointAtPixelWithColor p Color.Black
+    member this.DrawPointAtPixelWithMagnitude (p:Point) (magnitude:int) =
+        //Color.FromArgb(255-magnitude%255,0,255-magnitude%255)
+        magnitude 
+        |> ColorModule.toColor 
+        |> (this.DrawPointAtPixelWithColor p)
+    member this.DrawPointAtPixelWithColor (p:Point) (c:Color) =
         if insideBitmap(p) 
-        then this.Bitmap.SetPixel((p.X) ,(p.Y),Color.Black)
+        then this.Bitmap.SetPixel((p.X) ,(p.Y),c)
         else ()
 
     member this.DrawAxes() = 
@@ -48,16 +58,22 @@ type Graph(width:int, height:int, minX:double, maxX:double, minY:double, maxY:do
         let p4 = ({X=(-axesLength);Y=0.} |> mapPointToPixelPoint)
         graphics.DrawLine(p, p3.ToPointF, p4.ToPointF)
 
-    member this.IterateGraph fn = 
-        let pixelMaperX = GraphHelpers.pixelToValue this.MinX this.MaxX width
-        let pixelMaperY = GraphHelpers.pixelToValue this.MaxY this.MinY height
+    member this.GetValueFromPixel(pixel:Point) = 
+        {PointD.X=(pixel.X|>pixelMaperX);Y=(pixel.Y|>pixelMaperY)}
+
+    member this.IterateGraph (fn: float-> float -> (int Option )) = 
+        let pixelToPixelPointD (pixel:Point) = 
+            (pixel, this.GetValueFromPixel(pixel))
 
         seq{
             for x in 0..this.Width do 
                 for y in 0..this.Height do
                     yield new Point(x,y)
         }
-        |> PSeq.map (fun (pixel) ->  (pixel, {PointD.X=(pixel.X|>pixelMaperX);Y=(pixel.Y|>pixelMaperY)}))
+        |> PSeq.map pixelToPixelPointD
         |> PSeq.map (fun (pixel,point) -> (pixel, fn point.X point.Y))
-        |> PSeq.filter (fun (_,v) -> v)
-        |> Seq.iter (fun (pixel,_) -> this.DrawPointAtPixel pixel)
+        |> PSeq.filter (fun (_,v) -> v.IsSome)
+        |> Seq.iter (fun (pixel,v) -> this.DrawPointAtPixelWithMagnitude pixel v.Value)
+
+    member this.RenderSet() = 
+        this.IterateGraph fn

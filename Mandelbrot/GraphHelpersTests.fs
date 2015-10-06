@@ -4,7 +4,6 @@ open NUnit.Framework
 open FsUnit
 open GraphHelpers
 
-
 [<Test>]
 let ``simple mapping``() = 
     let minX = 100.

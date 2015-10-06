@@ -16,15 +16,16 @@ let ``inside set``()=
     |> (inSet defaultIterationsToCheck) 
     |> should equal true
 
-//[<Test>]
-//let ``outside set with result``()=
-//    new Complex(100.,100.)
-//    |> (inSetWithResult defaultIterationsToCheck)
-//    |> should equal NotInSet
-//
-//[<Test>]
-//let ``inside set with result``()=
-//    new Complex(0.,0.) 
-//    |> (inSetWithResult defaultIterationsToCheck) 
-//    |> should equal (InSetResult.InSet(100))
-//
+[<Test>]
+let ``outside set with result``()=
+    let value = (new Complex(100.,100.)
+                |> (inSetWithResult defaultIterationsToCheck))
+    value |> should equal (InSetResult.NotInSet(0))
+
+[<Test>]
+let ``inside set with result``()=
+    let value = new Complex(0.,0.) 
+                |> (inSetWithResult defaultIterationsToCheck) 
+
+    value |> should equal (InSetResult.InSet)
+
