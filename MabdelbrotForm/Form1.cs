@@ -21,7 +21,7 @@ namespace MabdelbrotForm
 
         private void Form1_Load(object sender, EventArgs e)
         {
-            //RenderMandlebrotSet();
+            
         }
 
         private void RenderMandlebrotSet()
@@ -42,7 +42,7 @@ namespace MabdelbrotForm
             {
                 Cursor.Current = Cursors.WaitCursor;
 
-                MandelbrotCalc.renderSet(_currentGraph);
+                MandelbrotCalc.renderSet(200, _currentGraph);
 
                 pictureBox1.Image = _currentGraph.Bitmap;
             }
@@ -101,6 +101,11 @@ namespace MabdelbrotForm
                 _viewPorts.Pop();
                 RenderMandlebrotSet();
             }
+        }
+
+        private void Form1_Shown(object sender, EventArgs e)
+        {
+            RenderMandlebrotSet();
         }
     }
 }

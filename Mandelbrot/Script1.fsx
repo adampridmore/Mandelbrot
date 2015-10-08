@@ -16,9 +16,7 @@ let render iterationsToCheck (size:System.Drawing.Size) filename=
     graph |> renderSet iterationsToCheck
     graph.Bitmap.Save(filename)
 
-
-seq{1..5..100}
-|> Seq.iter (fun iterationsToCheck ->
+let doRender iterationsToCheck =
     let size = new System.Drawing.Size(3840, 2160)
     //let size = new System.Drawing.Size(1080, 720)
     //let size = new System.Drawing.Size(1280, 960)
@@ -27,6 +25,11 @@ seq{1..5..100}
     let stopwatch = System.Diagnostics.Stopwatch.StartNew()
     filename |> render iterationsToCheck size
     printfn "Duration %fs" stopwatch.Elapsed.TotalSeconds
-    )
+    //System.Diagnostics.Process.Start(filename)
 
-//System.Diagnostics.Process.Start(filename)
+Seq.singleton 50
+//seq{1..5..100}
+|> Seq.iter doRender
+
+
+

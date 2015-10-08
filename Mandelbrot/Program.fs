@@ -28,7 +28,7 @@ let main argv =
           
     let render filename (size:System.Drawing.Size) = 
         let graph = new Graph.Graph(size.Width, size.Height,-2.5, 1., -1.1, 1.1)
-        renderSet graph
+        graph |> renderSet  20
         graph.Bitmap.Save(filename)
 
     let iterationsToCheck = 20
