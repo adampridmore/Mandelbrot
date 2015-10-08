@@ -41,7 +41,9 @@ namespace MabdelbrotForm
             try
             {
                 Cursor.Current = Cursors.WaitCursor;
-                _currentGraph.RenderSet();
+
+                MandelbrotCalc.renderSet(_currentGraph);
+
                 pictureBox1.Image = _currentGraph.Bitmap;
             }
             finally

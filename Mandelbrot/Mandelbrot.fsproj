@@ -56,17 +56,18 @@
   <ItemGroup>
     <Compile Include="AssemblyInfo.fs" />
     <Compile Include="ColorModule.fs" />
-    <Compile Include="Mandelbrot.fs" />
-    <Compile Include="MandelbrotTests.fs" />
     <Compile Include="PointD.fs" />
     <Compile Include="GraphHelpers.fs" />
     <Compile Include="GraphHelpersTests.fs" />
     <Compile Include="Graph.fs" />
+    <Compile Include="GraphTests.fs" />
+    <Compile Include="Mandelbrot.fs" />
+    <Compile Include="MandelbrotTests.fs" />
     <Compile Include="Program.fs" />
     <None Include="App.config" />
-    <None Include="Script2.fsx" />
     <Content Include="packages.config" />
     <None Include="Script1.fsx" />
+    <None Include="Script2.fsx" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="FSharp.Charting">

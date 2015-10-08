@@ -35,14 +35,13 @@ let ``simple mapping 3``() =
     mapToPixelValue minX maxX pixelWidth valueToMap |> should equal 500.
 
 [<Test>]
-let ``pixel increment size``()=
-    let minX = -100.
-    let maxX = 100.
-    let pixelWidth = 100.
-        
-    let value = pixelIncrement minX maxX pixelWidth
-    
-    value |> should equal 2. 
+let ``simple mapping 4``() = 
+    let minX = 0.
+    let maxX = 10.
+    let pixelWidth = 10.
+
+    mapToPixelValue minX maxX pixelWidth 0. |> should equal 0.
+    mapToPixelValue minX maxX pixelWidth 10. |> should equal 10.
 
 [<Test>]
 let ``map pixel to value``()=

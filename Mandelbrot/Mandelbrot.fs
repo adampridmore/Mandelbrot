@@ -1,14 +1,13 @@
 ﻿module MandelbrotCalc
 open System.Numerics
+open Graph
 
 let sqr (x:Complex) = x*x
 
-let defaultIterationsToCheck = 100
-
 type InSetResult = 
-    | NotInSet of value :int
+    | NotInSet of iterationsChecked :int
     | InSet
-
+    
 let mandleBrotValuesSequence (v:Complex) = 
     let fn currentValue = 
         (currentValue |> sqr) + v
@@ -44,7 +43,10 @@ let inSetToMagnitude inSet =
              | InSetResult.NotInSet(x) -> Some(x)
              | InSetResult.InSet -> None
 
-let fn x y = 
+let fn iterationsToCheck x y = 
     let inSet = new Complex(x,y) 
-                |> (inSetWithResult 500)
+                |> (inSetWithResult iterationsToCheck)
     inSet |> inSetToMagnitude
+
+let renderSet iterationsToCheck (graph: Graph) =
+    graph.IterateGraph (fn iterationsToCheck)

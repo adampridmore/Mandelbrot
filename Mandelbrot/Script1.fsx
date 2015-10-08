@@ -4,22 +4,29 @@
 #load "ColorModule.fs"
 #load "PointD.fs"
 #load "GraphHelpers.fs"
-#load "Mandelbrot.fs"
 #load "Graph.fs"
+#load "Mandelbrot.fs"
 
 open System.Numerics
 open System.Drawing
 open MandelbrotCalc
 
-let renderSet filename iterationsToCheck = 
-    let graph = new Graph.Graph(3840, 2160,-1.15590493422159, -1.15554362720591, 0.277349331271918, 0.278131835829461)
-    //let graph = new Graph.Graph(1024, 768,-2.,2.,-2.,2.)
-    //graph.DrawAxes()
-    graph.RenderSet()
+let render iterationsToCheck (size:System.Drawing.Size) filename= 
+    let graph = new Graph.Graph(size.Width, size.Height,-2.5, 1., -1.1, 1.1)
+    graph |> renderSet iterationsToCheck
     graph.Bitmap.Save(filename)
 
-let iterationsToCheck = 400
-let filename = sprintf @"C:\temp\mandlebrot\%d.bmp" iterationsToCheck
-renderSet filename iterationsToCheck
 
-System.Diagnostics.Process.Start(filename)
+seq{1..5..100}
+|> Seq.iter (fun iterationsToCheck ->
+    let size = new System.Drawing.Size(3840, 2160)
+    //let size = new System.Drawing.Size(1080, 720)
+    //let size = new System.Drawing.Size(1280, 960)
+    let filename = sprintf @"C:\temp\mandlebrot\%dx%d-%d.bmp" size.Width size.Height iterationsToCheck
+
+    let stopwatch = System.Diagnostics.Stopwatch.StartNew()
+    filename |> render iterationsToCheck size
+    printfn "Duration %fs" stopwatch.Elapsed.TotalSeconds
+    )
+
+//System.Diagnostics.Process.Start(filename)
