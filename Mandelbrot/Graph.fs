@@ -7,15 +7,15 @@ type Graph(width:int, height:int, minX:double, maxX:double, minY:double, maxY:do
     let bitmap = new Bitmap(width, height) 
 
     let mapPointToPixelPoint (p:PointD) =
-        let mappedX = GraphHelpers.mapToPixelValue minX maxX (float width) p.X
-        let mappedY = GraphHelpers.mapToPixelValue maxY minY (float height) p.Y
+        let mappedX = GraphHelpers.mapValueToPixel minX maxX (float width) p.X
+        let mappedY = GraphHelpers.mapValueToPixel maxY minY (float height) p.Y
         {PointD.X=mappedX; Y=mappedY}
 
     let insideBitmap (p:Point) =
         p.X < bitmap.Size.Width && p.Y < bitmap.Height && p.X >= 0 && p.Y >= 0
 
-    let pixelMaperX = GraphHelpers.pixelToValue minX maxX width
-    let pixelMaperY = GraphHelpers.pixelToValue minY maxY height
+    let pixelMaperX = GraphHelpers.mapPixelToValue minX maxX width
+    let pixelMaperY = GraphHelpers.mapPixelToValue minY maxY height
     
     member this.Width = width
     member this.Height = height

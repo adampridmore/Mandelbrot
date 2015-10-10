@@ -1,5 +1,6 @@
 ﻿#r "System.Drawing.dll"
 #r "..\packages\FSPowerPack.Parallel.Seq.Community.3.0.0.0\Lib\Net40\FSharp.PowerPack.Parallel.Seq.dll"
+#r "..\packages\FSPowerPack.Core.Community.2.0.0.0\Lib\Net40\FSharp.PowerPack.dll"
 
 #load "ColorModule.fs"
 #load "PointD.fs"
@@ -17,8 +18,8 @@ let render iterationsToCheck (size:System.Drawing.Size) filename=
     graph.Bitmap.Save(filename)
 
 let doRender iterationsToCheck =
-    let size = new System.Drawing.Size(3840, 2160)
-    //let size = new System.Drawing.Size(1080, 720)
+    //let size = new System.Drawing.Size(3840, 2160)
+    let size = new System.Drawing.Size(1080, 720)
     //let size = new System.Drawing.Size(1280, 960)
     let filename = sprintf @"C:\temp\mandlebrot\%dx%d-%d.bmp" size.Width size.Height iterationsToCheck
 

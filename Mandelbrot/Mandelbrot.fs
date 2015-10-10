@@ -1,5 +1,4 @@
 ﻿module MandelbrotCalc
-open System.Numerics
 open Graph
 
 let sqr (x:Complex) = x*x
@@ -38,15 +37,18 @@ let inSetWithResult(iterationsToCheck:int) (v:Complex) =
     | Some(index,_) -> NotInSet(index)
 
 
-let inSetToMagnitude inSet =
-             match inSet with
-             | InSetResult.NotInSet(x) -> Some(x)
-             | InSetResult.InSet -> None
+let inSetToMagnitude = 
+    function 
+    | InSetResult.NotInSet(x) -> Some(x)
+    | InSetResult.InSet -> None
+
+let createComplex real imaginary = 
+    Complex.Create(real,imaginary)
 
 let fn iterationsToCheck x y = 
-    let inSet = new Complex(x,y) 
-                |> (inSetWithResult iterationsToCheck)
-    inSet |> inSetToMagnitude
+    createComplex x y 
+    |> (inSetWithResult iterationsToCheck)
+    |> inSetToMagnitude
 
 let renderSet iterationsToCheck (graph: Graph) =
     graph.IterateGraph (fn iterationsToCheck)

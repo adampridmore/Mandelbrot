@@ -12,7 +12,7 @@ let ``simple mapping``() =
 
     let valueToMap = 150.
     
-    mapToPixelValue minX maxX pixelWidth valueToMap |> should equal 500.
+    mapValueToPixel minX maxX pixelWidth valueToMap |> should equal 500.
 
 [<Test>]
 let ``simple mapping 2``() = 
@@ -22,7 +22,7 @@ let ``simple mapping 2``() =
 
     let valueToMap = 150.
     
-    mapToPixelValue minX maxX pixelWidth valueToMap |> should equal 125.
+    mapValueToPixel minX maxX pixelWidth valueToMap |> should equal 125.
 
 [<Test>]
 let ``simple mapping 3``() = 
@@ -32,7 +32,7 @@ let ``simple mapping 3``() =
 
     let valueToMap = 0.
     
-    mapToPixelValue minX maxX pixelWidth valueToMap |> should equal 500.
+    mapValueToPixel minX maxX pixelWidth valueToMap |> should equal 500.
 
 [<Test>]
 let ``simple mapping 4``() = 
@@ -40,10 +40,9 @@ let ``simple mapping 4``() =
     let maxX = 10.
     let pixelWidth = 10.
 
-    mapToPixelValue minX maxX pixelWidth 0. |> should equal 0.
-    mapToPixelValue minX maxX pixelWidth 10. |> should equal 10.
+    mapValueToPixel minX maxX pixelWidth 0. |> should equal 0.
+    mapValueToPixel minX maxX pixelWidth 10. |> should equal 10.
 
 [<Test>]
 let ``map pixel to value``()=
-    pixelToValue -100. 200. 900 600 |> should equal 100 
-
+    mapPixelToValue -100. 200. 900 600 |> should equal 100
