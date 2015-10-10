@@ -42,11 +42,8 @@ let inSetToMagnitude =
     | InSetResult.NotInSet(x) -> Some(x)
     | InSetResult.InSet -> None
 
-let createComplex real imaginary = 
-    Complex.Create(real,imaginary)
-
-let fn iterationsToCheck x y = 
-    createComplex x y 
+let fn iterationsToCheck (value:PointD.PointD) = 
+    value.ToComplex
     |> (inSetWithResult iterationsToCheck)
     |> inSetToMagnitude
 

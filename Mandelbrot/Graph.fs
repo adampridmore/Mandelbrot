@@ -60,7 +60,7 @@ type Graph(width:int, height:int, minX:double, maxX:double, minY:double, maxY:do
     member this.GetValueFromPixel(pixel:Pixel) = 
         {PointD.X = (pixel.X|>pixelMaperX);Y = (pixel.Y|>pixelMaperY) }
 
-    member this.IterateGraph (fn: float-> float -> (int Option )) = 
+    member this.IterateGraph (fn: PointD -> (int Option )) = 
         let pixelToPixelPointD (pixel:Pixel) = 
             let point = this.GetValueFromPixel(pixel)
             (pixel, point)
@@ -71,7 +71,7 @@ type Graph(width:int, height:int, minX:double, maxX:double, minY:double, maxY:do
                     yield {Pixel.X=x; Pixel.Y=y}
         }
         |> PSeq.map pixelToPixelPointD
-        |> PSeq.map (fun (pixel,point) -> (pixel, fn point.X point.Y))
+        |> PSeq.map (fun (pixel,point) -> (pixel, fn point))
         |> Seq.iter (fun (pixel,v) -> match v with 
                                       | Some(v) -> this.DrawPointAtPixelWithMagnitude pixel v
                                       | None -> this.DrawPointAtPixelWithColor pixel Color.Black)
