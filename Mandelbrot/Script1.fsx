@@ -4,6 +4,7 @@
 
 #load "Pixel.fs"
 #load "ColorModule.fs"
+#load "RectangleD.fs"
 #load "PointD.fs"
 #load "GraphHelpers.fs"
 #load "Graph.fs"
@@ -12,9 +13,11 @@
 open System.Numerics
 open System.Drawing
 open MandelbrotCalc
+open RectangleD
 
 let render iterationsToCheck (size:System.Drawing.Size) filename= 
-    let graph = new Graph.Graph(size.Width, size.Height,-2.5, 1., -1.1, 1.1)
+    let viewPort = {XMin = -2.5; XMax = 1.0; YMin = -1.1; YMax = 1.1}
+    let graph = new Graph.Graph(size.Width, size.Height, viewPort)
     graph |> renderSet iterationsToCheck
     graph.Bitmap.Save(filename)
 

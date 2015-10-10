@@ -57,6 +57,8 @@
     <Compile Include="AssemblyInfo.fs" />
     <Compile Include="ColorModule.fs" />
     <Compile Include="Pixel.fs" />
+    <Compile Include="RectangleD.fs" />
+    <Compile Include="RectangleTests.fs" />
     <Compile Include="PointD.fs" />
     <Compile Include="GraphHelpers.fs" />
     <Compile Include="GraphHelpersTests.fs" />

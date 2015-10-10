@@ -3,27 +3,25 @@ open System.Drawing
 open PointD
 open Pixel
 open Microsoft.FSharp.Collections
+open RectangleD
 
-type Graph(width:int, height:int, minX:double, maxX:double, minY:double, maxY:double) =
+type Graph(width:int, height:int, viewPortal:RectangeD) =
     let bitmap = new System.Drawing.Bitmap(width, height) 
 
     let mapPointToPixelPoint (p:PointD) =
-        let mappedX = GraphHelpers.mapValueToPixel minX maxX (float width) p.X
-        let mappedY = GraphHelpers.mapValueToPixel maxY minY (float height) p.Y
+        let mappedX = GraphHelpers.mapValueToPixel viewPortal.XMin viewPortal.XMax (float width) p.X
+        let mappedY = GraphHelpers.mapValueToPixel viewPortal.YMin viewPortal.YMax (float height) p.Y
         {PointD.X=mappedX; Y=mappedY}
 
     let insideBitmap (p:Pixel) =
         p.X < bitmap.Size.Width && p.Y < bitmap.Height && p.X >= 0 && p.Y >= 0
 
-    let pixelMaperX = GraphHelpers.mapPixelToValue minX maxX width
-    let pixelMaperY = GraphHelpers.mapPixelToValue minY maxY height
+    let pixelMaperX = GraphHelpers.mapPixelToValue viewPortal.XMin viewPortal.XMax width
+    let pixelMaperY = GraphHelpers.mapPixelToValue viewPortal.YMin viewPortal.YMax height
     
     member this.Width = width
     member this.Height = height
-    member this.MinX = minX
-    member this.MaxX = maxX
-    member this.MinY = minY
-    member this.MaxY = maxY
+    member this.ViewPortal = viewPortal
     member this.Bitmap = bitmap
     member this.DrawLine (point1:Pixel) (point2:Pixel) = 
         use graphics = Graphics.FromImage(this.Bitmap)
@@ -70,7 +68,7 @@ type Graph(width:int, height:int, minX:double, maxX:double, minY:double, maxY:do
                 for x in 0..this.Width-1 do
                     yield {Pixel.X=x; Pixel.Y=y}
         }
-        |> PSeq.map pixelToPixelPointD
+        |> Seq.map pixelToPixelPointD
         |> PSeq.map (fun (pixel,point) -> (pixel, fn point))
         |> Seq.iter (fun (pixel,v) -> match v with 
                                       | Some(v) -> this.DrawPointAtPixelWithMagnitude pixel v

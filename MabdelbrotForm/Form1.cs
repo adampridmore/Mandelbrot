@@ -7,21 +7,33 @@ namespace MabdelbrotForm
 {
     public partial class Form1 : Form
     {
-        private readonly Stack<Rect> _viewPorts = new Stack<Rect>();
-        private Rect CurrentViewPort => _viewPorts.Peek();
+        private readonly Stack<RectangleD.RectangeD> _viewPorts = new Stack<RectangleD.RectangeD>();
+        private RectangleD.RectangeD CurrentViewPort => _viewPorts.Peek();
         private Graph.Graph _currentGraph;
         private Point? _mouseClickStart = null;
+
+        private int _iterations = 200;
 
         public Form1()
         {
             InitializeComponent();
 
-            _viewPorts.Push(new Rect(-2, 2, -2, 2));
+            this.AutoScaleDimensions = new SizeF(96f, 96f);
+            this.AutoScaleMode = AutoScaleMode.Dpi;
+
+            var startViewPort = new RectangleD.RectangeD(
+                -0.7603053435,
+                -0.5404580153,
+                0.3225806452,
+                0.5923753666);
+            //new RectangleD.RectangeD(-2, 2, -2, 2)
+
+            _viewPorts.Push(startViewPort);
         }
 
         private void Form1_Load(object sender, EventArgs e)
         {
-            
+            RenderMandlebrotSet();
         }
 
         private void RenderMandlebrotSet()
@@ -33,16 +45,17 @@ namespace MabdelbrotForm
 
             System.Diagnostics.Debug.WriteLine(CurrentViewPort.ToString());
 
+
+
             _currentGraph = new Graph.Graph(pictureBox1.Width,
                 pictureBox1.Height,
-                CurrentViewPort.MinX, CurrentViewPort.MaxX,
-                CurrentViewPort.MinY, CurrentViewPort.MaxY);
+                CurrentViewPort);
             //g.DrawAxes();
             try
             {
                 Cursor.Current = Cursors.WaitCursor;
 
-                MandelbrotCalc.renderSet(200, _currentGraph);
+                MandelbrotCalc.renderSet(_iterations, _currentGraph);
 
                 pictureBox1.Image = _currentGraph.Bitmap;
             }
@@ -54,7 +67,7 @@ namespace MabdelbrotForm
 
         private void Form1_SizeChanged(object sender, EventArgs e)
         {
-            RenderMandlebrotSet();
+            //RenderMandlebrotSet();
         }
         
         private void pictureBox1_MouseDown(object sender, MouseEventArgs e)
@@ -79,19 +92,41 @@ namespace MabdelbrotForm
                 return;
             }
 
-            var startValue = _currentGraph.GetValueFromPixel(Pixel.Pixel.FromPoint(_mouseClickStart.Value));
-            var endValue = _currentGraph.GetValueFromPixel(Pixel.Pixel.FromPoint(mousePoint));
+            var newViewPort = GetViewPortFromStartAndCurrentMousePos(mousePoint);
 
-            _viewPorts.Push(new Rect(startValue.X,
-                                endValue.X,
-                                endValue.Y,
-                                startValue.Y));
+            _viewPorts.Push(newViewPort);
 
-            RenderMandlebrotSet();
+            _mouseClickStart = null;
+            tbHoverText.Text = CurrentViewPort.ToString();
         }
 
-        private void pictureBox1_MouseClick(object sender, MouseEventArgs e)
+        private void pictureBox1_MouseMove(object sender, MouseEventArgs e)
         {
+            if (!_mouseClickStart.HasValue)
+            {
+                return;
+            }
+
+            var newViewPort = GetViewPortFromStartAndCurrentMousePos(e.Location);
+            tbHoverText.Text = newViewPort.ToString();
+        }
+
+        private Point TranslateMousePoint(Point mousePoint)
+        {
+            // The mouse is specified in pixel from top, but the view is in pixel from bottom
+            return new Point(mousePoint.X, pictureBox1.Height - mousePoint.Y);
+        }
+
+        private RectangleD.RectangeD GetViewPortFromStartAndCurrentMousePos(Point mousePoint)
+        {
+            var startValue = _currentGraph.GetValueFromPixel(Pixel.Pixel.FromPoint(TranslateMousePoint(_mouseClickStart.Value)));
+            var endValue = _currentGraph.GetValueFromPixel(Pixel.Pixel.FromPoint(TranslateMousePoint(mousePoint)));
+
+            var newViewPort = new RectangleD.RectangeD(startValue.X,
+                endValue.X,
+                endValue.Y,
+                startValue.Y);
+            return newViewPort;
         }
 
         private void bBack_Click(object sender, EventArgs e)
@@ -104,6 +139,11 @@ namespace MabdelbrotForm
         }
 
         private void Form1_Shown(object sender, EventArgs e)
+        {
+
+        }
+
+        private void bRender_Click(object sender, EventArgs e)
         {
             RenderMandlebrotSet();
         }
