@@ -2,6 +2,7 @@
 #r "..\packages\FSPowerPack.Parallel.Seq.Community.3.0.0.0\Lib\Net40\FSharp.PowerPack.Parallel.Seq.dll"
 #r "..\packages\FSPowerPack.Core.Community.2.0.0.0\Lib\Net40\FSharp.PowerPack.dll"
 
+#load "Pixel.fs"
 #load "ColorModule.fs"
 #load "PointD.fs"
 #load "GraphHelpers.fs"

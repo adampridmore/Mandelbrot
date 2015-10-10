@@ -79,8 +79,8 @@ namespace MabdelbrotForm
                 return;
             }
 
-            var startValue = _currentGraph.GetValueFromPixel(_mouseClickStart.Value);
-            var endValue = _currentGraph.GetValueFromPixel(mousePoint);
+            var startValue = _currentGraph.GetValueFromPixel(Pixel.Pixel.FromPoint(_mouseClickStart.Value));
+            var endValue = _currentGraph.GetValueFromPixel(Pixel.Pixel.FromPoint(mousePoint));
 
             _viewPorts.Push(new Rect(startValue.X,
                                 endValue.X,
