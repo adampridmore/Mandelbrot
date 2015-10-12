@@ -5,7 +5,6 @@
 #load "ColorModule.fs"
 #load "RectangleD.fs"
 #load "PointD.fs"
-#load "GraphHelpers.fs"
 #load "Graph.fs"
 #load "Mandelbrot.fs"
 
@@ -105,7 +104,7 @@ let everyNth n seq =
 
 transformations2
 |> Seq.pairwise
-|> Seq.map (fun (a, b) -> RectangleD.translate 100 a b)
+|> Seq.map (fun (a, b) -> RectangleD.TranslationSeq 100 a b)
 |> Seq.concat
 //|> (everyNth 50)
 |> Seq.iteri render

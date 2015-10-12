@@ -6,7 +6,6 @@
 #load "ColorModule.fs"
 #load "RectangleD.fs"
 #load "PointD.fs"
-#load "GraphHelpers.fs"
 #load "Graph.fs"
 #load "Mandelbrot.fs"
 

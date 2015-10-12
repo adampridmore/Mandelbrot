@@ -8,11 +8,11 @@ open Mandelbrot
 [<EntryPoint>]
 let main argv = 
 //    let graph = new Graph.Graph(300, 200,0.,100.,0.,100.)
-//  
+//
 //    let picutureBox = new PictureBox()
 //    picutureBox.Dock <- DockStyle.Fill
-//      
-//    let form = new Form()
+//
+//    let form = new Form(
 //    form.Controls.Add(picutureBox)
 //
 //    let renderGraph() = 
@@ -20,7 +20,7 @@ let main argv =
 //        graph.DrawAxes()
 //        graph |> renderSet
 //        graph.Bitmap
-//    
+//
 //    picutureBox.Image <- renderGraph()
 //
 //    form.SizeChanged.Add(fun _ -> picutureBox.Image <- renderGraph())

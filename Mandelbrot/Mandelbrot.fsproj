@@ -60,8 +60,6 @@
     <Compile Include="RectangleD.fs" />
     <Compile Include="RectangleTests.fs" />
     <Compile Include="PointD.fs" />
-    <Compile Include="GraphHelpers.fs" />
-    <Compile Include="GraphHelpersTests.fs" />
     <Compile Include="Graph.fs" />
     <Compile Include="GraphTests.fs" />
     <Compile Include="Mandelbrot.fs" />

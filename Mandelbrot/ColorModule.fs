@@ -40,7 +40,7 @@ let toColor i =
         |> Seq.toArray
 
 
-//    let allBlues =  
+//    let allBlues =
 //        seq{0..25..255}
 //        |> Seq.map (fun i -> Color.FromArgb(255, 255, i))
 //        |> Seq.toArray

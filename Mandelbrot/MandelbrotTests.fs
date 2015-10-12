@@ -1,4 +1,4 @@
-﻿module MandelbrotTests.MandelbrotCalculatorTests
+﻿module Mandelbrot.MandelbrotCalculatorTests
 
 open NUnit.Framework
 open FsUnit

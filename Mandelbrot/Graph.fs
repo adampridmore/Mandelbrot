@@ -9,15 +9,15 @@ type Graph(width:int, height:int, viewPortal:RectangleD) =
     let bitmap = new System.Drawing.Bitmap(width, height) 
 
     let mapPointToPixelPoint (p:PointD) =
-        let mappedX = GraphHelpers.mapValueToPixel viewPortal.XMin viewPortal.XMax (float width) p.X
-        let mappedY = GraphHelpers.mapValueToPixel viewPortal.YMin viewPortal.YMax (float height) p.Y
+        let mappedX = Graph.MapValueToPixel viewPortal.XMin viewPortal.XMax (float width) p.X
+        let mappedY = Graph.MapValueToPixel viewPortal.YMin viewPortal.YMax (float height) p.Y
         {PointD.X=mappedX; Y=mappedY}
 
     let insideBitmap (p:Pixel) =
         p.X < bitmap.Size.Width && p.Y < bitmap.Height && p.X >= 0 && p.Y >= 0
 
-    let pixelMaperX = GraphHelpers.mapPixelToValue viewPortal.XMin viewPortal.XMax width
-    let pixelMaperY = GraphHelpers.mapPixelToValue viewPortal.YMin viewPortal.YMax height
+    let pixelMaperX = Graph.MapPixelToValue viewPortal.XMin viewPortal.XMax width
+    let pixelMaperY = Graph.MapPixelToValue viewPortal.YMin viewPortal.YMax height
     
     member this.Width = width
     member this.Height = height
@@ -73,3 +73,10 @@ type Graph(width:int, height:int, viewPortal:RectangleD) =
         |> Seq.iter (fun (pixel,v) -> match v with 
                                         | Some(v) -> this.DrawPointAtPixelWithMagnitude pixel v
                                         | None -> this.DrawPointAtPixelWithColor pixel Color.Black)
+
+    static member MapValueToPixel (min:float) (max:float) (pixelWidth:float) (valueToMap:float) =
+        ((valueToMap - min) / (max - min)) * pixelWidth
+
+    static member MapPixelToValue (min:float) (max:float) (width:int) (pixelValue:int) = 
+        let percent = (float pixelValue) / (float width)
+        ((max - min) * percent) + min

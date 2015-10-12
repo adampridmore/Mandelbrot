@@ -6,7 +6,7 @@ type RectangleD =
     member this.Width = this.XMax - this.XMin
     override this.ToString() = sprintf "%A" this 
 
-    static member translate iterations (fromR:RectangleD) (toR:RectangleD) = 
+    static member TranslationSeq iterations (fromR:RectangleD) (toR:RectangleD) = 
         let incrementXMin = ( toR.XMin - fromR.XMin)  / (float iterations)
         let incrementXMax = (toR.XMax - fromR.XMax)  / (float iterations)
         let incrementYMin = (toR.YMin - fromR.YMin)  / (float iterations)
