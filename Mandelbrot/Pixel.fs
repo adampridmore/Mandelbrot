@@ -1,4 +1,4 @@
-﻿module Pixel
+﻿namespace Mandelbrot
 
 open System.Drawing
 

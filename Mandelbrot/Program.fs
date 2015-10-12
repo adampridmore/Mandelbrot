@@ -2,8 +2,8 @@
 open System.Drawing
 open System
 open System.Numerics
-open MandelbrotCalc
-open RectangleD
+open Mandelbrot.MandelbrotCalculator
+open Mandelbrot
 
 [<EntryPoint>]
 let main argv = 
@@ -30,7 +30,7 @@ let main argv =
     let render filename (size:System.Drawing.Size) = 
 
         let viewPortal = {RectangleD.XMin = -2.5; XMax = 1.0; YMin = -1.1; YMax = 1.1}
-        let graph = new Graph.Graph(size.Width, size.Height, viewPortal)
+        let graph = new Graph(size.Width, size.Height, viewPortal)
         graph |> renderSet  20
         graph.Bitmap.Save(filename)
 

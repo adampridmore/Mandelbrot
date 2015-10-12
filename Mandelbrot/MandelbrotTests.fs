@@ -1,7 +1,8 @@
-﻿module MandelbrotTests
+﻿module MandelbrotTests.MandelbrotCalculatorTests
+
 open NUnit.Framework
 open FsUnit
-open MandelbrotCalc
+open Mandelbrot.MandelbrotCalculator
 
 [<Test>]
 let ``outside set``()=

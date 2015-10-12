@@ -1,4 +1,4 @@
-﻿module GraphHelpers
+﻿module Mandelbrot.GraphHelpers
 
 let mapValueToPixel (min:float) (max:float) (pixelWidth:float) (valueToMap:float) =
     ((valueToMap - min) / (max - min)) * pixelWidth

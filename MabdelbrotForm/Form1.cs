@@ -2,14 +2,15 @@
 using System.Collections.Generic;
 using System.Drawing;
 using System.Windows.Forms;
+using Mandelbrot;
 
 namespace MabdelbrotForm
 {
     public partial class Form1 : Form
     {
-        private readonly Stack<RectangleD.RectangeD> _viewPorts = new Stack<RectangleD.RectangeD>();
-        private RectangleD.RectangeD CurrentViewPort => _viewPorts.Peek();
-        private Graph.Graph _currentGraph;
+        private readonly Stack<RectangleD> _viewPorts = new Stack<RectangleD>();
+        private RectangleD CurrentViewPort => _viewPorts.Peek();
+        private Graph _currentGraph;
         private Point? _mouseClickStart = null;
 
         private int _iterations = 200;
@@ -21,12 +22,12 @@ namespace MabdelbrotForm
             this.AutoScaleDimensions = new SizeF(96f, 96f);
             this.AutoScaleMode = AutoScaleMode.Dpi;
 
-            var startViewPort = new RectangleD.RectangeD(
+            var startViewPort = new RectangleD(
                 -0.7603053435,
                 -0.5404580153,
                 0.3225806452,
                 0.5923753666);
-            //new RectangleD.RectangeD(-2, 2, -2, 2)
+            //new RectangleD.RectangleD(-2, 2, -2, 2)
 
             _viewPorts.Push(startViewPort);
         }
@@ -47,7 +48,7 @@ namespace MabdelbrotForm
 
 
 
-            _currentGraph = new Graph.Graph(pictureBox1.Width,
+            _currentGraph = new Graph(pictureBox1.Width,
                 pictureBox1.Height,
                 CurrentViewPort);
             //g.DrawAxes();
@@ -55,7 +56,7 @@ namespace MabdelbrotForm
             {
                 Cursor.Current = Cursors.WaitCursor;
 
-                MandelbrotCalc.renderSet(_iterations, _currentGraph);
+                MandelbrotCalculator.renderSet(_iterations, _currentGraph);
 
                 pictureBox1.Image = _currentGraph.Bitmap;
             }
@@ -117,12 +118,12 @@ namespace MabdelbrotForm
             return new Point(mousePoint.X, pictureBox1.Height - mousePoint.Y);
         }
 
-        private RectangleD.RectangeD GetViewPortFromStartAndCurrentMousePos(Point mousePoint)
+        private RectangleD GetViewPortFromStartAndCurrentMousePos(Point mousePoint)
         {
-            var startValue = _currentGraph.GetValueFromPixel(Pixel.Pixel.FromPoint(TranslateMousePoint(_mouseClickStart.Value)));
-            var endValue = _currentGraph.GetValueFromPixel(Pixel.Pixel.FromPoint(TranslateMousePoint(mousePoint)));
+            var startValue = _currentGraph.GetValueFromPixel(Pixel.FromPoint(TranslateMousePoint(_mouseClickStart.Value)));
+            var endValue = _currentGraph.GetValueFromPixel(Pixel.FromPoint(TranslateMousePoint(mousePoint)));
 
-            var newViewPort = new RectangleD.RectangeD(startValue.X,
+            var newViewPort = new RectangleD(startValue.X,
                 endValue.X,
                 endValue.Y,
                 startValue.Y);

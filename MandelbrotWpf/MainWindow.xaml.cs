@@ -5,6 +5,7 @@ using System.Windows.Media.Imaging;
 using System.Drawing;
 using System.IO;
 using System.Linq;
+using Mandelbrot;
 using Point = System.Windows.Point;
 
 namespace MandelbrotWpf
@@ -14,14 +15,14 @@ namespace MandelbrotWpf
     /// </summary>
     public partial class MainWindow : Window
     {
-        private readonly RectangleD.RectangeD _initialViewPort = new RectangleD.RectangeD(-2.5, 1, -1, 1);
+        private readonly RectangleD _initialViewPort = new RectangleD(-2.5, 1, -1, 1);
         private readonly int _defaultIterations = 100;
         private Point? _startOfDragPosition;
 
-        private readonly Stack<RectangleD.RectangeD> _viewPortHistory = new Stack<RectangleD.RectangeD>();
+        private readonly Stack<RectangleD> _viewPortHistory = new Stack<RectangleD>();
 
-        private RectangleD.RectangeD CurrentViewPort => _viewPortHistory.Peek();
-        private Graph.Graph CurrentGraph { get; set; }
+        private RectangleD CurrentViewPort => _viewPortHistory.Peek();
+        private Graph CurrentGraph { get; set; }
 
         public MainWindow()
         {
@@ -52,12 +53,12 @@ namespace MandelbrotWpf
             {
                 var size = GetImageSize();
 
-                CurrentGraph = new Graph.Graph(
+                CurrentGraph = new Graph(
                     size.Width,
                     size.Height,
                     CurrentViewPort);
 
-                MandelbrotCalc.renderSet(GetIterations(), CurrentGraph);
+                MandelbrotCalculator.renderSet(GetIterations(), CurrentGraph);
                 image.Source = BitmapToImageSource(CurrentGraph.Bitmap);
             }
         }
@@ -120,13 +121,13 @@ namespace MandelbrotWpf
 
             var endOfDragPosition = e.GetPosition(image);
 
-            var startPixel = new Pixel.Pixel((int)_startOfDragPosition.Value.X, (int)_startOfDragPosition.Value.Y);
+            var startPixel = new Pixel((int)_startOfDragPosition.Value.X, (int)_startOfDragPosition.Value.Y);
             var startValue = CurrentGraph.GetValueFromPixel(startPixel);
 
-            var endPixel = new Pixel.Pixel((int)endOfDragPosition.X, (int)endOfDragPosition.Y);
+            var endPixel = new Pixel((int)endOfDragPosition.X, (int)endOfDragPosition.Y);
             var endValue = CurrentGraph.GetValueFromPixel(endPixel);
 
-            _viewPortHistory.Push(new RectangleD.RectangeD(startValue.X, endValue.X, startValue.Y, endValue.Y));
+            _viewPortHistory.Push(new RectangleD(startValue.X, endValue.X, startValue.Y, endValue.Y));
 
             RenderMandelbrotSet();
         }

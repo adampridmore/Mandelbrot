@@ -12,12 +12,12 @@
 
 open System.Numerics
 open System.Drawing
-open MandelbrotCalc
-open RectangleD
+open Mandelbrot
+open Mandelbrot.MandelbrotCalculator
 
 let render iterationsToCheck (size:System.Drawing.Size) filename= 
     let viewPort = {XMin = -2.5; XMax = 1.0; YMin = -1.1; YMax = 1.1}
-    let graph = new Graph.Graph(size.Width, size.Height, viewPort)
+    let graph = new Graph(size.Width, size.Height, viewPort)
     graph |> renderSet iterationsToCheck
     graph.Bitmap.Save(filename)
 

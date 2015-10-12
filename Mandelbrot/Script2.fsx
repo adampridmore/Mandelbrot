@@ -11,11 +11,11 @@
 
 open System.Numerics
 open System.Drawing
-open MandelbrotCalc
-open RectangleD
+open Mandelbrot
+open Mandelbrot.MandelbrotCalculator
 open Microsoft.FSharp.Collections
 
-let iterationsToCheck = 2000
+let iterationsToCheck = 200
 //let iterationsToCheck = 50
 //let size = new System.Drawing.Size(3840, 2160)
 //let size = new System.Drawing.Size(1080, 720)
@@ -25,7 +25,7 @@ let size = new System.Drawing.Size(1920, 1080) // HD
 let render index r = 
     let filename = sprintf @"C:\temp\mandlebrot\b-%dx%d-%d-%d.png" size.Width size.Height iterationsToCheck index
     let stopwatch = System.Diagnostics.Stopwatch.StartNew()
-    let graph = new Graph.Graph(size.Width, size.Height, r)
+    let graph = new Graph(size.Width, size.Height, r)
     graph |> renderSet iterationsToCheck
     graph.Bitmap.Save(filename, System.Drawing.Imaging.ImageFormat.Png)
     printfn "Duration %d %fs" index stopwatch.Elapsed.TotalSeconds
@@ -105,7 +105,7 @@ let everyNth n seq =
 
 transformations2
 |> Seq.pairwise
-|> Seq.map (fun (a, b) -> translate 100 a b)
+|> Seq.map (fun (a, b) -> RectangleD.translate 100 a b)
 |> Seq.concat
 //|> (everyNth 50)
 |> Seq.iteri render

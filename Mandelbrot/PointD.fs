@@ -1,5 +1,7 @@
-﻿module PointD
+﻿namespace Mandelbrot
+
 open System.Drawing
+open Mandelbrot
 
 type PointD = 
     {X: float; Y: float } 
@@ -8,5 +10,4 @@ type PointD =
     member this.ToComplex = Complex.Create(this.X, this.Y)
 
     static member FromPoint (point:Point) = {X=(float point.X); Y=(float point.Y)}
-
-let Zero = {X=0.;Y=0.}
+    static member Zero = {X=0.;Y=0.}

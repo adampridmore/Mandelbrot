@@ -1,8 +1,8 @@
-﻿module GraphHelpersTests
+﻿module Mandelbrot.GraphHelpersTests
 
 open NUnit.Framework
 open FsUnit
-open GraphHelpers
+open Mandelbrot.GraphHelpers
 
 [<Test>]
 let ``simple mapping``() = 

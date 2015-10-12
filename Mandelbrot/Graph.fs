@@ -1,11 +1,11 @@
-﻿module Graph
-open System.Drawing
-open PointD
-open Pixel
-open Microsoft.FSharp.Collections
-open RectangleD
+﻿namespace Mandelbrot 
 
-type Graph(width:int, height:int, viewPortal:RectangeD) =
+open System.Drawing
+open Microsoft.FSharp.Collections
+open Mandelbrot
+open Mandelbrot.Color
+
+type Graph(width:int, height:int, viewPortal:RectangleD) =
     let bitmap = new System.Drawing.Bitmap(width, height) 
 
     let mapPointToPixelPoint (p:PointD) =
@@ -34,7 +34,7 @@ type Graph(width:int, height:int, viewPortal:RectangeD) =
     member this.DrawPointAtPixel (p:Pixel) = this.DrawPointAtPixelWithColor p Color.Black
     member this.DrawPointAtPixelWithMagnitude (p:Pixel) (magnitude:int) =
         magnitude 
-        |> ColorModule.toColor 
+        |> toColor 
         |> (this.DrawPointAtPixelWithColor p)
     member this.DrawPointAtPixelWithColor (p:Pixel) (c:Color) =
         if insideBitmap(p) 
@@ -71,5 +71,5 @@ type Graph(width:int, height:int, viewPortal:RectangeD) =
         |> Seq.map pixelToPixelPointD
         |> PSeq.map (fun (pixel,point) -> (pixel, fn point))
         |> Seq.iter (fun (pixel,v) -> match v with 
-                                      | Some(v) -> this.DrawPointAtPixelWithMagnitude pixel v
-                                      | None -> this.DrawPointAtPixelWithColor pixel Color.Black)
+                                        | Some(v) -> this.DrawPointAtPixelWithMagnitude pixel v
+                                        | None -> this.DrawPointAtPixelWithColor pixel Color.Black)

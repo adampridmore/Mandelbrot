@@ -1,5 +1,6 @@
-﻿module MandelbrotCalc
-open Graph
+﻿module Mandelbrot.MandelbrotCalculator
+
+open Mandelbrot
 
 let sqr (x:Complex) = x*x
 
@@ -7,12 +8,15 @@ type InSetResult =
     | NotInSet of iterationsChecked :int
     | InSet
     
-let mandleBrotValuesSequence (v:Complex) = 
+let mandleBrotValuesSequence (value:Complex) = 
     let fn currentValue = 
-        (currentValue |> sqr) + v
+        (currentValue |> sqr) + value
     
-    Seq.unfold (fun state -> let nextValue = fn state
-                             Some(nextValue, nextValue)) v
+    let nextValue previousValue = 
+        let nextValue = fn previousValue
+        Some(nextValue, nextValue)
+    
+    Seq.unfold nextValue value
 
 let valueOutsideSet (x:Complex) = Complex.Abs(x) > 2.
 
@@ -42,7 +46,7 @@ let inSetToMagnitude =
     | InSetResult.NotInSet(x) -> Some(x)
     | InSetResult.InSet -> None
 
-let fn iterationsToCheck (value:PointD.PointD) = 
+let fn iterationsToCheck (value:PointD) = 
     value.ToComplex
     |> (inSetWithResult iterationsToCheck)
     |> inSetToMagnitude

@@ -1,4 +1,5 @@
-﻿module ColorModule
+﻿module Mandelbrot.Color
+
 open System.Drawing
 
 let toColor i = 
