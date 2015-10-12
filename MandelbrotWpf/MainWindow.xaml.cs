@@ -5,7 +5,6 @@ using System.Windows.Media.Imaging;
 using System.Drawing;
 using System.IO;
 using System.Linq;
-using System.Text;
 using Point = System.Windows.Point;
 
 namespace MandelbrotWpf
@@ -16,6 +15,7 @@ namespace MandelbrotWpf
     public partial class MainWindow : Window
     {
         private readonly RectangleD.RectangeD _initialViewPort = new RectangleD.RectangeD(-2.5, 1, -1, 1);
+        private readonly int _defaultIterations = 100;
         private Point? _startOfDragPosition;
 
         private readonly Stack<RectangleD.RectangeD> _viewPortHistory = new Stack<RectangleD.RectangeD>();
@@ -35,6 +35,8 @@ namespace MandelbrotWpf
             comboBox.Items.Add("500");
             comboBox.Items.Add("1000");
             comboBox.Items.Add("5000");
+
+            comboBox.SelectedValue = _defaultIterations.ToString();
 
             _viewPortHistory.Push(_initialViewPort);
         }
@@ -65,7 +67,7 @@ namespace MandelbrotWpf
             int value;
             if (!int.TryParse(comboBox.Text, out value))
             {
-                return 100;
+                return _defaultIterations;
             }
             return value;
         }
@@ -82,8 +84,7 @@ namespace MandelbrotWpf
                 return size;
             }
         }
-
-
+        
         private static BitmapImage BitmapToImageSource(Bitmap bitmap)
         {
             using (var memory = new MemoryStream())
@@ -137,6 +138,11 @@ namespace MandelbrotWpf
 
         private void bBack_Click(object sender, RoutedEventArgs e)
         {
+            if (_viewPortHistory.Count <= 1)
+            {
+                return;
+            }
+
             _viewPortHistory.Pop();
 
             RenderMandelbrotSet();

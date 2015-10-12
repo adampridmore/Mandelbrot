@@ -11,7 +11,8 @@
         <Image x:Name="image" Margin="10,10,10,34.8" MouseLeftButtonDown="image_MouseLeftButtonDown" MouseLeftButtonUp="image_MouseLeftButtonUp"/>
         <Button x:Name="bBack" Content="Back" HorizontalAlignment="Left" Margin="10,0,0,9.8" Width="75" Height="20" VerticalAlignment="Bottom" Click="bBack_Click"/>
         <Button x:Name="bCopyTransformations" Content="Copy Transformations" HorizontalAlignment="Left" Margin="170,0,0,9.8" Width="145" Height="20" VerticalAlignment="Bottom" Click="bCopyTransformations_Click"/>
-        <ComboBox x:Name="comboBox" HorizontalAlignment="Left" Margin="330,0,0,9.8" Width="122" Height="22" VerticalAlignment="Bottom"/>
+        <ComboBox x:Name="comboBox" HorizontalAlignment="Left" Margin="385,0,0,6" Width="122" Height="22" VerticalAlignment="Bottom" IsEditable="True"/>
+        <Label x:Name="label" Content="Iterations" HorizontalAlignment="Left" Margin="320,0,0,6" RenderTransformOrigin="0.573,0.523" Height="26" VerticalAlignment="Bottom"/>
 
     </Grid>
 </Window>
