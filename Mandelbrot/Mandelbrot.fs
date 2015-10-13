@@ -28,12 +28,13 @@ let inSet (iterationsToCheck:int) (v:Complex) =
     |> not
 
 let inSetWithResult(iterationsToCheck:int) (v:Complex) = 
-    let lastValue = v
-                    |> mandleBrotValuesSequence
-                    |> Seq.mapi (fun i v -> (i,v))
-                    |> Seq.take iterationsToCheck
-                    |> Seq.takeWhile (fun (_, v) -> valueOutsideSet(v) |> not)
-                    |> Seq.tryLast
+    let lastValue = 
+        v
+        |> mandleBrotValuesSequence
+        |> Seq.mapi (fun i v -> (i,v))
+        |> Seq.take iterationsToCheck
+        |> Seq.takeWhile (fun (_, v) -> valueOutsideSet(v) |> not)
+        |> Seq.tryLast
 
     match lastValue with
     | Some(index,_) when index >= (iterationsToCheck-1) -> InSet

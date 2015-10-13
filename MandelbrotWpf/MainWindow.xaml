@@ -5,14 +5,18 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:MandelbrotWpf"
         mc:Ignorable="d"
-        Title="MainWindow" Height="350" Width="525" Loaded="Window_Loaded">
-    <Grid>
-        <Button x:Name="bRefresh" Content="Refresh" Margin="90,0,0,9.8" Height="20" VerticalAlignment="Bottom" HorizontalAlignment="Left" Width="75" Click="bRefresh_Click"/>
-        <Image x:Name="image" Margin="10,10,10,34.8" MouseLeftButtonDown="image_MouseLeftButtonDown" MouseLeftButtonUp="image_MouseLeftButtonUp"/>
-        <Button x:Name="bBack" Content="Back" HorizontalAlignment="Left" Margin="10,0,0,9.8" Width="75" Height="20" VerticalAlignment="Bottom" Click="bBack_Click"/>
-        <Button x:Name="bCopyTransformations" Content="Copy Transformations" HorizontalAlignment="Left" Margin="170,0,0,9.8" Width="145" Height="20" VerticalAlignment="Bottom" Click="bCopyTransformations_Click"/>
-        <ComboBox x:Name="comboBox" HorizontalAlignment="Left" Margin="385,0,0,6" Width="122" Height="22" VerticalAlignment="Bottom" IsEditable="True"/>
-        <Label x:Name="label" Content="Iterations" HorizontalAlignment="Left" Margin="320,0,0,6" RenderTransformOrigin="0.573,0.523" Height="26" VerticalAlignment="Bottom"/>
-
+        Title="MainWindow" Height="573.611" Width="820.313" Loaded="Window_Loaded">
+    <Grid Margin="10,0,2,-3">
+        <Button x:Name="bRefreshOrZoom" Content="Refresh/Zoom" Margin="95,0,0,10" Height="20" VerticalAlignment="Bottom" HorizontalAlignment="Left" Width="145" Click="bRefresh_Click" ToolTip="Refreshed the display or zooms to the selection"/>
+        <Button x:Name="bBack" Content="Back" HorizontalAlignment="Left" Margin="0,0,0,10" Width="90" Height="20" VerticalAlignment="Bottom" Click="bBack_Click"/>
+        <Button x:Name="bCopyTransformations" Content="Copy Transformations" HorizontalAlignment="Left" Margin="340,0,0,10" Width="145" Height="20" VerticalAlignment="Bottom" Click="bCopyTransformations_Click" ToolTip="Copies the list of transformations to get to the current zoom."/>
+        <ComboBox x:Name="comboBox" HorizontalAlignment="Left" Margin="565,0,0,8" Width="151" Height="22" VerticalAlignment="Bottom" IsEditable="True" ToolTip="Controls the number of iterations to check if a point is in the set."/>
+        <Label x:Name="label" Content="Iterations" HorizontalAlignment="Left" Margin="500,0,0,7" RenderTransformOrigin="0.573,0.523" Height="26" VerticalAlignment="Bottom"/>
+        <local:ImageCanvas x:Name="canvas" Margin="10,10,10,38" MouseLeftButtonDown="canvas_MouseLeftButtonDown" MouseLeftButtonUp="canvas_MouseLeftButtonUp" MouseMove="canvas_MouseMove">
+            <local:ImageCanvas.ContextMenu>
+                <ContextMenu/>
+            </local:ImageCanvas.ContextMenu>
+        </local:ImageCanvas>
+        <Button x:Name="bClearSelection" Content="Clear Selection" HorizontalAlignment="Left" Margin="245,0,0,10" Width="90" Height="20" VerticalAlignment="Bottom" Click="bClearSelection_Click"/>
     </Grid>
 </Window>
