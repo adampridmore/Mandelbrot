@@ -14,12 +14,14 @@ open Mandelbrot
 open Mandelbrot.MandelbrotCalculator
 open Microsoft.FSharp.Collections
 
+//let iterationsToCheck = 1000
 let iterationsToCheck = 200
-//let iterationsToCheck = 50
 //let size = new System.Drawing.Size(3840, 2160)
+let size = new System.Drawing.Size(320, 240)
+//let size = new System.Drawing.Size(640, 480)
 //let size = new System.Drawing.Size(1080, 720)
 //let size = new System.Drawing.Size(1280, 960) // HD
-let size = new System.Drawing.Size(1920, 1080) // HD
+//let size = new System.Drawing.Size(1920, 1080) // HD
 
 let render index r = 
     let filename = sprintf @"C:\temp\mandlebrot\b-%dx%d-%d-%d.png" size.Width size.Height iterationsToCheck index
@@ -96,15 +98,63 @@ let transformations2 =
         YMin = -0.6456074321
         YMax = -0.6455754318 } ]
 
+let transformations3 = 
+  [ { XMin = -2.5;
+      XMax = 1.0;
+      YMin = -1.0;
+      YMax = 1.0;}
+    { XMin = -0.5463009829;
+      XMax = -0.5462781494;
+      YMin = -0.622141022;
+      YMax = -0.6221126694;}]
+
+let transformations4 =
+  [ { XMin = -0.5;
+      XMax = 1.0;
+      YMin = -1.0;
+      YMax = 1.0;}
+    { XMin = 0.3541935484;
+      XMax = 0.4761290323;
+      YMin = -0.3874239351;
+      YMax = -0.2900608519;}]
+
+let transformations5 = 
+    [ { XMin = -2.5
+        XMax = 1.0
+        YMin = -1.0
+        YMax = 1.0 }
+      { XMin = -1.234042553
+        XMax = -1.022273936
+        YMin = -0.3386243386
+        YMax = -0.1693121693 }
+      { XMin = -1.166738432
+        XMax = -1.149841999
+        YMin = -0.294728591
+        YMax = -0.2756921699 }
+      { XMin = -1.159413648
+        XMax = -1.158189106
+        YMin = -0.2856636286
+        YMax = -0.2842031624 }]
+
+let transformations6 = 
+    [ { XMin = -2.5
+        XMax = 1.0
+        YMin = -1.0
+        YMax = 1.0 }
+      { XMin = -1.159413648
+        XMax = -1.158189106
+        YMin = -0.2856636286
+        YMax = -0.2842031624 }]
+
 let everyNth n seq = 
     seq
     |> Seq.mapi (fun i v -> (i, v))
     |> Seq.filter (fun (i, _) -> (i % n) = 0)
     |> Seq.map (fun (_, v) -> v)
 
-transformations2
+transformations5
 |> Seq.pairwise
-|> Seq.map (fun (a, b) -> RectangleD.TranslationSeq 100 a b)
+|> Seq.map (fun (a, b) -> RectangleD.TranslationSeq3 100 a b)
 |> Seq.concat
 //|> (everyNth 50)
 |> Seq.iteri render

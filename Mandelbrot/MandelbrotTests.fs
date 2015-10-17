@@ -15,7 +15,7 @@ let ``inside set``()=
     Complex.Zero 
     |> (inSet 10) 
     |> should equal true
-
+    
 [<Test>]
 let ``outside set with result``()=
     Complex.Create(100.,100.)

@@ -9,11 +9,8 @@ type InSetResult =
     | InSet
     
 let mandleBrotValuesSequence (value:Complex) = 
-    let fn currentValue = 
-        (currentValue |> sqr) + value
-    
     let nextValue previousValue = 
-        let nextValue = fn previousValue
+        let nextValue = (previousValue |> sqr) + value
         Some(nextValue, nextValue)
     
     Seq.unfold nextValue value
