@@ -14,8 +14,8 @@ open Mandelbrot.MandelbrotCalculator
 open Microsoft.FSharp.Collections
 
 let tileSize = 256
-//let iterations = 200
-let iterations = 50
+let iterations = 200
+//let iterations = 50
 
 let imageFormat = System.Drawing.Imaging.ImageFormat.Png
 
@@ -81,11 +81,6 @@ type Tile = {
         Filename: string
     }
 
-let filterExistingTiles existingTiles (tilesToRender: (Tile seq) ) =
-    tilesToRender 
-    |> Seq.filter (fun tile -> existingTiles |> Seq.exists (fun filename -> filename = tile.Filename) |> not)
-
-
 let renderZoomLevel zoom = 
     let cellCount = zoom |> zoomToCellCount |> int
     seq{
@@ -95,8 +90,7 @@ let renderZoomLevel zoom =
     }
     |> Seq.map (fun (x,y) -> {X=x;Y=y;Filename=(toFilename x y zoom)})
     |> Seq.filter (fun tile -> System.IO.File.Exists tile.Filename |> not)
-    //|> filterExistingTiles existingTiles
-    |> Seq.rev
+    //|> Seq.rev
     |> PSeq.iter (fun tile -> renderCell tile.Filename tile.X tile.Y zoom)
     //|> Seq.iter (printf "%A")
     
