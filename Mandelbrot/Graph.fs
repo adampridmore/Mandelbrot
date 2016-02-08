@@ -6,6 +6,8 @@ open Mandelbrot
 open Mandelbrot.Color
 
 type Graph(width:int, height:int, viewPortal:RectangleD) =
+    let toPointF (p:PointD) = new PointF(float32 p.X, float32 p.Y)
+
     let bitmap = new System.Drawing.Bitmap(width, height) 
 
     let mapPointToPixelPoint (p:PointD) =
@@ -49,11 +51,11 @@ type Graph(width:int, height:int, viewPortal:RectangleD) =
         
         let p1 = ({PointD.X=0.;PointD.Y=(-axesLength)} |> mapPointToPixelPoint)
         let p2 = ({PointD.X=0.;PointD.Y=axesLength} |> mapPointToPixelPoint)
-        graphics.DrawLine(p, p1.ToPointF, p2.ToPointF)
+        graphics.DrawLine(p, p1 |> toPointF , p2 |> toPointF )
 
         let p3 = ({PointD.X=axesLength;PointD.Y=0.} |> mapPointToPixelPoint)
         let p4 = ({PointD.X=(-axesLength);PointD.Y=0.} |> mapPointToPixelPoint)
-        graphics.DrawLine(p, p3.ToPointF, p4.ToPointF)
+        graphics.DrawLine(p, p3 |> toPointF, p4 |> toPointF)
 
     member this.GetValueFromPixel(pixel:Pixel) = 
         {PointD.X = (pixel.X|>pixelMaperX);Y = (pixel.Y|>pixelMaperY) }

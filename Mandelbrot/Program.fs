@@ -1,45 +1,57 @@
-﻿open System.Windows.Forms
-open System.Drawing
-open System
-open System.Numerics
-open Mandelbrot.MandelbrotCalculator
-open Mandelbrot
+﻿module Program
 
-[<EntryPoint>]
-let main argv = 
-//    let graph = new Graph.Graph(300, 200,0.,100.,0.,100.)
+//open Mandelbrot
+//open Mandelbrot.MandelbrotCalculator
+//    
+//let parseOrDefault text defaultValue = 
+//    let mutable value = 0;
+//    if System.Int32.TryParse(text, &value) then value
+//    else defaultValue
 //
-//    let picutureBox = new PictureBox()
-//    picutureBox.Dock <- DockStyle.Fill
+//let parseOrDefaultArgv (argv: string array) index defValue =
+//    if argv.Length-1 < index then defValue
+//    else parseOrDefault argv.[index] defValue
+//        
+//[<EntryPoint>]
+//let main argv =
+//    let width = parseOrDefaultArgv argv 0 40
+//    let height = parseOrDefaultArgv argv 1 30
+//    let iterationsToCheck = parseOrDefaultArgv argv 2 20
 //
-//    let form = new Form(
-//    form.Controls.Add(picutureBox)
+//    let minValue = Complex.Create(-2., -1.);
+//    let maxValue = Complex.Create(1., 1.);
 //
-//    let renderGraph() = 
-//        let graph = new Graph.Graph(picutureBox.Size.Width, picutureBox.Size.Height,-2.,2.,-2.,2.);
-//        graph.DrawAxes()
-//        graph |> renderSet
-//        graph.Bitmap
+//    let newLine = System.Environment.NewLine
 //
-//    picutureBox.Image <- renderGraph()
+//    let mapPixelToComplex x y =
+//        let percentR = (float x) / (float width)
+//        let percentI = (float y) / (float height)
+//        let r = minValue.RealPart + (maxValue.RealPart - minValue.RealPart) * percentR
+//        let i = minValue.ImaginaryPart + (maxValue.ImaginaryPart - minValue.ImaginaryPart) * percentI
+//        Complex.Create(r,i)
 //
-//    form.SizeChanged.Add(fun _ -> picutureBox.Image <- renderGraph())
+//    let toChar v = match v with
+//                   | true -> "X"
+//                   | false -> " "
 //
-//    form.ShowDialog() |> ignore
-          
-    let render filename (size:System.Drawing.Size) = 
-
-        let viewPortal = {RectangleD.XMin = -2.5; XMax = 1.0; YMin = -1.1; YMax = 1.1}
-        let graph = new Graph(size.Width, size.Height, viewPortal)
-        graph |> renderSet  20
-        graph.Bitmap.Save(filename)
-
-    let iterationsToCheck = 20
-
-    let size = new System.Drawing.Size(120, 80)
-    let filename = sprintf @"C:\temp\mandlebrot\%dx%d-%d.bmp" size.Width size.Height iterationsToCheck
-
-    render filename size
-    System.Diagnostics.Process.Start(filename) |> ignore
-
-    0
+//    let inSet c = MandelbrotCalculator.inSet iterationsToCheck c
+//
+//    let renderRow y =
+//        seq{0..width-1}
+//        |> Seq.map (fun x -> mapPixelToComplex x y)
+//        |> Seq.map inSet 
+//        |> Seq.map toChar
+//        |> Seq.reduce (+)
+//    
+//    let stopwatch = System.Diagnostics.Stopwatch.StartNew()
+//
+//    seq{0..height-1}
+//    |> Seq.map renderRow
+//    |> Seq.map (fun row -> sprintf "%s%s" row newLine)
+//    |> Seq.reduce (+)
+//    |> printfn "%s"
+//
+//    printfn "Width:%d Height:%d Iterations:%d Duration(ms):%d" width height iterationsToCheck stopwatch.ElapsedMilliseconds
+//
+//    0
+//
