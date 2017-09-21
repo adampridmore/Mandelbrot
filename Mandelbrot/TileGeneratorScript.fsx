@@ -20,7 +20,7 @@ let iterations = 200
 let imageFormat = System.Drawing.Imaging.ImageFormat.Png
 
 let render iterationsToCheck (size:System.Drawing.Size) (filename:string) viewPort =     
-    let graph = new Graph(size.Width, size.Height, viewPort)
+    let graph = new Graph(size.Width, size.Height, viewPort, iterations)
     graph |> renderSet iterationsToCheck
 
     graph.Bitmap.Save(filename, imageFormat)
@@ -96,12 +96,12 @@ let renderZoomLevel zoom =
     
 
 System.IO.File.Exists @"C:\temp\mandelbrot\tile_zm1_x0_y0"
-//renderZoomLevel 0
-//renderZoomLevel 1
+renderZoomLevel 0
+renderZoomLevel 1
 //renderZoomLevel 2
 //renderZoomLevel 3
 //renderZoomLevel 4
-//renderZoomLevel 5
+renderZoomLevel 5
 
 #time "on"
 
@@ -112,7 +112,7 @@ System.IO.File.Exists @"C:\temp\mandelbrot\tile_zm1_x0_y0"
 
 //renderZoomLevel 7
 //renderZoomLevel 8
-renderZoomLevel 9
+//renderZoomLevel 9
 
 
 //renderZoomLevel 10

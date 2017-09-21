@@ -77,6 +77,7 @@
     <None Include="Script2.fsx" />
     <None Include="Script3.fsx" />
     <None Include="TileGeneratorScript.fsx" />
+    <None Include="TileGeneratorScript2.fsx" />
     <None Include="Script5.fsx" />
   </ItemGroup>
   <ItemGroup>

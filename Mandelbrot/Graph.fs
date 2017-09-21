@@ -5,7 +5,7 @@ open Microsoft.FSharp.Collections
 open Mandelbrot
 open Mandelbrot.Color
 
-type Graph(width:int, height:int, viewPortal:RectangleD) =
+type Graph(width:int, height:int, viewPortal:RectangleD, iterations:int) =
     let toPointF (p:PointD) = new PointF(float32 p.X, float32 p.Y)
 
     let bitmap = new System.Drawing.Bitmap(width, height) 
@@ -36,7 +36,7 @@ type Graph(width:int, height:int, viewPortal:RectangleD) =
     member this.DrawPointAtPixel (p:Pixel) = this.DrawPointAtPixelWithColor p Color.Black
     member this.DrawPointAtPixelWithMagnitude (p:Pixel) (magnitude:int) =
         magnitude 
-        |> toColor 
+        |> toColor iterations
         |> (this.DrawPointAtPixelWithColor p)
     member this.DrawPointAtPixelWithColor (p:Pixel) (c:Color) =
         if insideBitmap(p) 
