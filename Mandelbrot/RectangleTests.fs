@@ -27,7 +27,7 @@ let ``center``() =
     r.CenterY |> should equal 1005.
 
 [<Test>]
-[<Ignore>] 
+[<Ignore("Ignored")>] 
 let ``simple translations``() = 
     let rFrom = {RectangleD.XMin = 0. ; XMax = 10. ; YMin = 0. ; YMax = 10.}
     let rHalf = {RectangleD.XMin = 0. ; XMax = 16. ; YMin = 0. ; YMax = 60.}
