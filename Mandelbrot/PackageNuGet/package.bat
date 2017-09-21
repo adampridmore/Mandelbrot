@@ -1,0 +1,1 @@
+msbuild ..\Mandelbrot.fsproj /P:Config=Release
