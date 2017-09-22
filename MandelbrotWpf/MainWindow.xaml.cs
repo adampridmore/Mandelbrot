@@ -69,12 +69,16 @@ namespace MandelbrotWpf
 
                 var size = GetImageSize();
 
+                var iterationsToCheck = GetIterations();
+
+
                 CurrentGraph = new Graph(
                     size.Width,
                     size.Height,
-                    CurrentViewPort);
+                    CurrentViewPort,
+                    iterationsToCheck);
 
-                MandelbrotCalculator.renderSet(GetIterations(), CurrentGraph);
+                MandelbrotCalculator.renderSet(iterationsToCheck, CurrentGraph);
                 var imageSource = BitmapToImageSource(CurrentGraph.Bitmap);
                 
                 canvas.CanvasImageSource = imageSource;

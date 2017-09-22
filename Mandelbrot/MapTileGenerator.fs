@@ -9,8 +9,8 @@ let iterations = 200
 
 let imageFormat = System.Drawing.Imaging.ImageFormat.Png
 
-let render iterationsToCheck (size:System.Drawing.Size) viewPort =     
-    let graph = new Graph(size.Width, size.Height, viewPort)
+let render iterationsToCheck (size:System.Drawing.Size) viewPort = 
+    let graph = new Graph(size.Width, size.Height, viewPort, iterations)
     graph |> renderSet iterationsToCheck
     
     let ms = new System.IO.MemoryStream()
