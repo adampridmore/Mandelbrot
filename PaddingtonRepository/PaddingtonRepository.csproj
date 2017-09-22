@@ -67,14 +67,10 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Domain\BaseEntity.cs" />
-    <Compile Include="Domain\MrPoints.cs" />
     <Compile Include="Domain\Tile.cs" />
-    <Compile Include="MrPointsRepository.cs" />
-    <Compile Include="Tests\MrPointsRepositoryTests.cs" />
     <Compile Include="Tests\TileRepositoryTests.cs" />
     <Compile Include="TileRepository.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Domain\TileWithPoints.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config">

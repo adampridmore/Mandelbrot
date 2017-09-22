@@ -5,23 +5,10 @@ namespace PaddingtonRepository.Domain
 {
     public class Tile : BaseEntity
     {
-        public static readonly string Heatmaps1SetName = "Heatmaps1"; // 10 mill - Red point
-        public static readonly string Heatmaps2SetName = "Heatmaps2"; // 10 mill - Alpha blend v1
-        public static readonly string Heatmaps3SetName = "Heatmaps3"; // Alpha blend v2
-        public static readonly string Heatmaps4SetName = "Heatmaps4"; // 30 million AWS data Alpha Blend v2
-        public static readonly string Heatmaps5DriverBehaviourEventsSetName = "Heatmaps5DriverBehaviourEvents";
-        public static readonly string Heatmaps5HarshBraking = "Heatmaps5HarshBraking";
-
         public static readonly string MandelbrotSetName = "Mandelbrot";
         
         public static IEnumerable<string> GetTileSetNames()
         {
-            yield return Heatmaps1SetName;
-            //yield return Heatmaps2SetName;
-            //yield return Heatmaps3SetName;
-            yield return Heatmaps4SetName;
-            yield return Heatmaps5DriverBehaviourEventsSetName;
-            yield return Heatmaps5HarshBraking;
             yield return MandelbrotSetName;
         }
         
