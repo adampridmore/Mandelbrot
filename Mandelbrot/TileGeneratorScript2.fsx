@@ -41,7 +41,7 @@ let toDomainTile (tile:TileDetails) (graph:Graph) =
     domainTile
 
 let render iterationsToCheck (tile:TileDetails) (size:System.Drawing.Size) viewPort =     
-    let graph = new Graph(size.Width, size.Height, viewPort)
+    let graph = new Graph(size.Width, size.Height, viewPort, iterations)
     graph |> renderSet iterationsToCheck
 
     graph |> toDomainTile tile |> repository.Save
@@ -102,7 +102,8 @@ let renderZoomLevel zoom =
 #time "on"
 
 //seq{0..2} |> Seq.iter renderZoomLevel
-//renderZoomLevel 1
+renderZoomLevel 0
+renderZoomLevel 1
 renderZoomLevel 2
 //renderZoomLevel 5
 //renderZoomLevel 6
