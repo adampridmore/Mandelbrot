@@ -36,10 +36,6 @@
 </div>
 
 <div id="staticLayerButtons" class="layerButtons" style="display: none">
-    <button id="btnSatellite" onclick="setSataliteDisplay()">Satellite</button>
-    <button id="btnMap" onclick="setMapDisplay()">Map</button>
-    <button id="btnTinted" onclick="setTintedDisplay()">Tinted</button>
-    <button id="btnRaw" onclick="setRawDisplay()">Raw</button>
     <button id="btnMandelbrot" onclick="setMandelbrotDisplay()">Mandelbrot </button>
 </div>
 
@@ -79,27 +75,11 @@
             };
         };
 
-        var createTintLayer = function(name) {
-            return {
-                mapType: new google.maps.ImageMapType({
-                    getTileUrl: function() {
-                        return '@Url.Content("~/Content/Images/tint.png")';
-                    },
-                    tileSize: new google.maps.Size(256, 256),
-                    radius: 1738000,
-                    name: name,
-                    opacity: 0.8
-                }),
-                name: name
-            };
-        };
-
         var map;
         var layersTileSetNames = @Html.Raw(Json.Encode(ViewBag.TileSetNames));
 
         var layers = [];
 
-        var heatmap1Layer;
         var labeledTilesLayer;
 
         var addLayerButtons = function(layers) {
@@ -133,45 +113,12 @@
             layersTileSetNames.forEach(function(tileSetName) {
                 layers.push(createLayer(tileSetName));
             });
-            layers.push(createTintLayer("Tint"));
 
             $("#staticLayerButtons").show();
-
-            $('#clearLayers').click(function() {
-                map.overlayMapTypes.clear();
-            });
         });
 
-        function setSataliteDisplay() {
-            map.setMapTypeId(google.maps.MapTypeId.SATELLITE);
-
-            map.overlayMapTypes.clear();
-            map.overlayMapTypes.push(layers[2].mapType);
-        }
-
-        function setMapDisplay() {
-            map.setMapTypeId(google.maps.MapTypeId.ROADMAP);
-
-            map.overlayMapTypes.clear();
-            map.overlayMapTypes.push(layers[2].mapType); 
-        }
-
-        function setTintedDisplay() {
-            map.setMapTypeId(google.maps.MapTypeId.SATELLITE);
-
-            map.overlayMapTypes.clear();
-            map.overlayMapTypes.push(layers[layers.length - 1].mapType); // Add tint layer (last layer)
-            map.overlayMapTypes.push(layers[2].mapType); 
-        }
-        
-        function setRawDisplay() {
-            map.setMapTypeId(layers[2].name);
-
-            map.overlayMapTypes.clear();
-        }
-
         function setMandelbrotDisplay() {
-            map.setMapTypeId(layers[4].name);
+            map.setMapTypeId(layers[0].name);
 
             map.overlayMapTypes.clear();
         }
@@ -180,16 +127,12 @@
             var mapCener = new google.maps.LatLng(51.5, -0.1); // Center on London
 
             var mapOptions = {
-                zoom: 6,
+                zoom: 2,
                 center: mapCener,
                 //mapTypeControl: true,
                 mapTypeControl: false,
                 mapTypeControlOptions: {
-                    mapTypeIds: [
-                        google.maps.MapTypeId.SATELLITE,
-                        google.maps.MapTypeId.ROADMAP,
-                    ]
-                    //style: google.maps.MapTypeControlStyle.DROPDOWN_MENU
+                    mapTypeIds: []
                 }
             };
             layers.forEach(function(layer) {
@@ -215,7 +158,7 @@
                 map.mapTypes.set(layer.name, layer.mapType);
             });
 
-            setTintedDisplay();
+            setMandelbrotDisplay();
         }
 
         // Normalizes the coords that tiles repeat across the x axis (horizontally)
