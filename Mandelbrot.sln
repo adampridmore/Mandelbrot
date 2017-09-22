@@ -9,31 +9,58 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MandelbrotWpf", "Mandelbrot
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PaddingtonRepository", "PaddingtonRepository\PaddingtonRepository.csproj", "{64C7DB88-20EA-4D82-B3DB-D730C5636B67}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PaddingtonHeatmaps2", "PaddingtonHeatmaps2\PaddingtonHeatmaps2.csproj", "{4207D889-FB82-47CA-A4C2-2E8BD61D348D}"
+EndProject
+Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "PaddingtonHeatmapsComponents", "PaddingtonHeatmapsComponents\PaddingtonHeatmapsComponents.fsproj", "{78ADE4C1-A0CB-4CF4-931D-B7B2CF7B24F8}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		abihkweb001|Any CPU = abihkweb001|Any CPU
+		AWS|Any CPU = AWS|Any CPU
 		Debug|Any CPU = Debug|Any CPU
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
 		{72A7CBC1-EE9F-481C-82B6-AA9E6F4FCB6E}.abihkweb001|Any CPU.ActiveCfg = Release|Any CPU
 		{72A7CBC1-EE9F-481C-82B6-AA9E6F4FCB6E}.abihkweb001|Any CPU.Build.0 = Release|Any CPU
+		{72A7CBC1-EE9F-481C-82B6-AA9E6F4FCB6E}.AWS|Any CPU.ActiveCfg = Debug|Any CPU
+		{72A7CBC1-EE9F-481C-82B6-AA9E6F4FCB6E}.AWS|Any CPU.Build.0 = Debug|Any CPU
 		{72A7CBC1-EE9F-481C-82B6-AA9E6F4FCB6E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{72A7CBC1-EE9F-481C-82B6-AA9E6F4FCB6E}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{72A7CBC1-EE9F-481C-82B6-AA9E6F4FCB6E}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{72A7CBC1-EE9F-481C-82B6-AA9E6F4FCB6E}.Release|Any CPU.Build.0 = Release|Any CPU
 		{A6E4FFA0-BD4E-4A00-B807-07AD3FB2E279}.abihkweb001|Any CPU.ActiveCfg = Release|Any CPU
 		{A6E4FFA0-BD4E-4A00-B807-07AD3FB2E279}.abihkweb001|Any CPU.Build.0 = Release|Any CPU
+		{A6E4FFA0-BD4E-4A00-B807-07AD3FB2E279}.AWS|Any CPU.ActiveCfg = Debug|Any CPU
+		{A6E4FFA0-BD4E-4A00-B807-07AD3FB2E279}.AWS|Any CPU.Build.0 = Debug|Any CPU
 		{A6E4FFA0-BD4E-4A00-B807-07AD3FB2E279}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{A6E4FFA0-BD4E-4A00-B807-07AD3FB2E279}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{A6E4FFA0-BD4E-4A00-B807-07AD3FB2E279}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{A6E4FFA0-BD4E-4A00-B807-07AD3FB2E279}.Release|Any CPU.Build.0 = Release|Any CPU
 		{64C7DB88-20EA-4D82-B3DB-D730C5636B67}.abihkweb001|Any CPU.ActiveCfg = abihkweb001|Any CPU
 		{64C7DB88-20EA-4D82-B3DB-D730C5636B67}.abihkweb001|Any CPU.Build.0 = abihkweb001|Any CPU
+		{64C7DB88-20EA-4D82-B3DB-D730C5636B67}.AWS|Any CPU.ActiveCfg = abihkweb001|Any CPU
+		{64C7DB88-20EA-4D82-B3DB-D730C5636B67}.AWS|Any CPU.Build.0 = abihkweb001|Any CPU
 		{64C7DB88-20EA-4D82-B3DB-D730C5636B67}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{64C7DB88-20EA-4D82-B3DB-D730C5636B67}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{64C7DB88-20EA-4D82-B3DB-D730C5636B67}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{64C7DB88-20EA-4D82-B3DB-D730C5636B67}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4207D889-FB82-47CA-A4C2-2E8BD61D348D}.abihkweb001|Any CPU.ActiveCfg = abihkweb001|Any CPU
+		{4207D889-FB82-47CA-A4C2-2E8BD61D348D}.abihkweb001|Any CPU.Build.0 = abihkweb001|Any CPU
+		{4207D889-FB82-47CA-A4C2-2E8BD61D348D}.AWS|Any CPU.ActiveCfg = AWS|Any CPU
+		{4207D889-FB82-47CA-A4C2-2E8BD61D348D}.AWS|Any CPU.Build.0 = AWS|Any CPU
+		{4207D889-FB82-47CA-A4C2-2E8BD61D348D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4207D889-FB82-47CA-A4C2-2E8BD61D348D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4207D889-FB82-47CA-A4C2-2E8BD61D348D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4207D889-FB82-47CA-A4C2-2E8BD61D348D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{78ADE4C1-A0CB-4CF4-931D-B7B2CF7B24F8}.abihkweb001|Any CPU.ActiveCfg = abihkweb001|Any CPU
+		{78ADE4C1-A0CB-4CF4-931D-B7B2CF7B24F8}.abihkweb001|Any CPU.Build.0 = abihkweb001|Any CPU
+		{78ADE4C1-A0CB-4CF4-931D-B7B2CF7B24F8}.AWS|Any CPU.ActiveCfg = abihkweb001|Any CPU
+		{78ADE4C1-A0CB-4CF4-931D-B7B2CF7B24F8}.AWS|Any CPU.Build.0 = abihkweb001|Any CPU
+		{78ADE4C1-A0CB-4CF4-931D-B7B2CF7B24F8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{78ADE4C1-A0CB-4CF4-931D-B7B2CF7B24F8}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{78ADE4C1-A0CB-4CF4-931D-B7B2CF7B24F8}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{78ADE4C1-A0CB-4CF4-931D-B7B2CF7B24F8}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

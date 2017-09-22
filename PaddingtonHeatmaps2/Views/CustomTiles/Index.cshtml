@@ -1,0 +1,244 @@
+﻿@model dynamic
+
+@{
+    ViewBag.Title = "Customer Tiles";
+}
+
+@section style
+{
+    <style>
+        #map-canvas {
+            height: 100%;
+            width: 100%;
+            left: 0;
+            position: absolute;
+            top: 0;
+        }
+
+        #menu {
+            position: absolute;
+            top: 10px;
+            left: 10px;
+        }
+
+        .layerButtons {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+        }
+    </style>
+}
+
+<div id="map-canvas"></div>
+
+<div id="layerButtons" style="display: none">
+    <button id="clearLayers">Clear layers</button>
+</div>
+
+<div id="staticLayerButtons" class="layerButtons" style="display: none">
+    <button id="btnSatellite" onclick="setSataliteDisplay()">Satellite</button>
+    <button id="btnMap" onclick="setMapDisplay()">Map</button>
+    <button id="btnTinted" onclick="setTintedDisplay()">Tinted</button>
+    <button id="btnRaw" onclick="setRawDisplay()">Raw</button>
+    <button id="btnMandelbrot" onclick="setMandelbrotDisplay()">Mandelbrot </button>
+</div>
+
+@section scripts{
+    <script type="text/javascript">
+
+        var createImageMapType = function(tileSetName) {
+            return new google.maps.ImageMapType({
+                getTileUrl: function(coord, zoom) {
+                    var normalizedCoord = getNormalizedCoord(coord, zoom);
+                    if (!normalizedCoord) {
+                        return null;
+                    }
+
+                    // Loaded from MongoDB
+                    var url = '@Url.Content("~/MapTile/Index")' +
+                        '?x=' + normalizedCoord.x +
+                        '&y=' + normalizedCoord.y +
+                        '&z=' + zoom;
+                    if (tileSetName) {
+                        url += ('&tileSetName=' + tileSetName);
+                    }
+                    return url;
+                },
+                tileSize: new google.maps.Size(256, 256),
+                maxZoom: @ViewBag.maxZoom,
+                minZoom: @ViewBag.minZoom,
+                radius: 1738000,
+                name: tileSetName,
+                //opacity: 0.5
+            });
+        };
+        var createLayer = function(tileSetName) {
+            return {
+                mapType: createImageMapType(tileSetName),
+                name: tileSetName
+            };
+        };
+
+        var createTintLayer = function(name) {
+            return {
+                mapType: new google.maps.ImageMapType({
+                    getTileUrl: function() {
+                        return '@Url.Content("~/Content/Images/tint.png")';
+                    },
+                    tileSize: new google.maps.Size(256, 256),
+                    radius: 1738000,
+                    name: name,
+                    opacity: 0.8
+                }),
+                name: name
+            };
+        };
+
+        var map;
+        var layersTileSetNames = @Html.Raw(Json.Encode(ViewBag.TileSetNames));
+
+        var layers = [];
+
+        var heatmap1Layer;
+        var labeledTilesLayer;
+
+        var addLayerButtons = function(layers) {
+            var layerButtonsDiv = $('#layerButtons');
+
+            layerButtonsDiv.show();
+
+            layers.forEach(function(layer, index) {
+                var btn = document.createElement('button');
+                var txt = document.createTextNode(String(layer.name));
+
+                btn.appendChild(txt);
+                btn.setAttribute('onclick', "layerButtonClick(" + index + ")");
+                btn.setAttribute('layerIndex', index);
+                layerButtonsDiv.append(btn);
+            });
+        };
+
+        var layerButtonClick = function(layerIndex) {
+            var layer = layers[layerIndex];
+            console.log(layer.name);
+
+            if (map.overlayMapTypes.indexOf(layer.mapType) === -1) {
+                map.overlayMapTypes.push(layer.mapType);
+            }
+        };
+
+        $(document).ready(function() {
+            google.maps.event.addDomListener(window, 'load', initialize);
+
+            layersTileSetNames.forEach(function(tileSetName) {
+                layers.push(createLayer(tileSetName));
+            });
+            layers.push(createTintLayer("Tint"));
+
+            $("#staticLayerButtons").show();
+
+            $('#clearLayers').click(function() {
+                map.overlayMapTypes.clear();
+            });
+        });
+
+        function setSataliteDisplay() {
+            map.setMapTypeId(google.maps.MapTypeId.SATELLITE);
+
+            map.overlayMapTypes.clear();
+            map.overlayMapTypes.push(layers[2].mapType);
+        }
+
+        function setMapDisplay() {
+            map.setMapTypeId(google.maps.MapTypeId.ROADMAP);
+
+            map.overlayMapTypes.clear();
+            map.overlayMapTypes.push(layers[2].mapType); 
+        }
+
+        function setTintedDisplay() {
+            map.setMapTypeId(google.maps.MapTypeId.SATELLITE);
+
+            map.overlayMapTypes.clear();
+            map.overlayMapTypes.push(layers[layers.length - 1].mapType); // Add tint layer (last layer)
+            map.overlayMapTypes.push(layers[2].mapType); 
+        }
+        
+        function setRawDisplay() {
+            map.setMapTypeId(layers[2].name);
+
+            map.overlayMapTypes.clear();
+        }
+
+        function setMandelbrotDisplay() {
+            map.setMapTypeId(layers[4].name);
+
+            map.overlayMapTypes.clear();
+        }
+
+        function initialize() {
+            var mapCener = new google.maps.LatLng(51.5, -0.1); // Center on London
+
+            var mapOptions = {
+                zoom: 6,
+                center: mapCener,
+                //mapTypeControl: true,
+                mapTypeControl: false,
+                mapTypeControlOptions: {
+                    mapTypeIds: [
+                        google.maps.MapTypeId.SATELLITE,
+                        google.maps.MapTypeId.ROADMAP,
+                    ]
+                    //style: google.maps.MapTypeControlStyle.DROPDOWN_MENU
+                }
+            };
+            layers.forEach(function(layer) {
+                mapOptions.mapTypeControlOptions.mapTypeIds.push(layer.name);
+            });
+
+            map = new google.maps.Map(document.getElementById('map-canvas'), mapOptions);
+
+            google.maps.event.addListener(map, 'click', function(event) {
+                var latLgn = event.latLng;
+                var message = "lat: " + latLgn.lat() + " lng: " + latLgn.lng();
+                console.log(message);
+            });
+
+            google.maps.event.addListener(map, 'zoom_changed', function() {
+                console.log("Zoom Changed:" + map.zoom);
+            });
+
+            layers.forEach(function(layer) {
+                if (layer.name === 'Tint') {
+                    return;
+                }
+                map.mapTypes.set(layer.name, layer.mapType);
+            });
+
+            setTintedDisplay();
+        }
+
+        // Normalizes the coords that tiles repeat across the x axis (horizontally)
+        // like the standard Google map tiles.
+        function getNormalizedCoord(coord, zoom) {
+            var y = coord.y;
+            var x = coord.x;
+
+            // tile range in one direction range is dependent on zoom level
+            // 0 = 1 tile, 1 = 2 tiles, 2 = 4 tiles, 3 = 8 tiles, etc
+            var tileRange = 1 << zoom;
+
+            // don't repeat across y-axis (vertically)
+            if (y < 0 || y >= tileRange) {
+                return null;
+            }
+
+            // repeat across x-axis
+            if (x < 0 || x >= tileRange) {
+                x = (x % tileRange + tileRange) % tileRange;
+            }
+
+            return { x: x, y: y };
+        }
+    </script>
+}

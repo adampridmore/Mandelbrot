@@ -5,6 +5,7 @@ namespace PaddingtonRepository.Domain
 {
     public class Tile : BaseEntity
     {
+        public static readonly string DefaultSetName = MandelbrotSetName;
         public static readonly string MandelbrotSetName = "Mandelbrot";
         
         public static IEnumerable<string> GetTileSetNames()
