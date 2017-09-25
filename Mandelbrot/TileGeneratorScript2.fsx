@@ -86,10 +86,10 @@ let renderZoomLevel zoom =
                 yield (x,y)
     }
     |> Seq.map (fun (x,y) -> {X=x;Y=y;Filename=(toFilename x y zoom);Zoom=zoom})
-    //|> Seq.rev
     |> PSeq.filter (fun tile -> tile |> tileNeedToBeRendered)
     |> PSeq.iter (fun tile -> renderCell tile)
-    //|> Seq.iter (printf "%A")
+//    |> Seq.filter (fun tile -> tile |> tileNeedToBeRendered)
+//    |> Seq.iter (fun tile -> renderCell tile)
     
 
 //renderZoomLevel 0
@@ -102,16 +102,18 @@ let renderZoomLevel zoom =
 #time "on"
 
 //seq{0..2} |> Seq.iter renderZoomLevel
-renderZoomLevel 0
-renderZoomLevel 1
-renderZoomLevel 2
+//renderZoomLevel 0
+//renderZoomLevel 1
+//renderZoomLevel 2
+//renderZoomLevel 3
+//renderZoomLevel 4
 //renderZoomLevel 5
 //renderZoomLevel 6
-
+//
 //renderZoomLevel 7
-//renderZoomLevel 8
-// renderZoomLevel 9
-
-// renderZoomLevel 10
-// renderZoomLevel 11
+renderZoomLevel 8
+renderZoomLevel 9
+//
+//renderZoomLevel 10
+//renderZoomLevel 11
 

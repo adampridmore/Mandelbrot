@@ -1,8 +1,10 @@
-﻿using System.Configuration;
+﻿using System;
+using System.Configuration;
 using System.Drawing;
 using System.Drawing.Imaging;
 using System.IO;
 using System.Web.Mvc;
+using Mandelbrot;
 using PaddingtonRepository;
 
 namespace PaddingtonHeatmaps2.Controllers
@@ -87,12 +89,41 @@ namespace PaddingtonHeatmaps2.Controllers
 
         private byte[] LoadTile(int x, int y, int zoom, string tileSetName)
         {
-            return _tileRepository.TryGetTileImageByte(
+            var tile = _tileRepository.TryGetTileImageByte(
                 x, 
                 y, 
                 zoom,
                 tileSetName
             );
+
+            return tile;
+
+            // TODO
+            //if (tile == null)
+            //{
+            //    return CreateTile(x, y, zoom, tileSetName);
+            //}
+            //return tile;
+            
+        }
+
+        private byte[] CreateTile(int x, int y, int zoom, string tileSetName)
+        {
+            var size = new Size(256, 256);
+            
+            // TODO
+            var viewPort = new RectangleD(0, 0, 0, 0);
+            var iterations = 400;
+
+            var graph = new Graph(size.Width, size.Height, viewPort, iterations);
+            MandelbrotCalculator.renderSet(iterations, graph);
+            
+            // TODO
+            // toDomainTile
+            //graph |> toDomainTile tile |> repository.Save
+
+            // TODO
+            return null;
         }
 
         private static Image CreateTile(int x, int y, int zoom)
