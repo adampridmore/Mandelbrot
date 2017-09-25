@@ -16,7 +16,7 @@ type Graph(width:int, height:int, viewPortal:RectangleD, iterations:int) =
         {PointD.X=mappedX; Y=mappedY}
 
     let insideBitmap (p:Pixel) =
-        p.X < bitmap.Size.Width && p.Y < bitmap.Height && p.X >= 0 && p.Y >= 0
+        p.X < width && p.Y < height && p.X >= 0 && p.Y >= 0
 
     let pixelMaperX = Graph.MapPixelToValue viewPortal.XMin viewPortal.XMax width
     let pixelMaperY = Graph.MapPixelToValue viewPortal.YMin viewPortal.YMax height
