@@ -57,7 +57,7 @@ namespace PaddingtonHeatmaps2.Controllers
 
         private ActionResult LoadFromDb(string tileSetName, int x, int y, int zoom)
         {
-          var tile = LoadTile(x, y, zoom, tileSetName);
+            var tile = LoadTile(x, y, zoom, tileSetName);
             if (tile == null)
             {
                 return HttpNotFound();
@@ -71,61 +71,10 @@ namespace PaddingtonHeatmaps2.Controllers
             return new FileStreamResult(memoryStream, contentType);
         }
 
-        // Genrate tiles on the 'fly' aka slow...
-        public ActionResult Index3(string x, string y, string z)
-        {
-            var xVal = int.Parse(x);
-            var yVal = int.Parse(y);
-            var zoom = int.Parse(z);
-
-            var memoryStream = MapTileGenerator.renderCell(xVal,yVal,zoom);
-            memoryStream.Position = 0;
-
-            var imageFormat = ImageFormat.Png;
-
-            var contentType = $"image/{imageFormat.ToString().ToLowerInvariant()}";
-            return new FileStreamResult(memoryStream, contentType);
-        }
-
         private byte[] LoadTile(int x, int y, int zoom, string tileSetName)
         {
-            var tile = _tileRepository.TryGetTileImageByte(
-                x, 
-                y, 
-                zoom,
-                tileSetName
-            );
-
-            return tile;
-
-            // TODO
-            //if (tile == null)
-            //{
-            //    return CreateTile(x, y, zoom, tileSetName);
-            //}
-            //return tile;
-            
+            return MapTileGenerator.getTileImageByte(x, y, zoom, tileSetName);
         }
-
-        private byte[] CreateTile(int x, int y, int zoom, string tileSetName)
-        {
-            var size = new Size(256, 256);
-            
-            // TODO
-            var viewPort = new RectangleD(0, 0, 0, 0);
-            var iterations = 400;
-
-            var graph = new Graph(size.Width, size.Height, viewPort, iterations);
-            MandelbrotCalculator.renderSet(iterations, graph);
-            
-            // TODO
-            // toDomainTile
-            //graph |> toDomainTile tile |> repository.Save
-
-            // TODO
-            return null;
-        }
-
         private static Image CreateTile(int x, int y, int zoom)
         {
             return PaddingtonHeatmapsComponents.TileGenerator.generateTile(x, y, zoom);
