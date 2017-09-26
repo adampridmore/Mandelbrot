@@ -67,22 +67,6 @@ let renderCell (tile:TileDetails) =
 let tileNeedToBeRendered (tile:TileDetails) = 
     repository.DoesTileExist(tile.X, tile.Y, tile.Zoom, Tile.MandelbrotSetName) |> not
 
-//
-//
-//let renderZoomLevel zoom = 
-//    let cellCount = zoom |> zoomToCellCount |> int
-//    seq{
-//        for x in 0 .. (cellCount - 1) do
-//            for y in 0 .. (cellCount - 1) do
-//                yield (x,y)
-//    }
-//    |> Seq.map (fun (x,y) -> {X=x;Y=y;Filename=(toFilename x y zoom);Zoom=zoom})
-//    |> PSeq.filter (fun tile -> tile |> tileNeedToBeRendered)
-//    |> PSeq.iter (fun tile -> renderCell tile)
-////    |> Seq.filter (fun tile -> tile |> tileNeedToBeRendered)
-////    |> Seq.iter (fun tile -> renderCell tile)
-//    
-
 let generateAndSaveTile x y zoom tileSetName = 
     {X=x;Y=y;Filename=(toFilename x y zoom);Zoom=zoom}
     |> renderCell
