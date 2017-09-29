@@ -30,8 +30,9 @@ let renderZoomLevel zoom =
                 yield (x,y)
     }
     |> Seq.map (fun (x,y) -> {X=x;Y=y;Filename=(toFilename x y zoom);Zoom=zoom})
-    |> Seq.map (fun tile -> (printfn "%s" tile.Filename) ; getTileImageByte (tile.X, tile.Y, tile.Zoom, tilesetName, repository) )
-    |> Seq.iter ignore
+    // |> PSeq.withDegreeOfParallelism 3
+    |> PSeq.map (fun tile -> (printfn "%s" tile.Filename) ; getTileImageByte (tile.X, tile.Y, tile.Zoom, tilesetName, repository) )
+    |> PSeq.iter ignore
 
     
 #time "on"
