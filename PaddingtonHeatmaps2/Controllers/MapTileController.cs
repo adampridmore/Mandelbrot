@@ -21,7 +21,7 @@ namespace PaddingtonHeatmaps2.Controllers
         // Generates labled tiles.
         private FileResult LabeledTiles(int x, int y, int z)
         {
-            var tileImage = CreateTile(x, y, z);
+            var tileImage = CreatePlainLabeledTile(x, y, z);
 
             var memoryStream = new MemoryStream();
 
@@ -73,7 +73,7 @@ namespace PaddingtonHeatmaps2.Controllers
         {
             return MapTileGenerator.getTileImageByte(x, y, zoom, tileSetName, _tileRepository);
         }
-        private static Image CreateTile(int x, int y, int zoom)
+        private static Image CreatePlainLabeledTile(int x, int y, int zoom)
         {
             return PaddingtonHeatmapsComponents.TileGenerator.generateTile(x, y, zoom);
         }

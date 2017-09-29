@@ -70,9 +70,6 @@
     <Compile Include="BitmapHelpers.fs" />
     <Content Include="packages.config" />
     <Content Include="App.config" />
-    <None Include="MrPointsToTiles.fsx" />
-    <None Include="ImageRenderScratch.fsx" />
-    <None Include="HelloWorld.fsx" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="FSharp.Core">

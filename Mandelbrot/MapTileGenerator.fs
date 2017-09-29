@@ -34,7 +34,7 @@ let private toDomainTile (tile:TileDetails) (graph:Graph) =
     domainTile.Data <- ms.ToArray()
     domainTile
 
-let render iterationsToCheck (tile:TileDetails) (size:System.Drawing.Size) viewPort (repository:TileRepository) =
+let private render iterationsToCheck (tile:TileDetails) (size:System.Drawing.Size) viewPort (repository:TileRepository) =
     let graph = new Graph(size.Width, size.Height, viewPort, iterations)
     graph |> renderSet iterationsToCheck
 
@@ -42,14 +42,14 @@ let render iterationsToCheck (tile:TileDetails) (size:System.Drawing.Size) viewP
     tile |> repository.Save
     tile.Data
     
-let size = new System.Drawing.Size(tileSize, tileSize)
+let private size = new System.Drawing.Size(tileSize, tileSize)
 
-let fullViewport = {XMin = -2.0; XMax = 2.0; YMin = -2.; YMax = 2.}
+let private fullViewport = {XMin = -2.0; XMax = 2.0; YMin = -2.; YMax = 2.}
 
 let zoomToCellCount zoom =
     (2. ** (zoom |> float)) |> float
 
-let toRectangleD (tile:TileDetails) =
+let private toRectangleD (tile:TileDetails) =
     let cellCountSize = zoomToCellCount tile.Zoom
     let cellWidth = (fullViewport.XMax - fullViewport.XMin) / cellCountSize
     let cellHeight = (fullViewport.YMax - fullViewport.YMin) / cellCountSize
@@ -63,14 +63,14 @@ let toRectangleD (tile:TileDetails) =
     
 let toFilename x y zoom = sprintf @"tile_zm%d_x%d_y%d.%A" zoom x y imageFormat
 
-let renderCell (tile:TileDetails) (repository: TileRepository) = 
+let private renderCell (tile:TileDetails) (repository: TileRepository) = 
     let rectangle = toRectangleD tile
     render iterations tile size rectangle repository
 
-let tileNeedToBeRendered (tile:TileDetails) (repository:TileRepository) = 
+let private tileNeedToBeRendered (tile:TileDetails) (repository:TileRepository) = 
     repository.DoesTileExist(tile.X, tile.Y, tile.Zoom, Tile.MandelbrotSetName) |> not
 
-let generateAndSaveTile x y zoom tileSetName = 
+let private generateAndSaveTile x y zoom tileSetName = 
     {X=x;Y=y;Filename=(toFilename x y zoom);Zoom=zoom}
     |> renderCell
 

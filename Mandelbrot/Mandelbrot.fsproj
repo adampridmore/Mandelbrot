@@ -67,7 +67,6 @@
     <Compile Include="GraphTests.fs" />
     <Compile Include="Mandelbrot.fs" />
     <Compile Include="MandelbrotTests.fs" />
-    <Compile Include="Render.fs" />
     <Compile Include="MapTileGenerator.fs" />
     <Compile Include="Program.fs" />
     <None Include="App.config" />

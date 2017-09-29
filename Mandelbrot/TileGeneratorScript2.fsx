@@ -20,6 +20,8 @@ open System.Configuration
 
 let private repository = new PaddingtonRepository.TileRepository("mongodb://localhost/tiles")
 
+let tilesetName = "Mandelbrot" 
+
 let renderZoomLevel zoom = 
     let cellCount = zoom |> zoomToCellCount |> int
     seq{
@@ -28,8 +30,9 @@ let renderZoomLevel zoom =
                 yield (x,y)
     }
     |> Seq.map (fun (x,y) -> {X=x;Y=y;Filename=(toFilename x y zoom);Zoom=zoom})
-    |> PSeq.filter (fun tile -> tileNeedToBeRendered tile repository)
-    |> PSeq.iter (fun tile -> printfn "%s" tile.Filename; renderCell tile repository |> ignore)
+    |> Seq.map (fun tile -> (printfn "%s" tile.Filename) ; getTileImageByte (tile.X, tile.Y, tile.Zoom, tilesetName, repository) )
+    |> Seq.iter ignore
+
     
 #time "on"
 
