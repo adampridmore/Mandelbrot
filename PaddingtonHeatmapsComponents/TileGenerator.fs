@@ -34,46 +34,13 @@ let generateTile x y zoom =
     let renderBox (g:Graphics) = 
         g.DrawLines(new Pen(alphaBrush), (boxLines |> Seq.toArray) )
     
-    let renderCoordinate (g:Graphics) (b:Bitmap) c =
-        let t = Tile.Tile(x,y,zoom,tileSize)
-//        let pixel = Tile.mapToPixel tileSize t c 
-        let pixel = t.toTilePixelOption c
-        match pixel with
-        | Some(pixel) -> b.SetPixel(pixel.x,pixel.y, Color.Red)
-        | None -> ()
-
     let pixelToPoint (pixel:Pixel) : (PointF) = new PointF(pixel.x |> float32, pixel.y |> float32)
-
-    let renderLine (g:Graphics) c1 c2 =
-        let t = Tile.Tile(x,y,zoom,tileSize)
-        let pixel1 = t.toTilePixel c1
-        let pixel2 = t.toTilePixel c2
-        let p1 = pixel1 |> pixelToPoint
-        let p2 = pixel2 |> pixelToPoint
-        g.DrawLine(new Pen(alphaBrushRed,3.0f), p1, p2)
-        
 
     let bitmap = new Bitmap(tileSize, tileSize, PixelFormat.Format32bppArgb)
     
     use g = Graphics.FromImage(bitmap)
 
     renderBox g
-    //renderWatermark g
     renderText g
-
-//    Data.points 
-//    |> Seq.map (fun (long, lat) -> {longitude = long; latitude = lat})
-//    |> Seq.iter (renderCoordinate g bitmap)
-
-//    Data.points 
-//    |> Seq.map (fun (long, lat) -> {longitude = long; latitude = lat})
-//    |> Seq.pairwise
-//    |> Seq.iter (fun (c1, c2) -> renderLine g c1 c2)
-    
-    
-//    renderCoordinate g bitmap { 
-//        longitude = -1.8666755;
-//        latitude = 53.8277477;
-//    }
 
     bitmap

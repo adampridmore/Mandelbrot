@@ -62,15 +62,11 @@
   <ItemGroup>
     <Compile Include="AssemblyInfo.fs" />
     <Compile Include="Types.fs" />
-    <Compile Include="Mercator.fs" />
-    <Compile Include="MercatorTest.fs" />
     <Compile Include="Data.fs" />
     <Compile Include="Tile.fs" />
-    <Compile Include="TileTests.fs" />
     <Compile Include="TileGenerator.fs" />
     <None Include="Script.fsx" />
     <None Include="MongoDBScript.fsx" />
-    <None Include="CoordinateToTiles.fsx" />
     <Compile Include="BitmapHelpers.fs" />
     <Content Include="packages.config" />
     <Content Include="App.config" />
