@@ -4,11 +4,15 @@ open Mandelbrot
 open Mandelbrot.MandelbrotCalculator
 open Microsoft.FSharp.Collections
 open PaddingtonRepository.Domain
+open PaddingtonRepository
 
 let tileSize = 256
 let iterations = 400
 
-let private mongoUri = (System.Configuration.ConfigurationManager.ConnectionStrings.["MongoDB"].ConnectionString)
+//let private mongoUri = 
+//    match (System.Configuration.ConfigurationManager.ConnectionStrings.["MongoDB"]) with 
+//    | null -> failwith "Missing app.config settings 'MongoDB'"
+//    | x -> x.ConnectionString
 
 let imageFormat = System.Drawing.Imaging.ImageFormat.Png
 
@@ -19,7 +23,7 @@ type TileDetails = {
         Filename: string
     }
 
-let private repository = new PaddingtonRepository.TileRepository(mongoUri)
+//let private repository = new PaddingtonRepository.TileRepository(mongoUri)
 
 let private toDomainTile (tile:TileDetails) (graph:Graph) = 
     let domainTile = Tile.CreateTile(tile.X, tile.Y, tile.Zoom, iterations, Tile.MandelbrotSetName)
@@ -30,7 +34,7 @@ let private toDomainTile (tile:TileDetails) (graph:Graph) =
     domainTile.Data <- ms.ToArray()
     domainTile
 
-let render iterationsToCheck (tile:TileDetails) (size:System.Drawing.Size) viewPort =     
+let render iterationsToCheck (tile:TileDetails) (size:System.Drawing.Size) viewPort (repository:TileRepository) =
     let graph = new Graph(size.Width, size.Height, viewPort, iterations)
     graph |> renderSet iterationsToCheck
 
@@ -59,20 +63,19 @@ let toRectangleD (tile:TileDetails) =
     
 let toFilename x y zoom = sprintf @"tile_zm%d_x%d_y%d.%A" zoom x y imageFormat
 
-let renderCell (tile:TileDetails) = 
-    printfn "%s" tile.Filename
+let renderCell (tile:TileDetails) (repository: TileRepository) = 
+    let rectangle = toRectangleD tile
+    render iterations tile size rectangle repository
 
-    toRectangleD tile |> render iterations tile size 
-
-let tileNeedToBeRendered (tile:TileDetails) = 
+let tileNeedToBeRendered (tile:TileDetails) (repository:TileRepository) = 
     repository.DoesTileExist(tile.X, tile.Y, tile.Zoom, Tile.MandelbrotSetName) |> not
 
 let generateAndSaveTile x y zoom tileSetName = 
     {X=x;Y=y;Filename=(toFilename x y zoom);Zoom=zoom}
     |> renderCell
 
-let getTileImageByte (x, y, zoom, tileSetName) =
+let getTileImageByte (x, y, zoom, tileSetName, (repository:TileRepository)) =
     let image = repository.TryGetTileImageByte (x, y, zoom, tileSetName )
     match image with 
-    | null -> generateAndSaveTile x y zoom tileSetName
+    | null -> generateAndSaveTile x y zoom tileSetName repository
     | _ -> image

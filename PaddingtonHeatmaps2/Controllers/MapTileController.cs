@@ -1,10 +1,8 @@
-﻿using System;
-using System.Configuration;
+﻿using System.Configuration;
 using System.Drawing;
 using System.Drawing.Imaging;
 using System.IO;
 using System.Web.Mvc;
-using Mandelbrot;
 using PaddingtonRepository;
 
 namespace PaddingtonHeatmaps2.Controllers
@@ -73,7 +71,7 @@ namespace PaddingtonHeatmaps2.Controllers
 
         private byte[] LoadTile(int x, int y, int zoom, string tileSetName)
         {
-            return MapTileGenerator.getTileImageByte(x, y, zoom, tileSetName);
+            return MapTileGenerator.getTileImageByte(x, y, zoom, tileSetName, _tileRepository);
         }
         private static Image CreateTile(int x, int y, int zoom)
         {
