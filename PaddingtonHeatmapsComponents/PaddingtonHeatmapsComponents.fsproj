@@ -67,7 +67,6 @@
     <Compile Include="TileGenerator.fs" />
     <None Include="Script.fsx" />
     <None Include="MongoDBScript.fsx" />
-    <Compile Include="BitmapHelpers.fs" />
     <Content Include="packages.config" />
     <Content Include="App.config" />
   </ItemGroup>
