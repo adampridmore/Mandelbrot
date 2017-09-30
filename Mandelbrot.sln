@@ -7,7 +7,7 @@ Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "Mandelbrot", "Mandelbrot\Ma
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MandelbrotWpf", "MandelbrotWpf\MandelbrotWpf.csproj", "{A6E4FFA0-BD4E-4A00-B807-07AD3FB2E279}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PaddingtonRepository", "PaddingtonRepository\PaddingtonRepository.csproj", "{64C7DB88-20EA-4D82-B3DB-D730C5636B67}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Repository", "Repository\Repository.csproj", "{64C7DB88-20EA-4D82-B3DB-D730C5636B67}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PaddingtonHeatmaps2", "PaddingtonHeatmaps2\PaddingtonHeatmaps2.csproj", "{4207D889-FB82-47CA-A4C2-2E8BD61D348D}"
 EndProject

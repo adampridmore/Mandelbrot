@@ -1,6 +1,6 @@
 ﻿#r @"..\packages\FSPowerPack.Parallel.Seq.Community.3.0.0.0\Lib\Net40\FSharp.PowerPack.Parallel.Seq.dll"
 #r @"..\packages\FSPowerPack.Core.Community.3.0.0.0\Lib\Net40\FSharp.PowerPack.dll"
-#r @"..\PaddingtonRepository\bin\Debug\PaddingtonRepository.dll"
+#r @"..\Repository\bin\Debug\Repository.dll"
 #r @"System.Configuration.dll"
 
 #load "Pixel.fs"
@@ -14,11 +14,11 @@
 open Mandelbrot
 open Mandelbrot.MandelbrotCalculator
 open Microsoft.FSharp.Collections
-open PaddingtonRepository.Domain
+open Repository.Domain
 open MapTileGenerator
 open System.Configuration
 
-let private repository = new PaddingtonRepository.TileRepository("mongodb://localhost/tiles")
+let private repository = new Repository.TileRepository("mongodb://localhost/tiles")
 
 let tilesetName = "Mandelbrot" 
 

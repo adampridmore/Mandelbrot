@@ -3,8 +3,8 @@
 open Mandelbrot
 open Mandelbrot.MandelbrotCalculator
 open Microsoft.FSharp.Collections
-open PaddingtonRepository.Domain
-open PaddingtonRepository
+open Repository.Domain
+open Repository
 
 let private tileSize = 256
 let private iterations = 400

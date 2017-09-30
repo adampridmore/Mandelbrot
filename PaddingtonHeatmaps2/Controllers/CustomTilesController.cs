@@ -7,7 +7,7 @@ namespace PaddingtonHeatmaps2.Controllers
     {
         public ActionResult Index()
         {
-            var tileSetNames = PaddingtonRepository.Domain.Tile.GetTileSetNames().ToList();
+            var tileSetNames = Repository.Domain.Tile.GetTileSetNames().ToList();
             tileSetNames.Add(MapTileController.TileLabelsSetName);
 
             ViewBag.minZoom = 0;

@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace PaddingtonRepository.Domain
+namespace Repository.Domain
 {
     public class Tile : BaseEntity
     {

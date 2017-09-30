@@ -3,7 +3,7 @@ using System.Drawing;
 using System.Drawing.Imaging;
 using System.IO;
 using System.Web.Mvc;
-using PaddingtonRepository;
+using Repository;
 
 namespace PaddingtonHeatmaps2.Controllers
 {
@@ -38,7 +38,7 @@ namespace PaddingtonHeatmaps2.Controllers
         {
             if (string.IsNullOrWhiteSpace(tileSetName))
             {
-                tileSetName = PaddingtonRepository.Domain.Tile.DefaultSetName;
+                tileSetName = Repository.Domain.Tile.DefaultSetName;
             }
 
             var xVal = int.Parse(x);

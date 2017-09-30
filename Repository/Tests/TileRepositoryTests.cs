@@ -1,9 +1,9 @@
 ﻿using NUnit.Framework;
-using PaddingtonRepository.Domain;
+using Repository.Domain;
 using Assert = NUnit.Framework.Assert;
 using CollectionAssert = NUnit.Framework.CollectionAssert;
 
-namespace PaddingtonRepository.Tests
+namespace Repository.Tests
 {
     [TestFixture]
     public class TileRepositoryTests

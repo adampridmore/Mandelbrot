@@ -7,8 +7,8 @@
     <ProjectGuid>{64C7DB88-20EA-4D82-B3DB-D730C5636B67}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>PaddingtonRepository</RootNamespace>
-    <AssemblyName>PaddingtonRepository</AssemblyName>
+    <RootNamespace>Repository</RootNamespace>
+    <AssemblyName>Repository</AssemblyName>
     <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <TargetFrameworkProfile />

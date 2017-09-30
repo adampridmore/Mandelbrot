@@ -2,9 +2,9 @@
 using System.Linq;
 using MongoDB.Bson;
 using MongoDB.Driver;
-using PaddingtonRepository.Domain;
+using Repository.Domain;
 
-namespace PaddingtonRepository
+namespace Repository
 {
     public class TileRepository
     {

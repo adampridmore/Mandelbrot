@@ -112,8 +112,8 @@
     <Reference Include="System.Windows.Forms.DataVisualization" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\PaddingtonRepository\PaddingtonRepository.csproj">
-      <Name>PaddingtonRepository</Name>
+    <ProjectReference Include="..\Repository\Repository.csproj">
+      <Name>Repository</Name>
       <Project>{64c7db88-20ea-4d82-b3db-d730c5636b67}</Project>
       <Private>True</Private>
     </ProjectReference>
