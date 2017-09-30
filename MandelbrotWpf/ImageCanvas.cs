@@ -6,15 +6,15 @@ namespace MandelbrotWpf
 {
     public class ImageCanvas : Canvas
     {
-        public ImageSource CanvasImageSource
-        {
-            get { return (ImageSource)GetValue(CanvasImageSourceProperty); }
-            set { SetValue(CanvasImageSourceProperty, value); }
-        }
-
         public static readonly DependencyProperty CanvasImageSourceProperty =
             DependencyProperty.Register("CanvasImageSource", typeof(ImageSource),
-            typeof(ImageCanvas), new FrameworkPropertyMetadata(default(ImageSource)));
+                typeof(ImageCanvas), new FrameworkPropertyMetadata(default(ImageSource)));
+
+        public ImageSource CanvasImageSource
+        {
+            get { return (ImageSource) GetValue(CanvasImageSourceProperty); }
+            set { SetValue(CanvasImageSourceProperty, value); }
+        }
 
         protected override void OnRender(DrawingContext dc)
         {

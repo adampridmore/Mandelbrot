@@ -7,16 +7,27 @@
         mc:Ignorable="d"
         Title="MainWindow" Height="573.611" Width="820.313" Loaded="Window_Loaded">
     <Grid Margin="10,0,2,-3">
-        <Button x:Name="bRefreshOrZoom" Content="Refresh/Zoom" Margin="95,0,0,10" Height="20" VerticalAlignment="Bottom" HorizontalAlignment="Left" Width="145" Click="bRefresh_Click" ToolTip="Refreshed the display or zooms to the selection"/>
-        <Button x:Name="bBack" Content="Back" HorizontalAlignment="Left" Margin="0,0,0,10" Width="90" Height="20" VerticalAlignment="Bottom" Click="bBack_Click"/>
-        <Button x:Name="bCopyTransformations" Content="Copy Transformations" HorizontalAlignment="Left" Margin="340,0,0,10" Width="145" Height="20" VerticalAlignment="Bottom" Click="bCopyTransformations_Click" ToolTip="Copies the list of transformations to get to the current zoom."/>
-        <ComboBox x:Name="comboBox" HorizontalAlignment="Left" Margin="565,0,0,8" Width="151" Height="22" VerticalAlignment="Bottom" IsEditable="True" ToolTip="Controls the number of iterations to check if a point is in the set."/>
-        <Label x:Name="label" Content="Iterations" HorizontalAlignment="Left" Margin="500,0,0,7" RenderTransformOrigin="0.573,0.523" Height="26" VerticalAlignment="Bottom"/>
-        <local:ImageCanvas x:Name="canvas" Margin="10,10,10,38" MouseLeftButtonDown="canvas_MouseLeftButtonDown" MouseLeftButtonUp="canvas_MouseLeftButtonUp" MouseMove="canvas_MouseMove">
+        <Button x:Name="bRefreshOrZoom" Content="Refresh/Zoom" Margin="95,0,0,10" Height="20"
+                VerticalAlignment="Bottom" HorizontalAlignment="Left" Width="145" Click="bRefresh_Click"
+                ToolTip="Refreshed the display or zooms to the selection" />
+        <Button x:Name="bBack" Content="Back" HorizontalAlignment="Left" Margin="0,0,0,10" Width="90" Height="20"
+                VerticalAlignment="Bottom" Click="bBack_Click" />
+        <Button x:Name="bCopyTransformations" Content="Copy Transformations" HorizontalAlignment="Left"
+                Margin="340,0,0,10" Width="145" Height="20" VerticalAlignment="Bottom"
+                Click="bCopyTransformations_Click"
+                ToolTip="Copies the list of transformations to get to the current zoom." />
+        <ComboBox x:Name="comboBox" HorizontalAlignment="Left" Margin="565,0,0,8" Width="151" Height="22"
+                  VerticalAlignment="Bottom" IsEditable="True"
+                  ToolTip="Controls the number of iterations to check if a point is in the set." />
+        <Label x:Name="label" Content="Iterations" HorizontalAlignment="Left" Margin="500,0,0,7"
+               RenderTransformOrigin="0.573,0.523" Height="26" VerticalAlignment="Bottom" />
+        <local:ImageCanvas x:Name="canvas" Margin="10,10,10,38" MouseLeftButtonDown="canvas_MouseLeftButtonDown"
+                           MouseLeftButtonUp="canvas_MouseLeftButtonUp" MouseMove="canvas_MouseMove">
             <local:ImageCanvas.ContextMenu>
-                <ContextMenu/>
+                <ContextMenu />
             </local:ImageCanvas.ContextMenu>
         </local:ImageCanvas>
-        <Button x:Name="bClearSelection" Content="Clear Selection" HorizontalAlignment="Left" Margin="245,0,0,10" Width="90" Height="20" VerticalAlignment="Bottom" Click="bClearSelection_Click"/>
+        <Button x:Name="bClearSelection" Content="Clear Selection" HorizontalAlignment="Left" Margin="245,0,0,10"
+                Width="90" Height="20" VerticalAlignment="Bottom" Click="bClearSelection_Click" />
     </Grid>
 </Window>

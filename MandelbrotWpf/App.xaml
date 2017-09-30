@@ -4,6 +4,6 @@
              xmlns:local="clr-namespace:MandelbrotWpf"
              StartupUri="MainWindow.xaml">
     <Application.Resources>
-         
+
     </Application.Resources>
 </Application>

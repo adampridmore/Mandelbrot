@@ -1,35 +1,34 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Windows;
-using System.Windows.Media.Imaging;
 using System.Drawing;
+using System.Drawing.Imaging;
 using System.IO;
 using System.Linq;
+using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Shapes;
+using System.Windows.Input;
+using System.Windows.Media.Imaging;
 using Mandelbrot;
 using Point = System.Windows.Point;
 using Rectangle = System.Windows.Shapes.Rectangle;
+using Size = System.Drawing.Size;
 using SystemColors = System.Windows.SystemColors;
 
 namespace MandelbrotWpf
 {
     /// <summary>
-    /// Interaction logic for MainWindow.xaml
+    ///     Interaction logic for MainWindow.xaml
     /// </summary>
     public partial class MainWindow : Window
     {
-        private readonly RectangleD _initialViewPort = new RectangleD(-2.5, 1, -1, 1);
         private readonly int _defaultIterations = 100;
-        private Point? _startOfDragPosition;
-
-        private readonly Stack<RectangleD> _viewPortHistory = new Stack<RectangleD>();
-
-        private RectangleD CurrentViewPort => _viewPortHistory.Peek();
-        private Graph CurrentGraph { get; set; }
 
         private readonly Rectangle _dragRectangle = new Rectangle();
+        private readonly RectangleD _initialViewPort = new RectangleD(-2.5, 1, -1, 1);
+
+        private readonly Stack<RectangleD> _viewPortHistory = new Stack<RectangleD>();
         private RectangleD _currentSelectedViewPort;
+        private Point? _startOfDragPosition;
 
         public MainWindow()
         {
@@ -51,6 +50,9 @@ namespace MandelbrotWpf
             canvas.Children.Add(_dragRectangle);
             _dragRectangle.Visibility = Visibility.Hidden;
         }
+
+        private RectangleD CurrentViewPort => _viewPortHistory.Peek();
+        private Graph CurrentGraph { get; set; }
 
         private void bRefresh_Click(object sender, RoutedEventArgs e)
         {
@@ -80,7 +82,7 @@ namespace MandelbrotWpf
 
                 MandelbrotCalculator.renderSet(iterationsToCheck, CurrentGraph);
                 var imageSource = BitmapToImageSource(CurrentGraph.Bitmap);
-                
+
                 canvas.CanvasImageSource = imageSource;
 
                 _dragRectangle.Visibility = Visibility.Hidden;
@@ -99,24 +101,21 @@ namespace MandelbrotWpf
             return value;
         }
 
-        private System.Drawing.Size GetImageSize()
+        private Size GetImageSize()
         {
-            var size = new System.Drawing.Size((int)canvas.ActualWidth, (int)canvas.ActualHeight);
-            if (size.Width == 0 || size.Height == 0)
+            var size = new Size((int) canvas.ActualWidth, (int) canvas.ActualHeight);
+            if ((size.Width == 0) || (size.Height == 0))
             {
-                return new System.Drawing.Size(120, 80);
+                return new Size(120, 80);
             }
-            else
-            {
-                return size;
-            }
+            return size;
         }
-        
+
         private static BitmapImage BitmapToImageSource(Bitmap bitmap)
         {
             using (var memory = new MemoryStream())
             {
-                bitmap.Save(memory, System.Drawing.Imaging.ImageFormat.Bmp);
+                bitmap.Save(memory, ImageFormat.Bmp);
                 memory.Position = 0;
                 var bitmapimage = new BitmapImage();
                 bitmapimage.BeginInit();
@@ -127,24 +126,25 @@ namespace MandelbrotWpf
                 return bitmapimage;
             }
         }
-        private void canvas_MouseLeftButtonDown(object sender, System.Windows.Input.MouseButtonEventArgs e)
+
+        private void canvas_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
             _startOfDragPosition = e.GetPosition(canvas);
         }
 
-        private void canvas_MouseLeftButtonUp(object sender, System.Windows.Input.MouseButtonEventArgs e)
+        private void canvas_MouseLeftButtonUp(object sender, MouseButtonEventArgs e)
         {
             if (!_startOfDragPosition.HasValue)
             {
                 return;
             }
-            
+
             var endOfDragPosition = e.GetPosition(canvas);
 
-            var startPixel = new Pixel((int)_startOfDragPosition.Value.X, (int)_startOfDragPosition.Value.Y);
+            var startPixel = new Pixel((int) _startOfDragPosition.Value.X, (int) _startOfDragPosition.Value.Y);
             var startValue = CurrentGraph.GetValueFromPixel(startPixel);
 
-            var endPixel = new Pixel((int)endOfDragPosition.X, (int)endOfDragPosition.Y);
+            var endPixel = new Pixel((int) endOfDragPosition.X, (int) endOfDragPosition.Y);
             var endValue = CurrentGraph.GetValueFromPixel(endPixel);
 
             _currentSelectedViewPort = new RectangleD(startValue.X, endValue.X, startValue.Y, endValue.Y);
@@ -173,7 +173,7 @@ namespace MandelbrotWpf
             var textLines = _viewPortHistory
                 .ToArray()
                 .Reverse()
-                .Select(v=>v.ToString());
+                .Select(v => v.ToString());
 
             var txt = string.Join(Environment.NewLine, textLines);
 
@@ -185,13 +185,13 @@ namespace MandelbrotWpf
             return a < b ? a : b;
         }
 
-        private void canvas_MouseMove(object sender, System.Windows.Input.MouseEventArgs e)
+        private void canvas_MouseMove(object sender, MouseEventArgs e)
         {
             if (!_startOfDragPosition.HasValue)
             {
                 return;
             }
-            
+
             var mousePosition = e.GetPosition(canvas);
 
             var x1 = _startOfDragPosition.Value.X;
