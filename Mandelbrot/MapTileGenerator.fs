@@ -6,13 +6,8 @@ open Microsoft.FSharp.Collections
 open PaddingtonRepository.Domain
 open PaddingtonRepository
 
-let tileSize = 256
-let iterations = 400
-
-//let private mongoUri = 
-//    match (System.Configuration.ConfigurationManager.ConnectionStrings.["MongoDB"]) with 
-//    | null -> failwith "Missing app.config settings 'MongoDB'"
-//    | x -> x.ConnectionString
+let private tileSize = 256
+let private iterations = 400
 
 let imageFormat = System.Drawing.Imaging.ImageFormat.Png
 
@@ -22,8 +17,6 @@ type TileDetails = {
         Zoom: int;
         Filename: string
     }
-
-//let private repository = new PaddingtonRepository.TileRepository(mongoUri)
 
 let private toDomainTile (tile:TileDetails) (graph:Graph) = 
     let domainTile = Tile.CreateTile(tile.X, tile.Y, tile.Zoom, iterations, Tile.MandelbrotSetName)

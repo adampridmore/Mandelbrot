@@ -56,8 +56,6 @@
   <Import Project="$(FSharpTargetsPath)" />
   <ItemGroup>
     <Compile Include="AssemblyInfo.fs" />
-    <Compile Include="ExceptsBy.fs" />
-    <Compile Include="ExceptsByTests.fs" />
     <Compile Include="ColorModule.fs" />
     <Compile Include="Pixel.fs" />
     <Compile Include="RectangleD.fs" />
@@ -68,16 +66,9 @@
     <Compile Include="Mandelbrot.fs" />
     <Compile Include="MandelbrotTests.fs" />
     <Compile Include="MapTileGenerator.fs" />
-    <Compile Include="Program.fs" />
     <None Include="App.config" />
     <Content Include="packages.config" />
-    <None Include="Script4.fsx" />
-    <None Include="Script1.fsx" />
-    <None Include="Script2.fsx" />
-    <None Include="Script3.fsx" />
-    <None Include="TileGeneratorScript.fsx" />
     <None Include="TileGeneratorScript2.fsx" />
-    <None Include="Script5.fsx" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="FSharp.Charting">
