@@ -61,12 +61,8 @@
   <Import Project="$(FSharpTargetsPath)" />
   <ItemGroup>
     <Compile Include="AssemblyInfo.fs" />
-    <Compile Include="Types.fs" />
     <Compile Include="Data.fs" />
-    <Compile Include="Tile.fs" />
     <Compile Include="TileGenerator.fs" />
-    <None Include="Script.fsx" />
-    <None Include="MongoDBScript.fsx" />
     <Content Include="packages.config" />
     <Content Include="App.config" />
   </ItemGroup>

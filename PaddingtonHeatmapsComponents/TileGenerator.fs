@@ -2,7 +2,6 @@
 
 open System.Drawing
 open System.Drawing.Imaging
-open Types
 
 let tileSize = 256
 let alpha = 80
@@ -34,8 +33,6 @@ let generateTile x y zoom =
     let renderBox (g:Graphics) = 
         g.DrawLines(new Pen(alphaBrush), (boxLines |> Seq.toArray) )
     
-    let pixelToPoint (pixel:Pixel) : (PointF) = new PointF(pixel.x |> float32, pixel.y |> float32)
-
     let bitmap = new Bitmap(tileSize, tileSize, PixelFormat.Format32bppArgb)
     
     use g = Graphics.FromImage(bitmap)
