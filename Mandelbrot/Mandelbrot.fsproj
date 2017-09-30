@@ -68,8 +68,8 @@
     <Compile Include="MapTileGenerator.fs" />
     <None Include="App.config" />
     <Content Include="packages.config" />
-    <None Include="TileGeneratorScript2.fsx" />
     <Compile Include="TileGenerator.fs" />
+    <None Include="TileGeneratorScript2.fsx" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="FSharp.Charting">

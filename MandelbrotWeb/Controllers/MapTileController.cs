@@ -3,7 +3,9 @@ using System.Drawing;
 using System.Drawing.Imaging;
 using System.IO;
 using System.Web.Mvc;
+using Mandelbrot;
 using Repository;
+using Repository.Domain;
 
 namespace MandelbrotWeb.Controllers
 {
@@ -11,6 +13,7 @@ namespace MandelbrotWeb.Controllers
     {
         public const string TileLabelsSetName = "TileLabels";
         private readonly TileRepository _tileRepository = Create();
+
         public static TileRepository Create()
         {
             var mongoUri = ConfigurationManager.ConnectionStrings["MongoDB"].ConnectionString;
@@ -38,7 +41,7 @@ namespace MandelbrotWeb.Controllers
         {
             if (string.IsNullOrWhiteSpace(tileSetName))
             {
-                tileSetName = Repository.Domain.Tile.DefaultSetName;
+                tileSetName = Tile.DefaultSetName;
             }
 
             var xVal = int.Parse(x);
@@ -73,9 +76,10 @@ namespace MandelbrotWeb.Controllers
         {
             return MapTileGenerator.getTileImageByte(x, y, zoom, tileSetName, _tileRepository);
         }
+
         private static Image CreatePlainLabeledTile(int x, int y, int zoom)
         {
-            return Mandelbrot.TileGenerator.generateTile(x, y, zoom);
+            return TileGenerator.generateTile(x, y, zoom);
         }
     }
 }

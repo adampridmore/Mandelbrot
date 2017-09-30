@@ -145,12 +145,6 @@
     <Content Include="Views\_ViewStart.cshtml" />
     <Content Include="Views\Shared\_Layout.cshtml" />
     <Content Include="Views\CustomTiles\Index.cshtml" />
-    <None Include="Web.abihkweb001.config">
-      <DependentUpon>Web.config</DependentUpon>
-    </None>
-    <None Include="Web.AWS.config">
-      <DependentUpon>Web.config</DependentUpon>
-    </None>
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

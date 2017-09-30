@@ -1,5 +1,6 @@
 ﻿using System.Linq;
 using System.Web.Mvc;
+using Repository.Domain;
 
 namespace MandelbrotWeb.Controllers
 {
@@ -7,7 +8,7 @@ namespace MandelbrotWeb.Controllers
     {
         public ActionResult Index()
         {
-            var tileSetNames = Repository.Domain.Tile.GetTileSetNames().ToList();
+            var tileSetNames = Tile.GetTileSetNames().ToList();
             tileSetNames.Add(MapTileController.TileLabelsSetName);
 
             ViewBag.minZoom = 0;

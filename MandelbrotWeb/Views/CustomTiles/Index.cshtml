@@ -1,187 +1,195 @@
 ﻿@model dynamic
 
 @{
-    ViewBag.Title = "Customer Tiles";
+  ViewBag.Title = "Customer Tiles";
 }
 
 @section style
 {
-    <style>
-        #map-canvas {
-            height: 100%;
-            width: 100%;
-            left: 0;
-            position: absolute;
-            top: 0;
-        }
+  <style>
+    #map-canvas {
+      height: 100%;
+      left: 0;
+      position: absolute;
+      top: 0;
+      width: 100%;
+    }
 
-        #menu {
-            position: absolute;
-            top: 10px;
-            left: 10px;
-        }
+    #menu {
+      left: 10px;
+      position: absolute;
+      top: 10px;
+    }
 
-        .layerButtons {
-            position: absolute;
-            top: 10px;
-            right: 10px;
-        }
-    </style>
+    .layerButtons {
+      position: absolute;
+      right: 10px;
+      top: 10px;
+    }
+  </style>
 }
 
 <div id="map-canvas"></div>
 
 <div id="layerButtons" style="display: none">
-    <button id="clearLayers">Clear layers</button>
+  <button id="clearLayers">Clear layers</button>
 </div>
 
 <div id="staticLayerButtons" class="layerButtons" style="display: none">
-    <button id="btnMandelbrot" onclick="setMandelbrotDisplay()">Mandelbrot </button>
+  <button id="btnMandelbrot" onclick="setMandelbrotDisplay()">Mandelbrot </button>
 </div>
 
 @section scripts{
-    <script type="text/javascript">
+  <script type="text/javascript">
 
-        var createImageMapType = function(tileSetName) {
-            return new google.maps.ImageMapType({
-                getTileUrl: function(coord, zoom) {
-                    var normalizedCoord = getNormalizedCoord(coord, zoom);
-                    if (!normalizedCoord) {
-                        return null;
-                    }
+    var createImageMapType = function(tileSetName) {
+      return new google.maps.ImageMapType({
+        getTileUrl: function(coord, zoom) {
+          var normalizedCoord = getNormalizedCoord(coord, zoom);
+          if (!normalizedCoord) {
+            return null;
+          }
 
-                    // Loaded from MongoDB
-                    var url = '@Url.Content("~/MapTile/Index")' +
-                        '?x=' + normalizedCoord.x +
-                        '&y=' + normalizedCoord.y +
-                        '&z=' + zoom;
-                    if (tileSetName) {
-                        url += ('&tileSetName=' + tileSetName);
-                    }
-                    return url;
-                },
-                tileSize: new google.maps.Size(256, 256),
-                maxZoom: @ViewBag.maxZoom,
-                minZoom: @ViewBag.minZoom,
-                radius: 1738000,
-                name: tileSetName,
-                //opacity: 0.5
-            });
-        };
-        var createLayer = function(tileSetName) {
-            return {
-                mapType: createImageMapType(tileSetName),
-                name: tileSetName
-            };
-        };
+          // Loaded from MongoDB
+          var url = '@Url.Content("~/MapTile/Index")' +
+            '?x=' +
+            normalizedCoord.x +
+            '&y=' +
+            normalizedCoord.y +
+            '&z=' +
+            zoom;
+          if (tileSetName) {
+            url += ('&tileSetName=' + tileSetName);
+          }
+          return url;
+        },
+        tileSize: new google.maps.Size(256, 256),
+        maxZoom: @ViewBag.maxZoom,
+        minZoom: @ViewBag.minZoom,
+        radius: 1738000,
+        name: tileSetName,
+        //opacity: 0.5
+      });
+    };
+    var createLayer = function(tileSetName) {
+      return {
+        mapType: createImageMapType(tileSetName),
+        name: tileSetName
+      };
+    };
 
-        var map;
-        var layersTileSetNames = @Html.Raw(Json.Encode(ViewBag.TileSetNames));
+    var map;
+    var layersTileSetNames = @Html.Raw(Json.Encode(ViewBag.TileSetNames));
 
-        var layers = [];
+    var layers = [];
 
-        var labeledTilesLayer;
+    var labeledTilesLayer;
 
-        var addLayerButtons = function(layers) {
-            var layerButtonsDiv = $('#layerButtons');
+    var addLayerButtons = function(layers) {
+      var layerButtonsDiv = $('#layerButtons');
 
-            layerButtonsDiv.show();
+      layerButtonsDiv.show();
 
-            layers.forEach(function(layer, index) {
-                var btn = document.createElement('button');
-                var txt = document.createTextNode(String(layer.name));
+      layers.forEach(function(layer, index) {
+        var btn = document.createElement('button');
+        var txt = document.createTextNode(String(layer.name));
 
-                btn.appendChild(txt);
-                btn.setAttribute('onclick', "layerButtonClick(" + index + ")");
-                btn.setAttribute('layerIndex', index);
-                layerButtonsDiv.append(btn);
-            });
-        };
+        btn.appendChild(txt);
+        btn.setAttribute('onclick', "layerButtonClick(" + index + ")");
+        btn.setAttribute('layerIndex', index);
+        layerButtonsDiv.append(btn);
+      });
+    };
 
-        var layerButtonClick = function(layerIndex) {
-            var layer = layers[layerIndex];
-            console.log(layer.name);
+    var layerButtonClick = function(layerIndex) {
+      var layer = layers[layerIndex];
+      console.log(layer.name);
 
-            if (map.overlayMapTypes.indexOf(layer.mapType) === -1) {
-                map.overlayMapTypes.push(layer.mapType);
-            }
-        };
+      if (map.overlayMapTypes.indexOf(layer.mapType) === -1) {
+        map.overlayMapTypes.push(layer.mapType);
+      }
+    };
 
-        $(document).ready(function() {
-            google.maps.event.addDomListener(window, 'load', initialize);
+    $(document)
+      .ready(function() {
+        google.maps.event.addDomListener(window, 'load', initialize);
 
-            layersTileSetNames.forEach(function(tileSetName) {
-                layers.push(createLayer(tileSetName));
-            });
-
-            $("#staticLayerButtons").show();
+        layersTileSetNames.forEach(function(tileSetName) {
+          layers.push(createLayer(tileSetName));
         });
 
-        function setMandelbrotDisplay() {
-            map.setMapTypeId(layers[0].name);
+        $("#staticLayerButtons").show();
+      });
 
-            map.overlayMapTypes.clear();
+    function setMandelbrotDisplay() {
+      map.setMapTypeId(layers[0].name);
+
+      map.overlayMapTypes.clear();
+    }
+
+    function initialize() {
+      var mapCener = new google.maps.LatLng(51.5, -0.1); // Center on London
+
+      var mapOptions = {
+        zoom: 2,
+        center: mapCener,
+        //mapTypeControl: true,
+        mapTypeControl: false,
+        mapTypeControlOptions: {
+          mapTypeIds: []
         }
+      };
+      layers.forEach(function(layer) {
+        mapOptions.mapTypeControlOptions.mapTypeIds.push(layer.name);
+      });
 
-        function initialize() {
-            var mapCener = new google.maps.LatLng(51.5, -0.1); // Center on London
+      map = new google.maps.Map(document.getElementById('map-canvas'), mapOptions);
 
-            var mapOptions = {
-                zoom: 2,
-                center: mapCener,
-                //mapTypeControl: true,
-                mapTypeControl: false,
-                mapTypeControlOptions: {
-                    mapTypeIds: []
-                }
-            };
-            layers.forEach(function(layer) {
-                mapOptions.mapTypeControlOptions.mapTypeIds.push(layer.name);
-            });
+      google.maps.event.addListener(map,
+        'click',
+        function(event) {
+          var latLgn = event.latLng;
+          var message = "lat: " + latLgn.lat() + " lng: " + latLgn.lng();
+          console.log(message);
+        });
 
-            map = new google.maps.Map(document.getElementById('map-canvas'), mapOptions);
+      google.maps.event.addListener(map,
+        'zoom_changed',
+        function() {
+          console.log("Zoom Changed:" + map.zoom);
+        });
 
-            google.maps.event.addListener(map, 'click', function(event) {
-                var latLgn = event.latLng;
-                var message = "lat: " + latLgn.lat() + " lng: " + latLgn.lng();
-                console.log(message);
-            });
-
-            google.maps.event.addListener(map, 'zoom_changed', function() {
-                console.log("Zoom Changed:" + map.zoom);
-            });
-
-            layers.forEach(function(layer) {
-                if (layer.name === 'Tint') {
-                    return;
-                }
-                map.mapTypes.set(layer.name, layer.mapType);
-            });
-
-            setMandelbrotDisplay();
+      layers.forEach(function(layer) {
+        if (layer.name === 'Tint') {
+          return;
         }
+        map.mapTypes.set(layer.name, layer.mapType);
+      });
 
-        // Normalizes the coords that tiles repeat across the x axis (horizontally)
-        // like the standard Google map tiles.
-        function getNormalizedCoord(coord, zoom) {
-            var y = coord.y;
-            var x = coord.x;
+      setMandelbrotDisplay();
+    }
 
-            // tile range in one direction range is dependent on zoom level
-            // 0 = 1 tile, 1 = 2 tiles, 2 = 4 tiles, 3 = 8 tiles, etc
-            var tileRange = 1 << zoom;
+    // Normalizes the coords that tiles repeat across the x axis (horizontally)
+    // like the standard Google map tiles.
+    function getNormalizedCoord(coord, zoom) {
+      var y = coord.y;
+      var x = coord.x;
 
-            // don't repeat across y-axis (vertically)
-            if (y < 0 || y >= tileRange) {
-                return null;
-            }
+      // tile range in one direction range is dependent on zoom level
+      // 0 = 1 tile, 1 = 2 tiles, 2 = 4 tiles, 3 = 8 tiles, etc
+      var tileRange = 1 << zoom;
 
-            // repeat across x-axis
-            if (x < 0 || x >= tileRange) {
-                x = (x % tileRange + tileRange) % tileRange;
-            }
+      // don't repeat across y-axis (vertically)
+      if (y < 0 || y >= tileRange) {
+        return null;
+      }
 
-            return { x: x, y: y };
-        }
-    </script>
+      // repeat across x-axis
+      if (x < 0 || x >= tileRange) {
+        x = (x % tileRange + tileRange) % tileRange;
+      }
+
+      return { x: x, y: y };
+    }
+  </script>
 }
