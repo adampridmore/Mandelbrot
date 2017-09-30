@@ -1,6 +1,6 @@
 ﻿using System.Web.Http;
 
-namespace PaddingtonHeatmaps2
+namespace MandelbrotWeb
 {
     public static class WebApiConfig
     {

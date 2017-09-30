@@ -1,7 +1,7 @@
 ﻿using System.Web.Mvc;
 using System.Web.Routing;
 
-namespace PaddingtonHeatmaps2
+namespace MandelbrotWeb
 {
     public class RouteConfig
     {

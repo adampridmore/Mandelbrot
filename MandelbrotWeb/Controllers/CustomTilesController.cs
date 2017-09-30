@@ -1,7 +1,7 @@
 ﻿using System.Linq;
 using System.Web.Mvc;
 
-namespace PaddingtonHeatmaps2.Controllers
+namespace MandelbrotWeb.Controllers
 {
     public class CustomTilesController : Controller
     {

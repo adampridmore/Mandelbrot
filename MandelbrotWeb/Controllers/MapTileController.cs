@@ -5,7 +5,7 @@ using System.IO;
 using System.Web.Mvc;
 using Repository;
 
-namespace PaddingtonHeatmaps2.Controllers
+namespace MandelbrotWeb.Controllers
 {
     public class MapTileController : Controller
     {

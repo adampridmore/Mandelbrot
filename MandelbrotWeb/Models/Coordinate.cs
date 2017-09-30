@@ -1,4 +1,4 @@
-﻿namespace PaddingtonHeatmaps2.Models
+﻿namespace MandelbrotWeb.Models
 {
     public class Coordinate
     {
