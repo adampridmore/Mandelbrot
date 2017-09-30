@@ -8,8 +8,8 @@ namespace Repository
 {
     public class TileRepository
     {
+        private const string CollectionName = "tiles";
         private readonly IMongoCollection<Tile> _collection;
-        const string CollectionName = "tiles";
 
         public TileRepository(string mongoUri)
         {
@@ -37,13 +37,13 @@ namespace Repository
             {
                 tile.Id = ObjectId.GenerateNewId().ToString();
             }
-                
-                    if (string.IsNullOrWhiteSpace(tile.TileSetName))
+
+            if (string.IsNullOrWhiteSpace(tile.TileSetName))
             {
                 throw new ArgumentException("Must specify a TileSetName", nameof(tile));
             }
 
-            var query = Builders<Tile>.Filter.Eq((t=>t.Id), tile.Id);
+            var query = Builders<Tile>.Filter.Eq(t => t.Id, tile.Id);
             var options = new UpdateOptions {IsUpsert = true};
             _collection.ReplaceOne(query, tile, options);
         }
@@ -51,9 +51,9 @@ namespace Repository
         public Tile TryGetTile(int x, int y, int zoom, string tileSetName)
         {
             var filterBuilder = Builders<Tile>.Filter;
-            var filter = 
-                filterBuilder.Eq("X", x) & 
-                filterBuilder.Eq("Y", y) & 
+            var filter =
+                filterBuilder.Eq("X", x) &
+                filterBuilder.Eq("Y", y) &
                 filterBuilder.Eq("Zoom", zoom) &
                 filterBuilder.Eq("TileSetName", tileSetName);
             var results = _collection.Find(filter);
@@ -64,9 +64,9 @@ namespace Repository
         public bool DoesTileExist(int x, int y, int zoom, string tileSetName)
         {
             var filterBuilder = Builders<Tile>.Filter;
-            var filter = 
-                filterBuilder.Eq("X", x) & 
-                filterBuilder.Eq("Y", y) & 
+            var filter =
+                filterBuilder.Eq("X", x) &
+                filterBuilder.Eq("Y", y) &
                 filterBuilder.Eq("Zoom", zoom) &
                 filterBuilder.Eq("TileSetName", tileSetName);
             var count = _collection.Count(filter);
@@ -101,20 +101,20 @@ namespace Repository
         public void DeleteTileSet(string tileSetName)
         {
             var filterBuilder = Builders<Tile>.Filter;
-            var filter = filterBuilder.Eq(t=>t.TileSetName, tileSetName);
+            var filter = filterBuilder.Eq(t => t.TileSetName, tileSetName);
             _collection.DeleteMany(filter);
         }
     }
 
     public class MinMaxZoomLevels
     {
-        public int MinZoom { get; }
-        public int MaxZoom { get; }
-
         public MinMaxZoomLevels(int minZoom, int maxZoom)
         {
             MinZoom = minZoom;
             MaxZoom = maxZoom;
         }
+
+        public int MinZoom { get; }
+        public int MaxZoom { get; }
     }
 }

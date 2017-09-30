@@ -1,52 +1,59 @@
-﻿using NUnit.Framework;
+﻿using System;
+using NUnit.Framework;
 using Repository.Domain;
-using Assert = NUnit.Framework.Assert;
-using CollectionAssert = NUnit.Framework.CollectionAssert;
 
 namespace Repository.Tests
 {
     [TestFixture]
     public class TileRepositoryTests
     {
-        readonly TileRepository _repository = new TileRepository("mongodb://localhost/tiles_unittests");
-
         [SetUp]
         public void Before()
         {
             _repository.DeleteAll();
         }
 
-        [Test]
-        public void SaveAndLoad()
-        {
-            var tile = new Tile
-            {
-                Id = "MyFilename",
-                X = 1,
-                Y = 2,
-                Zoom = 3,
-                Data = new byte[] { 1, 2, 3 },
-                TileSetName = "TestSetName"
-            };
-
-            _repository.Save(tile);
-
-            var loadedTile = _repository.TryGetTile(1, 2, 3, "TestSetName");
-
-            Assert.AreEqual("MyFilename", loadedTile.Id);
-            Assert.AreEqual(1, loadedTile.X);
-            Assert.AreEqual(2, loadedTile.Y);
-            Assert.AreEqual(3, loadedTile.Zoom);
-            Assert.AreEqual("TestSetName", tile.TileSetName);
-            CollectionAssert.AreEquivalent(new byte[] { 1, 2, 3 }, loadedTile.Data);
-        }
+        private readonly TileRepository _repository = new TileRepository("mongodb://localhost/tiles_unittests");
 
         [Test]
         public void CountTest()
         {
             var tileCount = _repository.CountTiles();
 
-            System.Console.WriteLine(tileCount);
+            Console.WriteLine(tileCount);
+        }
+
+        [Test]
+        public void Delete_tileset()
+        {
+            var tileToKeep = new Tile
+            {
+                X = 1,
+                Y = 2,
+                Zoom = 3,
+                TileSetName = "setToKeep"
+            };
+
+            var tileToDelete = new Tile
+            {
+                X = 2,
+                Y = 3,
+                Zoom = 4,
+                TileSetName = "setToDelete"
+            };
+
+            _repository.Save(tileToKeep);
+            _repository.Save(tileToDelete);
+
+            _repository.DeleteTileSet("setToDelete");
+
+            Assert.AreEqual(1, _repository.CountTiles());
+            var loadTile1 = _repository.TryGetTile(tileToKeep.X, tileToKeep.Y, tileToKeep.Zoom, tileToKeep.TileSetName);
+            var loadTile2 = _repository.TryGetTile(tileToDelete.X, tileToDelete.Y, tileToDelete.Zoom,
+                tileToDelete.TileSetName);
+
+            Assert.NotNull(loadTile1);
+            Assert.Null(loadTile2);
         }
 
         [Test]
@@ -58,7 +65,7 @@ namespace Repository.Tests
         [Test]
         public void ExistsTest_when_tile()
         {
-            var tile = new Tile { X = 1, Y = 2, Zoom = 3, TileSetName = Tile.MandelbrotSetName };
+            var tile = new Tile {X = 1, Y = 2, Zoom = 3, TileSetName = Tile.MandelbrotSetName};
             _repository.Save(tile);
 
             Assert.IsTrue(_repository.DoesTileExist(1, 2, 3, Tile.MandelbrotSetName));
@@ -100,35 +107,28 @@ namespace Repository.Tests
         }
 
         [Test]
-        public void Delete_tileset()
+        public void SaveAndLoad()
         {
-            var tileToKeep = new Tile
+            var tile = new Tile
             {
+                Id = "MyFilename",
                 X = 1,
                 Y = 2,
                 Zoom = 3,
-                TileSetName = "setToKeep"
+                Data = new byte[] {1, 2, 3},
+                TileSetName = "TestSetName"
             };
 
-            var tileToDelete = new Tile
-            {
-                X = 2,
-                Y = 3,
-                Zoom = 4,
-                TileSetName = "setToDelete"
-            };
+            _repository.Save(tile);
 
-            _repository.Save(tileToKeep);
-            _repository.Save(tileToDelete);
+            var loadedTile = _repository.TryGetTile(1, 2, 3, "TestSetName");
 
-            _repository.DeleteTileSet("setToDelete");
-
-            Assert.AreEqual(1, _repository.CountTiles());
-            var loadTile1 = _repository.TryGetTile(tileToKeep.X, tileToKeep.Y, tileToKeep.Zoom, tileToKeep.TileSetName);
-            var loadTile2 = _repository.TryGetTile(tileToDelete.X, tileToDelete.Y, tileToDelete.Zoom, tileToDelete.TileSetName);
-
-            Assert.NotNull(loadTile1);
-            Assert.Null(loadTile2);
+            Assert.AreEqual("MyFilename", loadedTile.Id);
+            Assert.AreEqual(1, loadedTile.X);
+            Assert.AreEqual(2, loadedTile.Y);
+            Assert.AreEqual(3, loadedTile.Zoom);
+            Assert.AreEqual("TestSetName", tile.TileSetName);
+            CollectionAssert.AreEquivalent(new byte[] {1, 2, 3}, loadedTile.Data);
         }
     }
 }

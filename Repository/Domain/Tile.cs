@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using MongoDB.Bson.Serialization.Attributes;
 
 namespace Repository.Domain
 {
@@ -7,14 +8,10 @@ namespace Repository.Domain
     {
         public static readonly string DefaultSetName = MandelbrotSetName;
         public static readonly string MandelbrotSetName = "Mandelbrot";
-        
-        public static IEnumerable<string> GetTileSetNames()
-        {
-            yield return MandelbrotSetName;
-        }
-        
-        [MongoDB.Bson.Serialization.Attributes.BsonId]
+
+        [BsonId]
         public string Id { get; set; }
+
         public int X { get; set; }
         public int Y { get; set; }
         public int Zoom { get; set; }
@@ -23,6 +20,11 @@ namespace Repository.Domain
 
         public DateTime CreatedDateTime { get; set; }
         public string TileSetName { get; set; }
+
+        public static IEnumerable<string> GetTileSetNames()
+        {
+            yield return MandelbrotSetName;
+        }
 
         public static Tile CreateTile(int x, int y, int zoom, int iterations, string tileSetName)
         {
