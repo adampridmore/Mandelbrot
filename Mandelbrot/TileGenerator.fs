@@ -1,4 +1,4 @@
-﻿module PaddingtonHeatmapsComponents.TileGenerator
+﻿module Mandelbrot.TileGenerator
 
 open System.Drawing
 open System.Drawing.Imaging

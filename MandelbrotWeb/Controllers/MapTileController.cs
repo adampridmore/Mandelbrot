@@ -75,7 +75,7 @@ namespace MandelbrotWeb.Controllers
         }
         private static Image CreatePlainLabeledTile(int x, int y, int zoom)
         {
-            return PaddingtonHeatmapsComponents.TileGenerator.generateTile(x, y, zoom);
+            return Mandelbrot.TileGenerator.generateTile(x, y, zoom);
         }
     }
 }
