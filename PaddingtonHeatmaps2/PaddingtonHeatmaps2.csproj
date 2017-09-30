@@ -169,10 +169,6 @@
       <Project>{72a7cbc1-ee9f-481c-82b6-aa9e6f4fcb6e}</Project>
       <Name>Mandelbrot</Name>
     </ProjectReference>
-    <ProjectReference Include="..\PaddingtonHeatmapsComponents\PaddingtonHeatmapsComponents.fsproj">
-      <Project>{78ade4c1-a0cb-4cf4-931d-b7b2cf7b24f8}</Project>
-      <Name>PaddingtonHeatmapsComponents</Name>
-    </ProjectReference>
     <ProjectReference Include="..\Repository\Repository.csproj">
       <Project>{64c7db88-20ea-4d82-b3db-d730c5636b67}</Project>
       <Name>Repository</Name>
