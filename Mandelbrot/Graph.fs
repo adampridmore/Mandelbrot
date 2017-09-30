@@ -38,11 +38,12 @@ type Graph(width:int, height:int, viewPortal:RectangleD, iterations:int) =
         magnitude 
         |> toColor iterations
         |> (this.DrawPointAtPixelWithColor p)
+    member this.setPixel(x,y,c) =
+         lock this.Bitmap (fun () -> this.Bitmap.SetPixel(x ,y,c) ) 
     member this.DrawPointAtPixelWithColor (p:Pixel) (c:Color) =
         if insideBitmap(p) 
-        then this.Bitmap.SetPixel((p.X) ,(p.Y),c)
+        then this.setPixel(p.X, p.Y, c)
         else ()
-
     member this.DrawAxes() = 
         use graphics = Graphics.FromImage(this.Bitmap)
         let axesColor = Color.DarkBlue
@@ -64,7 +65,7 @@ type Graph(width:int, height:int, viewPortal:RectangleD, iterations:int) =
         let pixelToPixelPointD (pixel:Pixel) = 
             let point = this.GetValueFromPixel(pixel)
             (pixel, point)
-
+             
         seq{
             for y in 0..this.Height-1 do
                 for x in 0..this.Width-1 do
@@ -72,7 +73,7 @@ type Graph(width:int, height:int, viewPortal:RectangleD, iterations:int) =
         }
         |> Seq.map pixelToPixelPointD
         |> Seq.map (fun (pixel,point) -> (pixel, fn point))
-        |> Seq.iter (fun (pixel,v) -> match v with 
+        |> PSeq.iter (fun (pixel,v) -> match v with 
                                         | Some(v) -> this.DrawPointAtPixelWithMagnitude pixel v
                                         | None -> this.DrawPointAtPixelWithColor pixel Color.Black)
 
