@@ -10,8 +10,8 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Repository2\Repository2.csproj" />
-    <ProjectReference Include="..\Mandelbrot2\Mandelbrot2.fsproj" />
+    <ProjectReference Include="..\Repository\Repository.csproj" />
+    <ProjectReference Include="..\Mandelbrot\Mandelbrot.fsproj" />
   </ItemGroup>
 
 </Project>

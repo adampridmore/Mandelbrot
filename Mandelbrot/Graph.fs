@@ -73,7 +73,8 @@ type Graph(width:int, height:int, viewPortal:RectangleD, iterations:int) =
         }
         |> Seq.map pixelToPixelPointD
         |> Seq.map (fun (pixel,point) -> (pixel, fn point))
-        |> PSeq.iter (fun (pixel,v) -> match v with 
+        // TODO: Make a PSeq (not sure which package)
+        |> Seq.iter (fun (pixel,v) -> match v with 
                                         | Some(v) -> this.DrawPointAtPixelWithMagnitude pixel v
                                         | None -> this.DrawPointAtPixelWithColor pixel Color.Black)
 
