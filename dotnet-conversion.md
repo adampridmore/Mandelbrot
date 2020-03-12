@@ -4,10 +4,9 @@
 
 - Mandelbrot
 - MandelbrotConsole
+- MandelbrotWeb
 
 ## Todo
  
- - MandelbrotWeb - In Progress
- - MandelbrotWeb2
  - MandelbrotWpf - N/A?
  - Repository - ?
