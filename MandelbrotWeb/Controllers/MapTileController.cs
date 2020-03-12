@@ -6,20 +6,25 @@ using Microsoft.AspNetCore.Mvc;
 using Mandelbrot;
 using Repository;
 using Repository.Domain;
+using Microsoft.Extensions.Configuration;
 
 namespace MandelbrotWeb.Controllers
 {
     public class MapTileController : Controller
     {
         public const string TileLabelsSetName = "TileLabels";
-        private readonly TileRepository _tileRepository = Create();
+        private readonly IConfiguration _config;
+        private readonly TileRepository _tileRepository;
 
-        public static TileRepository Create()
+        public MapTileController(IConfiguration config) {
+            _config = config;
+            _tileRepository = Create();
+        }
+        
+        public TileRepository Create()
         {
-            // TODO: Read from config
-            //var mongoUri = ConfigurationManager.ConnectionStrings["MongoDB"].ConnectionString;
-            var mongoUri = "mongodb://localhost/tiles";
-
+            var mongoUri = _config.GetConnectionString("MongoDb");
+            
             return new TileRepository(mongoUri);
         }
 
