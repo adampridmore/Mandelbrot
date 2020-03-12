@@ -26,7 +26,7 @@ namespace Repository
 
         public int CountTiles()
         {
-            return (int) _collection.Count(FilterDefinition<Tile>.Empty);
+            return (int)_collection.EstimatedDocumentCount();
         }
 
         public void Save(Tile tile)
@@ -44,7 +44,7 @@ namespace Repository
             }
 
             var query = Builders<Tile>.Filter.Eq(t => t.Id, tile.Id);
-            var options = new UpdateOptions {IsUpsert = true};
+            var options = new ReplaceOptions { IsUpsert = true };
             _collection.ReplaceOne(query, tile, options);
         }
 
@@ -69,7 +69,9 @@ namespace Repository
                 filterBuilder.Eq("Y", y) &
                 filterBuilder.Eq("Zoom", zoom) &
                 filterBuilder.Eq("TileSetName", tileSetName);
-            var count = _collection.Count(filter);
+
+            var count = _collection.CountDocuments(filter);
+            
             return count != 0;
         }
 
