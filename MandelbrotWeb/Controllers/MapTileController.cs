@@ -2,7 +2,7 @@
 using System.Drawing;
 using System.Drawing.Imaging;
 using System.IO;
-using System.Web.Mvc;
+using Microsoft.AspNetCore.Mvc;
 using Mandelbrot;
 using Repository;
 using Repository.Domain;
@@ -16,7 +16,9 @@ namespace MandelbrotWeb.Controllers
 
         public static TileRepository Create()
         {
-            var mongoUri = ConfigurationManager.ConnectionStrings["MongoDB"].ConnectionString;
+            // TODO: Read from config
+            //var mongoUri = ConfigurationManager.ConnectionStrings["MongoDB"].ConnectionString;
+            var mongoUri = "mongodb://localhost/tiles";
 
             return new TileRepository(mongoUri);
         }
@@ -61,7 +63,7 @@ namespace MandelbrotWeb.Controllers
             var tile = LoadTile(x, y, zoom, tileSetName);
             if (tile == null)
             {
-                return HttpNotFound();
+                return NotFound();
             }
 
             var imageFormat = ImageFormat.Png;

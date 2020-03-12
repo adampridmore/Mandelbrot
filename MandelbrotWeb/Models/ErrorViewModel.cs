@@ -1,6 +1,6 @@
 using System;
 
-namespace MandelbrotWeb2.Models
+namespace MandelbrotWeb.Models
 {
     public class ErrorViewModel
     {

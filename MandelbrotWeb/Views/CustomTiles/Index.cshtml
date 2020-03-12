@@ -79,7 +79,7 @@
     };
 
     var map;
-    var layersTileSetNames = @Html.Raw(Json.Encode(ViewBag.TileSetNames));
+    var layersTileSetNames = @Html.Raw(Json.Serialize(ViewBag.TileSetNames));
 
     var layers = [];
 

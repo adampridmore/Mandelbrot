@@ -9,7 +9,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 
-namespace MandelbrotWeb2
+namespace MandelbrotWeb
 {
     public class Startup
     {
