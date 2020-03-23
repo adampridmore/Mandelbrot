@@ -14,12 +14,12 @@
     <Compile Include="ColorModule.fs" />
     <Compile Include="Pixel.fs" />
     <Compile Include="RectangleD.fs" />
-    <Compile Include="RectangleTests.fs" />
+    <Compile Include="tests/RectangleTests.fs" />
     <Compile Include="PointD.fs" />
     <Compile Include="Graph.fs" />
-    <Compile Include="GraphTests.fs" />
+    <Compile Include="tests/GraphTests.fs" />
     <Compile Include="Mandelbrot.fs" />
-    <Compile Include="MandelbrotTests.fs" />
+    <Compile Include="tests/MandelbrotTests.fs" />
     <Compile Include="MapTileGenerator.fs" />
     <!-- <None Include="App.config" /> -->
     <Content Include="packages.config" />
