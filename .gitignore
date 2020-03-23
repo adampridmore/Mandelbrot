@@ -220,3 +220,6 @@ _Pvt_Extensions
 /Screenshots
 Data/
 .ionide/symbolCache.db
+
+.fake
+.ionide

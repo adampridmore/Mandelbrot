@@ -28,14 +28,14 @@ let private toDomainTile (tile:TileDetails) (graph:Graph) =
     domainTile
 
 let private render iterationsToCheck (tile:TileDetails) (size:System.Drawing.Size) viewPort (repository:TileRepository) =
-    let graph = new Graph(size.Width, size.Height, viewPort, iterations)
+    let graph = Graph(size.Width, size.Height, viewPort, iterations)
     graph |> renderSet iterationsToCheck
 
     let tile = graph |> toDomainTile tile 
     tile |> repository.Save
     tile.Data
     
-let private size = new System.Drawing.Size(tileSize, tileSize)
+let private size = System.Drawing.Size(tileSize, tileSize)
 
 let private fullViewport = {XMin = -2.0; XMax = 2.0; YMin = -2.; YMax = 2.}
 

@@ -23,7 +23,7 @@ open System.Configuration
 // #load "MapTileGenerator.fs"
 
 
-let private repository = new Repository.TileRepository("mongodb://localhost/tiles")
+let private repository = Repository.TileRepository("mongodb://localhost/tiles")
 
 let tilesetName = "Mandelbrot" 
 
@@ -36,7 +36,13 @@ let renderZoomLevel zoom =
     }
     |> Seq.map (fun (x,y) -> {X=x;Y=y;Filename=(toFilename x y zoom);Zoom=zoom})
     // |> PSeq.withDegreeOfParallelism 3
-    |> PSeq.map (fun tile -> (printfn "%s" tile.Filename) ; getTileImageByte (tile.X, tile.Y, tile.Zoom, tilesetName, repository) )
+    |> PSeq.map (fun t ->
+        let stopwatch = System.Diagnostics.Stopwatch.StartNew()
+
+        let tile = getTileImageByte (t.X, t.Y, t.Zoom, tilesetName, repository)
+        (printfn "%s \t Duration: %A)" (t.Filename) (stopwatch.Elapsed) )
+        tile
+    )
     |> PSeq.iter ignore
 
     
