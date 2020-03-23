@@ -3,10 +3,11 @@
 open NUnit.Framework
 open FsUnit
 open Mandelbrot.MandelbrotCalculator
+open System.Numerics
 
 [<Test>]
 let ``outside set``()=
-    Complex.Create(100., 100.)
+    Complex(100., 100.)
     |> (inSet 10)
     |> should equal false
 
@@ -18,7 +19,7 @@ let ``inside set``()=
     
 [<Test>]
 let ``outside set with result``()=
-    Complex.Create(100.,100.)
+    Complex(100.,100.)
     |> (inSetWithResult 10)
     |> should equal (InSetResult.NotInSet(0))
 

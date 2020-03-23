@@ -1,6 +1,7 @@
 ﻿module Mandelbrot.MandelbrotCalculator
 
 open Mandelbrot
+open System.Numerics
 
 let sqr (x:Complex) = x*x
 
