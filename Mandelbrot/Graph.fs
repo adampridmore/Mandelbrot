@@ -1,7 +1,6 @@
 ﻿namespace Mandelbrot 
 
 open System.Drawing
-open Microsoft.FSharp.Collections
 open FSharp.Collections.ParallelSeq
 
 open Mandelbrot

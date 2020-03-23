@@ -1,7 +1,7 @@
 ﻿open System
 open Mandelbrot
 open Mandelbrot.MandelbrotCalculator
-open Microsoft.FSharp.Collections
+open FSharp.Collections.ParallelSeq
 open Repository.Domain
 open MapTileGenerator
 open System.Configuration
