@@ -36,3 +36,7 @@ let ``Performance 2``()=
     
     performance "test1" (fun () -> graph |> renderSet iterationsToCheck) 
     |> ignore
+    performance "test2" (fun () -> graph |> renderSet iterationsToCheck) 
+    |> ignore
+    performance "test3" (fun () -> graph |> renderSet iterationsToCheck) 
+    |> ignore
