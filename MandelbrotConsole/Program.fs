@@ -36,11 +36,9 @@ let renderZoomLevel zoom =
     }
     |> Seq.map (fun (x,y) -> {X=x;Y=y;Filename=(toFilename x y zoom);Zoom=zoom})
     // |> PSeq.withDegreeOfParallelism 3
-    |> PSeq.map (fun t ->
-        let stopwatch = System.Diagnostics.Stopwatch.StartNew()
-
+    |> PSeq.map (fun t ->    
         let tile = getTileImageByte (t.X, t.Y, t.Zoom, tilesetName, repository)
-        (printfn "%s \t Duration: %A)" (t.Filename) (stopwatch.Elapsed) )
+        printfn "%s" (t.Filename) 
         tile
     )
     |> PSeq.iter ignore

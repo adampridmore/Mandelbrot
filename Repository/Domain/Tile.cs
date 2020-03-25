@@ -18,6 +18,8 @@ namespace Repository.Domain
         public int Iterations { get; set; }
         public byte[] Data { get; set; }
 
+        public double DurationMs {get;set;}
+
         public DateTime CreatedDateTime { get; set; }
         public string TileSetName { get; set; }
 
@@ -26,7 +28,7 @@ namespace Repository.Domain
             yield return MandelbrotSetName;
         }
 
-        public static Tile CreateTile(int x, int y, int zoom, int iterations, string tileSetName)
+        public static Tile CreateTile(int x, int y, int zoom, int iterations, string tileSetName, TimeSpan duration)
         {
             return new Tile
             {
@@ -35,7 +37,8 @@ namespace Repository.Domain
                 Zoom = zoom,
                 Iterations = iterations,
                 CreatedDateTime = DateTime.UtcNow,
-                TileSetName = tileSetName
+                TileSetName = tileSetName,
+                DurationMs  = duration.TotalMilliseconds
             };
         }
     }

@@ -18,8 +18,8 @@ type TileDetails = {
         Filename: string
     }
 
-let private toDomainTile (tile:TileDetails) (graph:Graph) = 
-    let domainTile = Tile.CreateTile(tile.X, tile.Y, tile.Zoom, iterations, Tile.MandelbrotSetName)
+let private toDomainTile (tile:TileDetails) (duration: System.TimeSpan) (graph:Graph) = 
+    let domainTile = Tile.CreateTile(tile.X, tile.Y, tile.Zoom, iterations, Tile.MandelbrotSetName, duration)
     
     domainTile.Id <- tile.Filename
     let ms = new System.IO.MemoryStream()
@@ -27,13 +27,18 @@ let private toDomainTile (tile:TileDetails) (graph:Graph) =
     domainTile.Data <- ms.ToArray()
     domainTile
 
-let private render iterationsToCheck (tile:TileDetails) (size:System.Drawing.Size) viewPort (repository:TileRepository) =
+let private render iterationsToCheck (tile:TileDetails) (size:System.Drawing.Size) viewPort (repository:TileRepository) : Tile =
     let graph = Graph(size.Width, size.Height, viewPort, iterations)
+
+    let stopwatch = System.Diagnostics.Stopwatch.StartNew()
+
     graph |> renderSet iterationsToCheck
 
-    let tile = graph |> toDomainTile tile 
+    stopwatch.Stop()
+
+    let tile = graph |> toDomainTile tile (stopwatch.Elapsed)
     tile |> repository.Save
-    tile.Data
+    tile
     
 let private size = System.Drawing.Size(tileSize, tileSize)
 
@@ -67,8 +72,8 @@ let private generateAndSaveTile x y zoom tileSetName =
     {X=x;Y=y;Filename=(toFilename x y zoom);Zoom=zoom}
     |> renderCell
 
-let getTileImageByte (x, y, zoom, tileSetName, (repository:TileRepository)) =
+let getTileImageByte (x, y, zoom, tileSetName, (repository:TileRepository)) : byte[] =
     let image = repository.TryGetTileImageByte (x, y, zoom, tileSetName )
     match image with 
-    | null -> generateAndSaveTile x y zoom tileSetName repository
+    | null -> (generateAndSaveTile x y zoom tileSetName repository).Data
     | _ -> image
