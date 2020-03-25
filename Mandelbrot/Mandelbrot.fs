@@ -18,7 +18,17 @@ let mandleBrotValuesSequence (value:Complex) =
 
 let valueOutsideSet (x:Complex) = Complex.Abs(x) > 2.
 
-let inSet (iterationsToCheck:int) (v:Complex) = 
+let inSet (iterationsToCheck: int) (v:Complex) : bool = 
+    let mutable currentValue = v
+
+    seq {0..iterationsToCheck}
+    |> Seq.map(fun _ -> 
+        currentValue <- currentValue * currentValue + v
+        Complex.Abs(currentValue) > 2.
+    )
+    |> Seq.exists id
+
+let inSet2 (iterationsToCheck:int) (v:Complex) : bool = 
     v
     |> mandleBrotValuesSequence
     |> Seq.take iterationsToCheck
