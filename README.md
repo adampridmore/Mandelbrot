@@ -16,6 +16,15 @@ Various components for viewing a deepzoomable mandelbrot set.
 
 ### Linux / OSX
 
+You need https://github.com/mono/libgdiplus to run on Linux / OSX. 
+
+To install with brew (osx)
+
+```
+brew install glib cairo libexif libjpeg giflib libtiff autoconf libtool automake pango pkg-config
+brew link gettext --force
+```
+
 ```
 cd MandelbrotWeb
 ./run.sh
