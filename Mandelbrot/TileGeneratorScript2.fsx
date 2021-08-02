@@ -1,6 +1,10 @@
-﻿#r @"..\packages\FSPowerPack.Parallel.Seq.Community.3.0.0.0\Lib\Net40\FSharp.PowerPack.Parallel.Seq.dll"
-#r @"..\packages\FSPowerPack.Core.Community.3.0.0.0\Lib\Net40\FSharp.PowerPack.dll"
-#r @"..\Repository\bin\Debug\Repository.dll"
+﻿#r "nuget: FSharp.Collections.ParallelSeq, 1.1.4"
+#r "nuget: runtime.osx.10.10-x64.CoreCompat.System.Drawing"
+#r "System.Drawing.Common.dll"
+
+#r @"../Repository/bin/Debug/netcoreapp3.1/Repository.dll"
+#r @"./bin/Debug/netcoreapp3.1/Mandelbrot.dll"
+
 #r @"System.Configuration.dll"
 
 #load "Pixel.fs"
@@ -14,6 +18,7 @@
 open Mandelbrot
 open Mandelbrot.MandelbrotCalculator
 open Microsoft.FSharp.Collections
+open FSharp.Collections.ParallelSeq
 open Repository.Domain
 open MapTileGenerator
 open System.Configuration
