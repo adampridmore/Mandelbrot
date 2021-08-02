@@ -6,23 +6,6 @@ open Repository.Domain
 open MapTileGenerator
 open System.Configuration
 
-
-
-
-// #r @"..\packages\FSPowerPack.Parallel.Seq.Community.3.0.0.0\Lib\Net40\FSharp.PowerPack.Parallel.Seq.dll"
-// #r @"..\packages\FSPowerPack.Core.Community.3.0.0.0\Lib\Net40\FSharp.PowerPack.dll"
-// #r @"..\Repository\bin\Debug\Repository.dll"
-// #r @"System.Configuration.dll"
-
-// #load "Pixel.fs"
-// #load "ColorModule.fs"
-// #load "RectangleD.fs"
-// #load "PointD.fs"
-// #load "Graph.fs"
-// #load "Mandelbrot.fs"
-// #load "MapTileGenerator.fs"
-
-
 let private repository = Repository.TileRepository("mongodb://localhost/tiles")
 
 let tilesetName = "Mandelbrot" 
