@@ -23,41 +23,33 @@ open Repository.Domain
 open MapTileGenerator
 open System.Configuration
 
-let repository = new Repository.TileRepository("mongodb://localhost/tiles")
-
-let tilesetName = "Mandelbrot" 
-
-let renderZoomLevel zoom = 
-    let cellCount = zoom |> zoomToCellCount |> int
-    seq{
-        for x in 0 .. (cellCount - 1) do
-            for y in 0 .. (cellCount - 1) do
-                yield (x,y)
-    }
-    |> Seq.map (fun (x,y) -> {X=x;Y=y;Filename=(toFilename x y zoom);Zoom=zoom})
-    // |> PSeq.withDegreeOfParallelism 3
-    |> PSeq.map (fun tile -> (printfn "%s" tile.Filename) ; getTileImageByte (tile.X, tile.Y, tile.Zoom, tilesetName, repository) )
-    |> PSeq.iter ignore
-
     
 #time "on"
 
-let zoom = 1
-let tile = {X=0;Y=0;Filename=("tile1.png");Zoom=zoom}
-getTileImageByte (tile.X, tile.Y, tile.Zoom, tilesetName, repository)
+let filename = "Mandelbrot_1.png"
 
+// let zoom = 1
+// let tile = {X=0;Y=0;Filename=("tile1.png");Zoom=zoom}
+// let imageBytes = getTileImageByte (tile.X, tile.Y, tile.Zoom, tilesetName, repository)
+// System.IO.File.WriteAllBytes(path, imageBytes)
 
+let real = -1.63149737002
+let imaginary = 1.985e-8
+let zoom = 1.0 / 1.0
 
-// seq{0..30} |> Seq.iter renderZoomLevel
-//renderZoomLevel 0
-//renderZoomLevel 1
-//renderZoomLevel 2
-//renderZoomLevel 3
-//renderZoomLevel 4
-//renderZoomLevel 5
-//renderZoomLevel 6
-//renderZoomLevel 7
-//renderZoomLevel 8
-//renderZoomLevel 9
-//renderZoomLevel 10
-//renderZoomLevel 11
+let viewPort = { 
+    RectangleD.XMin = -1.0
+    XMax = 1.0
+    YMin = -1.0
+    YMax = 1.0
+}
+let size = new System.Drawing.Size(100,100)
+let iterations = 400
+
+let graph = Graph(size.Width, size.Height, viewPort, iterations)
+
+let stopwatch = System.Diagnostics.Stopwatch.StartNew()
+
+graph |> renderSet iterations
+
+graph.Bitmap.Save(filename)
