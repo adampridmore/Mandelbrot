@@ -24,58 +24,16 @@ let private namesColors2 =
     |> Seq.map (fun (r,g,b) -> Color.FromArgb(255, r, g, b) )
     |> Seq.toArray
 
-let toColor iterations i = 
-//    let colors = [|
-//        Color.Blue;
-//        Color.Red;
-//        Color.Green;
-//        Color.Yellow;
-//        Color.Orange;
-//        Color.BlueViolet;
-//        Color.Ivory
-//    |]
+let private toBlackAndWhite iterations i= 
+    if (i%2=0) then Color.Black
+    else Color.White
 
-//    let namesBluesColors = 
-//        [|
-//            Color.AliceBlue;
-//            Color.Blue;
-//            Color.BlueViolet;
-//            Color.CadetBlue;
-//            Color.CornflowerBlue;
-//            Color.DarkBlue;
-//            Color.DarkSlateBlue;
-//            Color.DeepSkyBlue
-//            Color.DodgerBlue;
-//            Color.LightBlue;
-//            Color.LightSkyBlue;
-//            Color.LightSteelBlue;
-//            Color.MediumBlue;
-//            Color.MediumSlateBlue;
-//            Color.MidnightBlue;
-//            Color.PowderBlue;
-//            Color.RoyalBlue;
-//            Color.SkyBlue;
-//            Color.SlateBlue;
-//            Color.SteelBlue
-//        |]
-//        |> Seq.sortBy (fun c -> c.B + c.G + c.R)
-//        |> Seq.toArray
-
-
-
-
-//        |> Seq.rev
-
-
-//    let allBlues =
-//        seq{0..255}
-//        |> Seq.map (fun i -> Color.FromArgb(150, 150, i))
-//        |> Seq.toArray
-        
+let private toColorRange iterations i= 
     let colors = namesColors2 
-
-    //colors.[i % colors.Length]
 
     match i with
     | i when i < iterations && i > 0 -> colors.[i % colors.Length]
     | _ -> Color.Black
+
+let toColor = toBlackAndWhite 
+// let toColor = toColorRange
