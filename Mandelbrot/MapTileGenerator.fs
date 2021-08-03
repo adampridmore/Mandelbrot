@@ -27,7 +27,7 @@ let private toDomainTile (tile:TileDetails) (duration: System.TimeSpan) (graph:G
     domainTile.Data <- ms.ToArray()
     domainTile
 
-let private render iterationsToCheck (tile:TileDetails) (size:System.Drawing.Size) viewPort (repository:TileRepository) : Tile =
+let private render iterationsToCheck (tileDetails:TileDetails) (size:System.Drawing.Size) (viewPort: RectangleD) (repository:TileRepository) : Tile =
     let graph = Graph(size.Width, size.Height, viewPort, iterations)
 
     let stopwatch = System.Diagnostics.Stopwatch.StartNew()
@@ -36,7 +36,7 @@ let private render iterationsToCheck (tile:TileDetails) (size:System.Drawing.Siz
 
     stopwatch.Stop()
 
-    let tile = graph |> toDomainTile tile (stopwatch.Elapsed)
+    let tile = graph |> toDomainTile tileDetails (stopwatch.Elapsed)
     tile |> repository.Save
     tile
     
@@ -61,12 +61,12 @@ let private toRectangleD (tile:TileDetails) =
     
 let toFilename x y zoom = sprintf @"tile_zm%d_x%d_y%d.%A" zoom x y imageFormat
 
-let private renderCell (tile:TileDetails) (repository: TileRepository) = 
-    let rectangle = toRectangleD tile
-    render iterations tile size rectangle repository
+let private renderCell (tileDetails:TileDetails) (repository: TileRepository) : Tile = 
+    let rectangle = toRectangleD tileDetails
+    render iterations tileDetails size rectangle repository
 
-let private tileNeedToBeRendered (tile:TileDetails) (repository:TileRepository) = 
-    repository.DoesTileExist(tile.X, tile.Y, tile.Zoom, Tile.MandelbrotSetName) |> not
+let private tileNeedToBeRendered (tileDetails:TileDetails) (repository:TileRepository) = 
+    repository.DoesTileExist(tileDetails.X, tileDetails.Y, tileDetails.Zoom, Tile.MandelbrotSetName) |> not
 
 let private generateAndSaveTile x y zoom tileSetName = 
     {X=x;Y=y;Filename=(toFilename x y zoom);Zoom=zoom}
