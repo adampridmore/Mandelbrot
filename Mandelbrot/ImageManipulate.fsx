@@ -9,7 +9,6 @@ let fn() : Unit =
 
   use image = new Image<Rgba32>(10,10)
 
-  // This doesn't seem to work?
   image[5,5] <- Rgba32(100uy,255uy,255uy)
 
   image.Save("image.bmp")

@@ -15,7 +15,8 @@ let drawImage() =
 
     image[5,5] <- Rgba32(100uy,255uy,255uy)
 
-    image.Save("image.bmp")
+    let encoder = new SixLabors.ImageSharp.Formats.Bmp.BmpEncoder()
+    image.Save("image.bmp",encoder)
 
     printfn "Pixel 1: %O" image[0,0]
     printfn "Pixel 2: %O" image[5,5]
