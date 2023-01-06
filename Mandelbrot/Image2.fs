@@ -20,7 +20,8 @@ open SixLabors.ImageSharp.PixelFormats
 open Mandelbrot.Color
 
 // TODO: Change to png
-let imageTypeExtension = "bmp"
+let imageTypeExtension = "png"
+let encoder = new SixLabors.ImageSharp.Formats.Png.PngEncoder()
 
 type Bitmap3(width: int32, height: int32) = 
   let image = new Image<Rgba32>(width, height)
@@ -31,5 +32,4 @@ type Bitmap3(width: int32, height: int32) =
     lock this.Bitmap (fun () -> image[x,y] <- Rgba32(c.R(),c.G(),c.B()))
 
   member this.Save(stream: Stream) : Unit = 
-    let encoder = new SixLabors.ImageSharp.Formats.Bmp.BmpEncoder()
     image.Save(stream, encoder)

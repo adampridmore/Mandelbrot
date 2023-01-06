@@ -60,7 +60,7 @@ let private toRectangleD (tile:TileDetails) =
         YMax = (fullViewport.YMin + (cellHeight * (float tile.Y + 1.) ) )
     }
     
-let toFilename x y zoom = sprintf @"tile_zm%d_x%d_y%d.%A" zoom x y (Mandelbrot.Image2.imageTypeExtension)
+let toFilename x y zoom = sprintf @"tile_zm%d_x%d_y%d.%s" zoom x y (Mandelbrot.Image2.imageTypeExtension)
 
 let private renderCell (tile:TileDetails) (repository: TileRepository) = 
     let rectangle = toRectangleD tile
