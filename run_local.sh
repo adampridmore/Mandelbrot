@@ -1,1 +1,3 @@
-dotnet build run --project MandelbrotWeb/MandelbrotWeb.csproj
+dotnet build
+
+dotnet run --project MandelbrotWeb/MandelbrotWeb.csproj

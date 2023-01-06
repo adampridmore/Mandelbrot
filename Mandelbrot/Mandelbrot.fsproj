@@ -11,7 +11,7 @@
     <Compile Include="Pixel.fs" />
     <Compile Include="RectangleD.fs" />
     <Compile Include="PointD.fs" />
-    <Compile Include="Bitmap2.fs" />
+    <Compile Include="Image2.fs" />
     <Compile Include="Graph.fs" />
     <Compile Include="Mandelbrot.fs" />
     <Compile Include="MapTileGenerator.fs" />

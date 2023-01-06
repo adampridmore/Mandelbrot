@@ -2,6 +2,7 @@
 
 open Mandelbrot
 open Mandelbrot.MandelbrotCalculator
+open Mandelbrot.Image2
 open Microsoft.FSharp.Collections
 open Repository.Domain
 open Repository
@@ -9,7 +10,7 @@ open Repository
 let private tileSize = 256
 let private iterations = 400
 
-let imageFormat = System.Drawing.Imaging.ImageFormat.Png
+// let imageFormat = System.Drawing.Imaging.ImageFormat.Png
 
 type TileDetails = {
         X: int;
@@ -23,7 +24,7 @@ let private toDomainTile (tile:TileDetails) (duration: System.TimeSpan) (graph:G
     
     domainTile.Id <- tile.Filename
     let ms = new System.IO.MemoryStream()
-    graph.Bitmap.Save(ms, imageFormat)
+    graph.Bitmap.Save(ms)
     domainTile.Data <- ms.ToArray()
     domainTile
 
@@ -59,7 +60,7 @@ let private toRectangleD (tile:TileDetails) =
         YMax = (fullViewport.YMin + (cellHeight * (float tile.Y + 1.) ) )
     }
     
-let toFilename x y zoom = sprintf @"tile_zm%d_x%d_y%d.%A" zoom x y imageFormat
+let toFilename x y zoom = sprintf @"tile_zm%d_x%d_y%d.%A" zoom x y (Mandelbrot.Image2.imageTypeExtension)
 
 let private renderCell (tile:TileDetails) (repository: TileRepository) = 
     let rectangle = toRectangleD tile

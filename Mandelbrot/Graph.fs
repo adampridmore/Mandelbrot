@@ -1,13 +1,13 @@
 ﻿namespace Mandelbrot 
 
-open System.Drawing
 open FSharp.Collections.ParallelSeq
 
 open Mandelbrot
 open Mandelbrot.Color
+open Mandelbrot.Image2
 
 type Graph(width:int, height:int, viewPortal:RectangleD, iterations:int) =
-    let toPointF (p:PointD) = new PointF(float32 p.X, float32 p.Y)
+    // let toPointF (p:PointD) = new PointF(float32 p.X, float32 p.Y)
 
     let bitmap: Bitmap3 = new Bitmap3(width, height)
 
@@ -35,14 +35,14 @@ type Graph(width:int, height:int, viewPortal:RectangleD, iterations:int) =
     member this.DrawPoint (p:PointD) =
         (p |> mapPointToPixelPoint).ToPixel |> this.DrawPointAtPixel 
 
-    member this.DrawPointAtPixel (p:Pixel) = this.DrawPointAtPixelWithColor p Color.Black
+    member this.DrawPointAtPixel (p:Pixel) = this.DrawPointAtPixelWithColor p Mandelbrot.Color.Black
     member this.DrawPointAtPixelWithMagnitude (p:Pixel) (magnitude:int) =
         magnitude 
         |> toColor iterations
         |> (this.DrawPointAtPixelWithColor p)
     // member this.setPixel(x,y,c) =
     //      lock this.Bitmap (fun () -> this.Bitmap.SetPixel(x ,y,c) ) 
-    member this.DrawPointAtPixelWithColor (p:Pixel) (c:Color) =
+    member this.DrawPointAtPixelWithColor (p:Pixel) (c:Color2) =
         if insideBitmap(p) 
         then this.Bitmap.setPixel(p.X, p.Y, c)
         else ()
