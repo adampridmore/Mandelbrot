@@ -12,7 +12,6 @@ namespace MandelbrotWeb.Controllers
 {
     public class MapTileController : Controller
     {
-        public const string TileLabelsSetName = "TileLabels";
         private readonly IConfiguration _config;
         private readonly TileRepository _tileRepository;
 
@@ -28,22 +27,6 @@ namespace MandelbrotWeb.Controllers
             return new TileRepository(mongoUri);
         }
 
-        // Generates labled tiles.
-        private FileResult LabeledTiles(int x, int y, int z)
-        {
-            var tileImage = CreatePlainLabeledTile(x, y, z);
-
-            var memoryStream = new MemoryStream();
-
-            var imageFormat = ImageFormat.Png;
-            tileImage.Save(memoryStream, imageFormat);
-
-            memoryStream.Position = 0;
-
-            var contentType = $"image/{imageFormat.ToString().ToLowerInvariant()}";
-            return new FileStreamResult(memoryStream, contentType);
-        }
-
         public ActionResult Index(string x, string y, string z, string tileSetName)
         {
             if (string.IsNullOrWhiteSpace(tileSetName))
@@ -54,11 +37,6 @@ namespace MandelbrotWeb.Controllers
             var xVal = int.Parse(x);
             var yVal = int.Parse(y);
             var zoom = int.Parse(z);
-
-            if (tileSetName == TileLabelsSetName)
-            {
-                return LabeledTiles(xVal, yVal, zoom);
-            }
 
             return LoadFromDb(tileSetName, xVal, yVal, zoom);
         }
@@ -71,22 +49,17 @@ namespace MandelbrotWeb.Controllers
                 return NotFound();
             }
 
-            var imageFormat = ImageFormat.Png;
+            var imageFormat = Mandelbrot.Image2.imageTypeExtension;
 
             var memoryStream = new MemoryStream(tile);
 
-            var contentType = $"image/{imageFormat.ToString().ToLowerInvariant()}";
+            var contentType = $"image/{imageFormat.ToLowerInvariant()}";
             return new FileStreamResult(memoryStream, contentType);
         }
 
         private byte[] LoadTile(int x, int y, int zoom, string tileSetName)
         {
             return MapTileGenerator.getTileImageByte(x, y, zoom, tileSetName, _tileRepository);
-        }
-
-        private static Image CreatePlainLabeledTile(int x, int y, int zoom)
-        {
-            return TileGenerator.generateTile(x, y, zoom);
         }
     }
 }
