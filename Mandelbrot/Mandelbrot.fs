@@ -51,7 +51,7 @@ type MandelbrotCalculator() =
         |> Seq.exists valueOutsideSet
         |> not
 
-    member this.renderSet iterationsToCheck (graph: Graph) =
+    member this.renderSet iterationsToCheck (graph: Graph) : Unit =
         graph.IterateGraph (fn iterationsToCheck)
 
     
