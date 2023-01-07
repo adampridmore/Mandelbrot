@@ -27,6 +27,7 @@ namespace MandelbrotWeb.Controllers
             return new TileRepository(mongoUri);
         }
 
+        [ResponseCache(VaryByHeader = "User-Agent", Duration = 3600)]
         public ActionResult Index(string x, string y, string z, string tileSetName)
         {
             if (string.IsNullOrWhiteSpace(tileSetName))
