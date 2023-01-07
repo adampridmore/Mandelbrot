@@ -5,8 +5,28 @@ open FSharp.Collections.ParallelSeq
 open Repository.Domain
 open MapTileGenerator
 open System.Configuration
+open SixLabors.ImageSharp
+open SixLabors.ImageSharp.Drawing
+open SixLabors.ImageSharp.PixelFormats
+
+let drawImage() =
+
+    use image = new Image<Rgba32>(10,10)
+
+    image[5,5] <- Rgba32(100uy,255uy,255uy)
+
+    let encoder = new SixLabors.ImageSharp.Formats.Bmp.BmpEncoder()
+    image.Save("image.bmp",encoder)
+
+    printfn "Pixel 1: %O" image[0,0]
+    printfn "Pixel 2: %O" image[5,5]
+
+    // DrawImageExtensions.DrawImage(this IImageProcessingContext source, Image image, GraphicsOptions options)
 
 
+    // image.Mutate(x => x.Fill(Rgba32.HotPink))
+
+    ()
 
 
 // #r @"..\packages\FSPowerPack.Parallel.Seq.Community.3.0.0.0\Lib\Net40\FSharp.PowerPack.Parallel.Seq.dll"
@@ -49,9 +69,9 @@ let renderZoomLevel zoom =
 
 [<EntryPoint>]
 let main argv =
-    printfn "Hello World from F#!"
+    // printfn "Hello World from F#!"
 
-    seq{0..30} |> Seq.iter renderZoomLevel
+    // seq{0..30} |> Seq.iter renderZoomLevel
     //renderZoomLevel 0
     //renderZoomLevel 1
     //renderZoomLevel 2
@@ -66,5 +86,7 @@ let main argv =
     //renderZoomLevel 11
 
 
+    drawImage()
 
     0 // return an integer exit code
+

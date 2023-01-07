@@ -1,15 +1,15 @@
 ﻿namespace Mandelbrot 
 
-open System.Drawing
 open FSharp.Collections.ParallelSeq
 
 open Mandelbrot
 open Mandelbrot.Color
+open Mandelbrot.Image2
 
 type Graph(width:int, height:int, viewPortal:RectangleD, iterations:int) =
-    let toPointF (p:PointD) = new PointF(float32 p.X, float32 p.Y)
+    // let toPointF (p:PointD) = new PointF(float32 p.X, float32 p.Y)
 
-    let bitmap = new System.Drawing.Bitmap(width, height) 
+    let bitmap: Bitmap3 = new Bitmap3(width, height)
 
     let mapPointToPixelPoint (p:PointD) =
         let mappedX = Graph.MapValueToPixel viewPortal.XMin viewPortal.XMax (float width) p.X
@@ -26,38 +26,39 @@ type Graph(width:int, height:int, viewPortal:RectangleD, iterations:int) =
     member this.Height = height
     member this.ViewPortal = viewPortal
     member this.Bitmap = bitmap
-    member this.DrawLine (point1:Pixel) (point2:Pixel) = 
-        use graphics = Graphics.FromImage(this.Bitmap)
-        let p = new System.Drawing.Pen(new SolidBrush(Color.Red),5.f);
-        graphics.DrawLine(p, 0,0, this.Width, this.Height)
+
+    // member this.DrawLine (point1:Pixel) (point2:Pixel) = 
+    //     use graphics = Graphics.FromImage(this.Bitmap)
+    //     let p = new System.Drawing.Pen(new SolidBrush(Color.Red),5.f);
+    //     graphics.DrawLine(p, 0,0, this.Width, this.Height)
 
     member this.DrawPoint (p:PointD) =
         (p |> mapPointToPixelPoint).ToPixel |> this.DrawPointAtPixel 
 
-    member this.DrawPointAtPixel (p:Pixel) = this.DrawPointAtPixelWithColor p Color.Black
+    member this.DrawPointAtPixel (p:Pixel) = this.DrawPointAtPixelWithColor p Mandelbrot.Color.Black
     member this.DrawPointAtPixelWithMagnitude (p:Pixel) (magnitude:int) =
         magnitude 
         |> toColor iterations
         |> (this.DrawPointAtPixelWithColor p)
-    member this.setPixel(x,y,c) =
-         lock this.Bitmap (fun () -> this.Bitmap.SetPixel(x ,y,c) ) 
-    member this.DrawPointAtPixelWithColor (p:Pixel) (c:Color) =
+    // member this.setPixel(x,y,c) =
+    //      lock this.Bitmap (fun () -> this.Bitmap.SetPixel(x ,y,c) ) 
+    member this.DrawPointAtPixelWithColor (p:Pixel) (c:Color2) =
         if insideBitmap(p) 
-        then this.setPixel(p.X, p.Y, c)
+        then this.Bitmap.setPixel(p.X, p.Y, c)
         else ()
-    member this.DrawAxes() = 
-        use graphics = Graphics.FromImage(this.Bitmap)
-        let axesColor = Color.DarkBlue
-        let axesLength = 1000.
-        let p = new System.Drawing.Pen(new SolidBrush(axesColor),1.f);
+    // member this.DrawAxes() = 
+    //     use graphics = Graphics.FromImage(this.Bitmap)
+    //     let axesColor = Color.DarkBlue
+    //     let axesLength = 1000.
+    //     let p = new System.Drawing.Pen(new SolidBrush(axesColor),1.f);
         
-        let p1 = ({PointD.X=0.;PointD.Y=(-axesLength)} |> mapPointToPixelPoint)
-        let p2 = ({PointD.X=0.;PointD.Y=axesLength} |> mapPointToPixelPoint)
-        graphics.DrawLine(p, p1 |> toPointF , p2 |> toPointF )
+    //     let p1 = ({PointD.X=0.;PointD.Y=(-axesLength)} |> mapPointToPixelPoint)
+    //     let p2 = ({PointD.X=0.;PointD.Y=axesLength} |> mapPointToPixelPoint)
+    //     graphics.DrawLine(p, p1 |> toPointF , p2 |> toPointF )
 
-        let p3 = ({PointD.X=axesLength;PointD.Y=0.} |> mapPointToPixelPoint)
-        let p4 = ({PointD.X=(-axesLength);PointD.Y=0.} |> mapPointToPixelPoint)
-        graphics.DrawLine(p, p3 |> toPointF, p4 |> toPointF)
+    //     let p3 = ({PointD.X=axesLength;PointD.Y=0.} |> mapPointToPixelPoint)
+    //     let p4 = ({PointD.X=(-axesLength);PointD.Y=0.} |> mapPointToPixelPoint)
+    //     graphics.DrawLine(p, p3 |> toPointF, p4 |> toPointF)
 
     member this.GetValueFromPixel(pixel:Pixel) = 
         {PointD.X = (pixel.X|>pixelMaperX);Y = (pixel.Y|>pixelMaperY) }
