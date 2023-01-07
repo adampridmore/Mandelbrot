@@ -1,12 +1,18 @@
-﻿#r @"..\packages\FSPowerPack.Parallel.Seq.Community.3.0.0.0\Lib\Net40\FSharp.PowerPack.Parallel.Seq.dll"
-#r @"..\packages\FSPowerPack.Core.Community.3.0.0.0\Lib\Net40\FSharp.PowerPack.dll"
-#r @"..\Repository\bin\Debug\Repository.dll"
+﻿// #r @"..\packages\FSPowerPack.Parallel.Seq.Community.3.0.0.0\Lib\Net40\FSharp.PowerPack.Parallel.Seq.dll"
+#r @"./bin/Debug/netcoreapp7.0/FSharp.Collections.ParallelSeq.dll"
+
+#r @"./bin/Debug/netcoreapp7.0/SixLabors.ImageSharp.dll"
+#r @"./bin/Debug/netcoreapp7.0/SixLabors.ImageSharp.Drawing.dll"
+
+// #r @"..\packages\FSPowerPack.Core.Community.3.0.0.0\Lib\Net40\FSharp.PowerPack.dll"
+#r @"../Repository/bin/Debug/netcoreapp7.0/Repository.dll"
 #r @"System.Configuration.dll"
 
 #load "Pixel.fs"
 #load "ColorModule.fs"
 #load "RectangleD.fs"
 #load "PointD.fs"
+#load "Image2.fs"
 #load "Graph.fs"
 #load "Mandelbrot.fs"
 #load "MapTileGenerator.fs"
@@ -17,6 +23,7 @@ open Microsoft.FSharp.Collections
 open Repository.Domain
 open MapTileGenerator
 open System.Configuration
+open FSharp.Collections.ParallelSeq
 
 let private repository = new Repository.TileRepository("mongodb://localhost/tiles")
 
