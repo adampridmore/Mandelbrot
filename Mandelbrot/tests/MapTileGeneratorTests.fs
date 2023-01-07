@@ -6,6 +6,8 @@ open Mandelbrot.MandelbrotCalculator
 open System.Numerics
 open MapTileGenerator
 
+let mandelbrotCalculator = new MandelbrotCalculator()
+
 let iterationsToCheck = 100
     
 let size = System.Drawing.Size(512,512) 
@@ -34,9 +36,9 @@ let performance (name : string) (fn: (Unit -> Unit) ) : System.TimeSpan =
 [<Test>]
 let ``Performance 2``()=    
     
-    performance "test1" (fun () -> graph |> renderSet iterationsToCheck) 
+    performance "test1" (fun () -> graph |> mandelbrotCalculator.renderSet iterationsToCheck) 
     |> ignore
-    performance "test2" (fun () -> graph |> renderSet iterationsToCheck) 
+    performance "test2" (fun () -> graph |> mandelbrotCalculator.renderSet iterationsToCheck) 
     |> ignore
-    performance "test3" (fun () -> graph |> renderSet iterationsToCheck) 
+    performance "test3" (fun () -> graph |> mandelbrotCalculator.renderSet iterationsToCheck) 
     |> ignore

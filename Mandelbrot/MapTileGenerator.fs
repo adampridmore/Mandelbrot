@@ -33,7 +33,9 @@ let private render iterationsToCheck (tile:TileDetails) (size:System.Drawing.Siz
 
     let stopwatch = System.Diagnostics.Stopwatch.StartNew()
 
-    graph |> renderSet iterationsToCheck
+    let mandlebrot = new MandelbrotCalculator()
+
+    graph |> mandlebrot.renderSet iterationsToCheck
 
     stopwatch.Stop()
 
