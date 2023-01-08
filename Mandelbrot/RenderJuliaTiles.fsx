@@ -27,7 +27,7 @@ open System.Numerics
 
 let viewPort : RectangleD = {
     XMin = -2.0
-    XMax = 0.75
+    XMax = 2.0
     YMin = -1.5
     YMax = 1.5}
 
@@ -53,8 +53,8 @@ let complexSequence (start) (nextValue : Complex -> Complex) number : seq<Comple
     Seq.unfold fn start
     |> Seq.take number
 
-let start = Complex(0.0, 0.0)
-let increment = Complex(0.01, 0.0)
+let start = Complex(-1.0, -1.0)
+let increment = Complex(0.01, 0.01)
 
 (complexSequence (start) (fun c -> c + increment)) 100
 |> Seq.iteri (fun i c -> drawJulia c i)
