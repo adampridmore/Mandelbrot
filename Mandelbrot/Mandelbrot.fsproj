@@ -12,8 +12,8 @@
     <Compile Include="RectangleD.fs" />
     <Compile Include="PointD.fs" />
     <Compile Include="Image2.fs" />
-    <Compile Include="Calculator.fs" />
     <Compile Include="Graph.fs" />
+    <Compile Include="Calculator.fs" />
     <Compile Include="Julia.fs" />
     <Compile Include="Mandelbrot.fs" />
     <Compile Include="MapTileGenerator.fs" />

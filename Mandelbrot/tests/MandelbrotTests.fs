@@ -5,6 +5,8 @@ open FsUnit
 open Mandelbrot.MandelbrotCalculator
 open System.Numerics
 
+open Mandelbrot.Calculator
+
 let mandelbrotCalculator = new MandelbrotCalculator()
 
 [<Test>]
