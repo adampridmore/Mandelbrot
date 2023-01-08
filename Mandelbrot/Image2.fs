@@ -33,3 +33,6 @@ type Bitmap3(width: int32, height: int32) =
 
   member this.Save(stream: Stream) : Unit = 
     image.Save(stream, encoder)
+
+  member this.Save(fileName: string) : Unit = 
+    image.Save(fileName, encoder)

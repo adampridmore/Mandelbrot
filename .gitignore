@@ -228,3 +228,5 @@ Data/
 .vscode
 
 .metals
+
+/JuliaPics/*

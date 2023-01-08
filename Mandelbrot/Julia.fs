@@ -1,4 +1,4 @@
-﻿module Mandelbrot.MandelbrotCalculator
+﻿module Mandelbrot.JuliaCalculator
 
 open Mandelbrot
 open System.Numerics
@@ -8,10 +8,11 @@ let sqr (x:Complex) = x*x
 type InSetResult = 
     | NotInSet of iterationsChecked :int
     | InSet
-type MandelbrotCalculator() =
+
+type JuliaCalculator(c: Complex) =
     let mandleBrotValuesSequence (value:Complex) = 
         let nextValue previousValue = 
-            let nextValue = (previousValue |> sqr) + value
+            let nextValue = (previousValue |> sqr) + c
             Some(nextValue, nextValue)
         
         Seq.unfold nextValue value
