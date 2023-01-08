@@ -14,11 +14,11 @@
 #load "PointD.fs"
 #load "Image2.fs"
 #load "Graph.fs"
+#load "Calculator.fs"
 #load "Mandelbrot.fs"
 #load "MapTileGenerator.fs"
 
 open Mandelbrot
-open Mandelbrot.MandelbrotCalculator
 open Microsoft.FSharp.Collections
 open Repository.Domain
 open MapTileGenerator

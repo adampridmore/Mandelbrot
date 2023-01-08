@@ -33,14 +33,30 @@ let viewPort : RectangleD = {
 
 let graph = new Graph(512, 512, viewPort, 100)
 
-let c = new Complex(1,1)
-let mandlebrot = new JuliaCalculator(c)
+let drawJulia(c: Complex)(index: int) = 
+    // let c = new Complex(-1,0)
+    let mandlebrot = new JuliaCalculator(c)
 
-mandlebrot.renderSet(100)(graph)
+    mandlebrot.renderSet(100)(graph)
 
-let bitmap  = graph.Bitmap
+    let bitmap  = graph.Bitmap
 
-let fileName = sprintf "JuliaPics/render%f-%f.png" c.Real c.Imaginary
-bitmap.Save(fileName)
+    let fileName = sprintf "JuliaPics/%06i_render%f-%f.png" index c.Real c.Imaginary
+    bitmap.Save(fileName)
 
-#time "on"
+
+let complexSequence (start) (nextValue : Complex -> Complex) number : seq<Complex> = 
+    let fn previousValue = 
+        let nextValue2 = nextValue(previousValue)
+        Some(nextValue2, nextValue2)
+
+    Seq.unfold fn start
+    |> Seq.take number
+
+let start = Complex(0.0, 0.0)
+let increment = Complex(0.01, 0.0)
+
+(complexSequence (start) (fun c -> c + increment)) 100
+|> Seq.iteri (fun i c -> drawJulia c i)
+
+// #time "on"

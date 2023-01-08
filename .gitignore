@@ -230,3 +230,5 @@ Data/
 .metals
 
 /JuliaPics/*
+
+/.DS_Store
