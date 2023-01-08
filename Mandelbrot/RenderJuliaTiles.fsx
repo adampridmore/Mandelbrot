@@ -17,15 +17,13 @@
 #load "PointD.fs"
 #load "Image2.fs"
 #load "Graph.fs"
+#load "Calculator.fs"
 #load "Julia.fs"
 #load "Mandelbrot.fs"
 // #load "MapTileGenerator.fs"
 
 open Mandelbrot
-// open Mandelbrot.MandelbrotCalculator
-open Mandelbrot.JuliaCalculator
 open System.Numerics
-open Microsoft.FSharp.Collections
 
 let viewPort : RectangleD = {
     XMin = -2.0
@@ -35,8 +33,8 @@ let viewPort : RectangleD = {
 
 let graph = new Graph(512, 512, viewPort, 100)
 
-let c = new Complex(0,0)
-let mandlebrot = Mandelbrot.JuliaCalculator.JuliaCalculator(c)
+let c = new Complex(1,1)
+let mandlebrot = new JuliaCalculator(c)
 
 mandlebrot.renderSet(100)(graph)
 
@@ -44,6 +42,5 @@ let bitmap  = graph.Bitmap
 
 let fileName = sprintf "JuliaPics/render%f-%f.png" c.Real c.Imaginary
 bitmap.Save(fileName)
-
 
 #time "on"

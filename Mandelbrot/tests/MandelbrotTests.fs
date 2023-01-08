@@ -1,11 +1,10 @@
 ﻿module Mandelbrot.MandelbrotCalculatorTests
 
+open Mandelbrot.Calculator
 open NUnit.Framework
 open FsUnit
-open Mandelbrot.MandelbrotCalculator
+open Mandelbrot
 open System.Numerics
-
-open Mandelbrot.Calculator
 
 let mandelbrotCalculator = new MandelbrotCalculator()
 

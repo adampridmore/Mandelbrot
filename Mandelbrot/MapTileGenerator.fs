@@ -1,9 +1,6 @@
 ﻿module MapTileGenerator
 
 open Mandelbrot
-open Mandelbrot.MandelbrotCalculator
-open Mandelbrot.Image2
-open Microsoft.FSharp.Collections
 open Repository.Domain
 open Repository
 

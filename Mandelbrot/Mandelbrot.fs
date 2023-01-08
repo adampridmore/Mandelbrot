@@ -1,11 +1,10 @@
-﻿module Mandelbrot.MandelbrotCalculator
+﻿namespace Mandelbrot
 
 open Mandelbrot.Calculator
-open Mandelbrot
 open System.Numerics
 
 type MandelbrotCalculator() =
-    inherit Mandelbrot.Calculator.Calculator()
+    inherit BaseCalculator()
     
     override this.sequence(value:Complex) : seq<Complex> = 
         let nextValue previousValue = 

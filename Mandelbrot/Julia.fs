@@ -1,11 +1,10 @@
-﻿module Mandelbrot.JuliaCalculator
+﻿namespace Mandelbrot
 
-open Mandelbrot.Calculator;
-open Mandelbrot
+open Mandelbrot.Calculator
 open System.Numerics
 
 type JuliaCalculator(c: Complex) =
-  inherit Mandelbrot.Calculator.Calculator()
+  inherit BaseCalculator()
 
   override this.sequence(value:Complex) = 
     let nextValue previousValue = 

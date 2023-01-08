@@ -1,10 +1,8 @@
 module Mandelbrot.MapTileGeneratorTests
 
 open NUnit.Framework
-open FsUnit
-open Mandelbrot.MandelbrotCalculator
-open System.Numerics
-open MapTileGenerator
+
+open Mandelbrot
 
 let mandelbrotCalculator = new MandelbrotCalculator()
 

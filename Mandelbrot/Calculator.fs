@@ -9,7 +9,7 @@ type InSetResult =
     | InSet
 
 [<AbstractClass>]
-type Calculator() = 
+type BaseCalculator() = 
   let valueOutsideSet (x:Complex) = Complex.Abs(x) > 2.
 
   let inSetToMagnitude = 
