@@ -42,3 +42,15 @@ run.bat
 ### All
 Then open 
 http://localhost:5000
+
+
+### To encode an video from images
+
+```
+brew install FFmpeg
+```
+
+
+```
+ffmpeg -r 24 -f image2 -pattern_type glob -i "*?png" -vcodec libx264 -crf 20 -pix_fmt yuv420p output.mp4
+```

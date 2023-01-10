@@ -24,6 +24,7 @@
 
 open Mandelbrot
 open System.Numerics
+open FSharp.Collections.ParallelSeq
 
 let viewPort : RectangleD = {
     XMin = -2.0
@@ -31,9 +32,9 @@ let viewPort : RectangleD = {
     YMin = -1.5
     YMax = 1.5}
 
-let graph = new Graph(512, 512, viewPort, 100)
-
 let drawJulia(c: Complex)(index: int) = 
+    let graph = new Graph(4096, 4096, viewPort, 100)
+
     // let c = new Complex(-1,0)
     let mandlebrot = new JuliaCalculator(c)
 
@@ -56,7 +57,14 @@ let complexSequence (start) (nextValue : Complex -> Complex) number : seq<Comple
 let start = Complex(-1.0, -1.0)
 let increment = Complex(0.01, 0.01)
 
-(complexSequence (start) (fun c -> c + increment)) 100
-|> Seq.iteri (fun i c -> drawJulia c i)
+let x = id
+
+(complexSequence (start) (fun c -> c + increment)) 250
+|> Seq.mapi (fun i c -> (i, c))
+|> PSeq.iter (fun (i, c) -> 
+        drawJulia c i
+        printfn "Rendered image(%d): %f + %f" i c.Real c.Imaginary
+    )
+
 
 // #time "on"

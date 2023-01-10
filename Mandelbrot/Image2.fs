@@ -21,9 +21,10 @@ open Mandelbrot.Color
 
 // TODO: Change to png
 let imageTypeExtension = "png"
-let encoder = new SixLabors.ImageSharp.Formats.Png.PngEncoder()
 
 type Bitmap3(width: int32, height: int32) = 
+  let encoder = new Formats.Png.PngEncoder()
+  
   let image = new Image<Rgba32>(width, height)
 
   member this.Bitmap = image
