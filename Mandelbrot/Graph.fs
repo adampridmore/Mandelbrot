@@ -40,7 +40,8 @@ type Graph(width:int, height:int, viewPortal:RectangleD, iterations:int) =
         |> toColor iterations
         |> (this.DrawPointAtPixelWithColor p)
     member this.setPixel(x,y,c) =
-         lock this.Bitmap (fun () -> this.Bitmap.SetPixel(x ,y,c) ) 
+        //  lock this.Bitmap (fun () -> this.Bitmap.SetPixel(x ,y,c) ) 
+         this.Bitmap.SetPixel(x ,y,c)
     member this.DrawPointAtPixelWithColor (p:Pixel) (c:Color) =
         if insideBitmap(p) 
         then this.setPixel(p.X, p.Y, c)
@@ -72,8 +73,8 @@ type Graph(width:int, height:int, viewPortal:RectangleD, iterations:int) =
                 for x in 0..this.Width-1 do
                     yield {Pixel.X=x; Pixel.Y=y}
         }
-        |> Seq.map pixelToPixelPointD
-        |> Seq.map (fun (pixel,point) -> (pixel, fn point))
+        |> PSeq.map pixelToPixelPointD
+        |> PSeq.map (fun (pixel,point) -> (pixel, fn point))
         |> PSeq.iter (fun (pixel,v) -> match v with 
                                         | Some(v) -> this.DrawPointAtPixelWithMagnitude pixel v
                                         | None -> this.DrawPointAtPixelWithColor pixel Color.Black)

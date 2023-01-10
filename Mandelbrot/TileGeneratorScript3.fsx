@@ -37,7 +37,9 @@ open System.Configuration
 let iterations = 10000
 // let imageResolution = (2.0**12.0) |> int32 // 4096
 // let imageResolution = 1024
-let imageResolution = 4096 * 2
+// let imageResolution = 4096 * 2
+let imageResolution = 1920
+// let imageResolution = 1280
 
 let renderImage index span = 
     let real = -1.63149737002
@@ -46,11 +48,12 @@ let renderImage index span =
     // let span = 1.0 / zoom
     let filename = sprintf "Images/Mandelbrot_%d.png" index
 
+    let ratio = 16.0 / 9.0
     let viewPort = {
         RectangleD.XMin = real - span
         XMax = real + span
-        YMin = imaginary - (span * 0.8)
-        YMax = imaginary + (span * 0.8)
+        YMin = imaginary - ((span * ratio) / 2.0)
+        YMax = imaginary + ((span * ratio) / 2.0)
     }
 
     let size = System.Drawing.Size(imageResolution,((imageResolution |> float) * 0.8) |> int32)
@@ -67,12 +70,17 @@ let renderImage index span =
 // let logSequence = Seq.map(fun x -> printfn "%A" x; x)
 
 // let zoomFactor = 0.8
-let zoomFactor = 0.75
+// let zoomFactor = 0.75
 
-// seq{1..100}
-[27]
+let targetZoom = 0.75 ** 25.0
+let steps = 100
+let zoomFactor = System.Math.Pow(targetZoom, 1.0 / (steps |> float ))
+
+
+seq{1..steps}
 |> Seq.map(fun i -> i, zoomFactor ** (i |> float))
 |> Seq.map(fun x -> printfn "%A" x; x)
 // |> Seq.iter (ignore)
 |> Seq.iter (fun (i, span) -> renderImage i span)
 // |> Seq.iter (printf "%f\n")
+
