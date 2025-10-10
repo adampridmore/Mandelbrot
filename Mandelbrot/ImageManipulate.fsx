@@ -1,5 +1,5 @@
-#r "nuget: SixLabors.ImageSharp, 2.1.3"
-#r "nuget: SixLabors.ImageSharp.Drawing, 1.0.0-beta15"
+#r "nuget: SixLabors.ImageSharp, 3.1.11"
+#r "nuget: SixLabors.ImageSharp.Drawing, 2.1.7"
 
 open SixLabors.ImageSharp
 open SixLabors.ImageSharp.Drawing
