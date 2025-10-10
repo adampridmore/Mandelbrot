@@ -19,26 +19,30 @@ let mandleBrotValuesSequence (value:Complex) =
 let valueOutsideSet (x:Complex) = Complex.Abs(x) > 2.
 
 let inSet (iterationsToCheck:int) (v:Complex) = 
-    v
-    |> mandleBrotValuesSequence
-    |> Seq.take iterationsToCheck
-    |> Seq.exists valueOutsideSet
-    |> not
+    let mutable z = v
+    let mutable i = 0
+    let mutable inside = true
+    while i < iterationsToCheck && inside do
+        if Complex.Abs(z) > 2.0 then
+            inside <- false
+        else
+            z <- z * z + v
+            i <- i + 1
+    inside
 
 let inSetWithResult(iterationsToCheck:int) (v:Complex) = 
-    let lastValue = 
-        v
-        |> mandleBrotValuesSequence
-        |> Seq.mapi (fun i v -> (i,v))
-        |> Seq.take iterationsToCheck
-        |> Seq.takeWhile (fun (_, v) -> valueOutsideSet(v) |> not)
-        |> Seq.tryLast
-
-    match lastValue with
-    | Some(index,_) when index >= (iterationsToCheck-1) -> InSet
-    | None -> NotInSet(0)
-    | Some(index,_) -> NotInSet(index)
-
+    let mutable z = v
+    let mutable i = 0
+    let mutable escaped = false
+    while i < iterationsToCheck && not escaped do
+        if Complex.Abs(z) > 2.0 then
+            escaped <- true
+        else
+            z <- z * z + v
+            i <- i + 1
+    if not escaped && i >= iterationsToCheck then InSet
+    elif escaped then NotInSet(i)
+    else NotInSet(0)
 
 let inSetToMagnitude = 
     function 
