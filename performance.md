@@ -39,10 +39,8 @@ Fix: Add a `ConcurrentDictionary<string, Task<byte[]>>` generation gate so only 
 **2. Missing MongoDB compound index** ✅ Done
 Index created manually on `(TileSetName, Zoom, X, Y)`. Field order doesn't matter for equality queries so this covers all lookups in [TileRepository.cs](Repository/TileRepository.cs) efficiently. Note: created without `unique: true` — add that constraint if duplicate-tile prevention is desired.
 
-**3. New `TileRepository` instantiated per HTTP request**
-[MapTileController.cs](MandelbrotWeb/Controllers/MapTileController.cs) creates a new MongoDB connection pool slot on every request.
-
-Fix: Register `TileRepository` as a singleton in DI.
+**3. New `TileRepository` instantiated per HTTP request** ✅ Done
+`TileRepository` is now registered as a singleton in [Startup.cs](MandelbrotWeb/Startup.cs) and injected into [MapTileController.cs](MandelbrotWeb/Controllers/MapTileController.cs) via the primary constructor — one shared instance and connection pool for the lifetime of the app.
 
 ### High
 
