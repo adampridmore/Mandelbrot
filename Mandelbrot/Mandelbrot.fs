@@ -40,9 +40,8 @@ let inSetWithResult(iterationsToCheck:int) (v:Complex) =
         else
             z <- z * z + v
             i <- i + 1
-    if not escaped && i >= iterationsToCheck then InSet
-    elif escaped then NotInSet(i)
-    else NotInSet(0)
+    if not escaped then InSet
+    else NotInSet i
 
 let inSetToMagnitude = 
     function 

@@ -45,13 +45,8 @@ Fix: Add a `ConcurrentDictionary<string, Task<byte[]>>` generation gate so only 
 
 ### High
 
-**3. Cardioid / period-2 bulb pre-check**
-Many pixels fall inside the main cardioid or period-2 bulb and will never escape. Detecting them analytically before the iteration loop avoids potentially thousands of iterations per pixel. CLAUDE.md references this as `inSetWithResultUltra` but it is not yet implemented:
-```fsharp
-let q = (cr - 0.25)*(cr - 0.25) + ci*ci
-let inCardioid = q * (q + (cr - 0.25)) < 0.25 * ci * ci
-let inBulb = (cr + 1.0)*(cr + 1.0) + ci*ci < 0.0625
-```
+**3. Cardioid / period-2 bulb pre-check** ❌ Reverted
+Tried but reverted: only 2m18s → 2m16s at zoom 0–5 (noise-level gain). The added complexity was not justified by the measured benefit at typical zoom levels.
 
 **4. No in-process cache — every request hits MongoDB**
 Hot, recently-served tiles still pay MongoDB round-trip latency (1–5 ms) on every request.
