@@ -31,12 +31,12 @@ dotnet test Mandelbrot/Mandelbrot.fsproj --filter "performance" --logger "consol
 
 ### Critical
 
-**1. Avoid `sqrt` in escape check**
+**1. Avoid `sqrt` in escape check** ✅ Done
 `Complex.Abs(z) > 2.0` computes a square root on every iteration of the inner loop — the hottest path in the system. Compare squared magnitudes instead:
 ```fsharp
 z.Real * z.Real + z.Imaginary * z.Imaginary > 4.0
 ```
-One-line change in [Mandelbrot.fs](Mandelbrot/Mandelbrot.fs); applies to `inSetWithResult` (and `inSet`).
+One-line change in [Mandelbrot.fs](Mandelbrot/Mandelbrot.fs); applies to `inSetWithResult` (and `inSet`). User time: 2m44s → 2m18s.
 
 **2. Thundering herd — duplicate tile generation**
 [MapTileGenerator.fs](Mandelbrot/MapTileGenerator.fs) has a check-then-act race: concurrent requests for the same missing tile each trigger an independent render, wasting CPU and doing redundant DB writes.

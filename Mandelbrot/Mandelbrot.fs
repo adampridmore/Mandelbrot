@@ -18,24 +18,24 @@ let mandleBrotValuesSequence (value:Complex) =
 
 let valueOutsideSet (x:Complex) = Complex.Abs(x) > 2.
 
-let inSet (iterationsToCheck:int) (v:Complex) = 
+let inSet (iterationsToCheck:int) (v:Complex) =
     let mutable z = v
     let mutable i = 0
     let mutable inside = true
     while i < iterationsToCheck && inside do
-        if Complex.Abs(z) > 2.0 then
+        if z.Real * z.Real + z.Imaginary * z.Imaginary > 4.0 then
             inside <- false
         else
             z <- z * z + v
             i <- i + 1
     inside
 
-let inSetWithResult(iterationsToCheck:int) (v:Complex) = 
+let inSetWithResult(iterationsToCheck:int) (v:Complex) =
     let mutable z = v
     let mutable i = 0
     let mutable escaped = false
     while i < iterationsToCheck && not escaped do
-        if Complex.Abs(z) > 2.0 then
+        if z.Real * z.Real + z.Imaginary * z.Imaginary > 4.0 then
             escaped <- true
         else
             z <- z * z + v
