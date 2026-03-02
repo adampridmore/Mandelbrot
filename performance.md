@@ -59,7 +59,5 @@ Fix: `IMemoryCache` wrapper in front of `TileRepository` for a fast in-process p
 
 ### Lower
 
-**7. Zoom-aware iteration count**
-All tiles use a fixed 400 iterations. Low-zoom tiles waste computation; very high-zoom tiles may lack detail.
-
-Fix: Scale with zoom, e.g. `iterations = max 100 (zoom * 50)` in [MapTileGenerator.fs](Mandelbrot/MapTileGenerator.fs).
+**7. Zoom-aware iteration count** ✅ Done
+Replaced fixed `iterations = 400` with `iterationsForZoom zoom = max 100 (zoom * 50)` in [MapTileGenerator.fs](Mandelbrot/MapTileGenerator.fs). All render paths (`render`, `renderAsync`, `toDomainTile`) now use the zoom-derived value. Also fixed a latent bug where `render` was creating the `Graph` with the global constant instead of the `iterationsToCheck` parameter.
