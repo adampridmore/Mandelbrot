@@ -1,6 +1,4 @@
-﻿namespace Mandelbrot 
-
-open FSharp.Collections.ParallelSeq
+﻿namespace Mandelbrot
 
 open Mandelbrot
 open Mandelbrot.Color
@@ -63,21 +61,19 @@ type Graph(width:int, height:int, viewPortal:RectangleD, iterations:int) =
     member this.GetValueFromPixel(pixel:Pixel) = 
         {PointD.X = (pixel.X|>pixelMaperX);Y = (pixel.Y|>pixelMaperY) }
 
-    member this.IterateGraph (fn: PointD -> (int Option )) = 
-        let pixelToPixelPointD (pixel:Pixel) = 
-            let point = this.GetValueFromPixel(pixel)
-            (pixel, point)
-             
-        seq{
-            for y in 0..this.Height-1 do
-                for x in 0..this.Width-1 do
-                    yield {Pixel.X=x; Pixel.Y=y}
-        }
-        |> Seq.map pixelToPixelPointD
-        |> Seq.map (fun (pixel,point) -> (pixel, fn point))
-        |> PSeq.iter (fun (pixel,v) -> match v with 
-                                        | Some(v) -> this.DrawPointAtPixelWithMagnitude pixel v
-                                        | None -> this.DrawPointAtPixelWithColor pixel Color.Black)
+    member this.IterateGraph (fn: PointD -> int option) =
+        let results =
+            Array.Parallel.init (width * height) (fun i ->
+                let x = i % width
+                let y = i / width
+                let pixel = { Pixel.X = x; Pixel.Y = y }
+                let point = this.GetValueFromPixel pixel
+                pixel, fn point)
+
+        for pixel, v in results do
+            match v with
+            | Some v -> this.DrawPointAtPixelWithMagnitude pixel v
+            | None -> this.DrawPointAtPixelWithColor pixel Black
 
     static member MapValueToPixel (min:float) (max:float) (pixelWidth:float) (valueToMap:float) =
         ((valueToMap - min) / (max - min)) * pixelWidth
