@@ -74,6 +74,14 @@ dotnet run -- 10          # render zoom levels 0–10
 
 Requires MongoDB running at `mongodb://localhost/tiles`.
 
+To use a different MongoDB instance (e.g. MongoDB Atlas), pass the connection string inline:
+
+```bash
+ConnectionStrings__MongoDb="mongodb+srv://user:pass@cluster.mongodb.net/tiles" dotnet run -- 5
+```
+
+The connection string must be quoted and passed inline on the same command — `export` works too but the variable must be set before running.
+
 ## Running the performance tests
 
 ```
