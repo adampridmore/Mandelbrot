@@ -12,6 +12,25 @@ Various components for viewing a deepzoomable mandelbrot set.
 - MongoDBScripts - Some MongoDB scripts
 - Repository - Module for getting and saving image tiles.
 
+## Docker
+
+Requires Docker and Docker Compose.
+
+```bash
+docker compose up --build
+```
+
+Then open http://localhost:8080
+
+Mongo data is persisted in the `mongo-data` Docker volume between runs.
+
+To build the image without Compose:
+
+```bash
+docker build -t mandelbrot-web .
+docker run -p 8080:8080 -e ConnectionStrings__MongoDb=mongodb://host.docker.internal/tiles mandelbrot-web
+```
+
 ## To run web pages
 
 ### Linux / OSX
