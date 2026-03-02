@@ -44,7 +44,12 @@ let drawImage() =
 // #load "MapTileGenerator.fs"
 
 
-let private repository = Repository.TileRepository("mongodb://localhost/tiles")
+let private connectionString =
+    match Environment.GetEnvironmentVariable("ConnectionStrings__MongoDb") with
+    | null | "" -> "mongodb://localhost/tiles"
+    | cs -> cs
+
+let private repository = Repository.TileRepository(connectionString)
 
 let tilesetName = "Mandelbrot" 
 
