@@ -1,11 +1,11 @@
 ﻿// #r @"..\packages\FSPowerPack.Parallel.Seq.Community.3.0.0.0\Lib\Net40\FSharp.PowerPack.Parallel.Seq.dll"
-#r @"./bin/Debug/netcoreapp9.0/FSharp.Collections.ParallelSeq.dll"
+#r @"./bin/Debug/net10.0/FSharp.Collections.ParallelSeq.dll"
 
-#r @"./bin/Debug/netcoreapp9.0/SixLabors.ImageSharp.dll"
-#r @"./bin/Debug/netcoreapp9.0/SixLabors.ImageSharp.Drawing.dll"
+#r @"./bin/Debug/net10.0/SixLabors.ImageSharp.dll"
+#r @"./bin/Debug/net10.0/SixLabors.ImageSharp.Drawing.dll"
 
 // #r @"..\packages\FSPowerPack.Core.Community.3.0.0.0\Lib\Net40\FSharp.PowerPack.dll"
-#r @"../Repository/bin/Debug/netcoreapp9.0/Repository.dll"
+#r @"../Repository/bin/Debug/net10.0/Repository.dll"
 #r @"System.Configuration.dll"
 
 #load "Pixel.fs"
