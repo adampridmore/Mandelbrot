@@ -3,20 +3,10 @@
 open Mandelbrot
 open System.Numerics
 
-let sqr (x:Complex) = x*x
 
-type InSetResult = 
+type InSetResult =
     | NotInSet of iterationsChecked :int
     | InSet
-    
-let mandleBrotValuesSequence (value:Complex) = 
-    let nextValue previousValue = 
-        let nextValue = (previousValue |> sqr) + value
-        Some(nextValue, nextValue)
-    
-    Seq.unfold nextValue value
-
-let valueOutsideSet (x:Complex) = Complex.Abs(x) > 2.
 
 let inSet (iterationsToCheck:int) (v:Complex) =
     let mutable z = v

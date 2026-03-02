@@ -60,9 +60,10 @@ Fix: `IMemoryCache` wrapper in front of `TileRepository` for a fast in-process p
 
 ### Lower
 
-**6. Dead code cleanup**
-- `inSet` in [Mandelbrot.fs:21](Mandelbrot/Mandelbrot.fs) is never called by any render path.
-- The final `else NotInSet(0)` branch in `inSetWithResult` is unreachable (after the loop, either `escaped` is true or `i >= iterationsToCheck`).
+**6. Dead code cleanup** ✅ Done
+- `sqr`, `mandleBrotValuesSequence`, and `valueOutsideSet` were unused and removed from [Mandelbrot.fs](Mandelbrot/Mandelbrot.fs).
+- The unreachable `else NotInSet(0)` branch was already removed in a prior cleanup.
+- Note: `inSet` is kept — it is unused by the render path but is covered by tests.
 
 ---
 
