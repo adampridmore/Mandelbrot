@@ -36,7 +36,6 @@ let ``Performance 2``()=
 let ``Tile generation performance - zoom levels 0 to 2``() =
     let fullViewport = { XMin = -2.0; XMax = 2.0; YMin = -2.0; YMax = 2.0 }
     let tilePixelSize = 256
-    let tileIterations = 400
 
     let toViewport x y zoom =
         let cellCount = 2. ** float zoom
@@ -47,9 +46,11 @@ let ``Tile generation performance - zoom levels 0 to 2``() =
           YMin = fullViewport.YMin + cellHeight * float y
           YMax = fullViewport.YMin + cellHeight * float (y + 1) }
 
+    // Option B: parallel across tiles, sequential within each tile
     let renderTile x y zoom =
+        let tileIterations = MapTileGenerator.iterationsForZoom zoom
         let g = Graph(tilePixelSize, tilePixelSize, toViewport x y zoom, tileIterations)
-        g |> renderSet tileIterations
+        g |> renderSetSequential tileIterations
 
     let totalWatch = System.Diagnostics.Stopwatch.StartNew()
 
@@ -57,9 +58,10 @@ let ``Tile generation performance - zoom levels 0 to 2``() =
         let cellCount = 1 <<< zoom
         let tileCount = cellCount * cellCount
         let sw = System.Diagnostics.Stopwatch.StartNew()
-        for x in 0..cellCount-1 do
-            for y in 0..cellCount-1 do
-                renderTile x y zoom
+        [| for x in 0..cellCount-1 do
+               for y in 0..cellCount-1 do
+                   yield (x, y) |]
+        |> Array.Parallel.iter (fun (x, y) -> renderTile x y zoom)
         sw.Stop()
         let avgMs = sw.ElapsedMilliseconds / int64 tileCount
         testPrint(sprintf "Zoom %d: %d tile(s) in %dms (avg %dms/tile)" zoom tileCount sw.ElapsedMilliseconds avgMs)

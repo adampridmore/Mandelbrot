@@ -80,6 +80,27 @@ let getTileImageByte (x, y, zoom, tileSetName, (repository:TileRepository)) : by
     | null -> (generateAndSaveTile x y zoom tileSetName repository).Data
     | _ -> image
 
+let private renderCellSequential (tile:TileDetails) (repository: TileRepository) =
+    let rectangle = toRectangleD tile
+    let tileIterations = iterationsForZoom tile.Zoom
+    let graph = Graph(size.Width, size.Height, rectangle, tileIterations)
+    let stopwatch = System.Diagnostics.Stopwatch.StartNew()
+    graph |> renderSetSequential tileIterations
+    stopwatch.Stop()
+    let t = graph |> toDomainTile tile stopwatch.Elapsed
+    t |> repository.Save
+    t
+
+let private generateAndSaveTileSequential x y zoom =
+    {X=x; Y=y; Filename=(toFilename x y zoom); Zoom=zoom}
+    |> renderCellSequential
+
+let getTileImageByteSequential (x, y, zoom, tileSetName, (repository:TileRepository)) : byte[] =
+    let image = repository.TryGetTileImageByte(x, y, zoom, tileSetName)
+    match image with
+    | null -> (generateAndSaveTileSequential x y zoom repository).Data
+    | _ -> image
+
 let private renderAsync (tile:TileDetails) (repository:TileRepository) =
     task {
         let tileIterations = iterationsForZoom tile.Zoom
