@@ -43,6 +43,18 @@ run.bat
 Then open
 http://localhost:5000
 
+## Running the console app
+
+The console app pre-generates tiles and saves them to MongoDB.
+
+```bash
+cd MandelbrotConsole
+dotnet run                # render zoom levels 0–30 (default)
+dotnet run -- 10          # render zoom levels 0–10
+```
+
+Requires MongoDB running at `mongodb://localhost/tiles`.
+
 ## Running the performance tests
 
 ```
