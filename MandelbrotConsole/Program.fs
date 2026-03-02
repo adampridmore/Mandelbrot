@@ -1,4 +1,6 @@
-﻿open System
+﻿module MandelbrotConsole.Program
+
+open System
 open Mandelbrot
 open Mandelbrot.MandelbrotCalculator
 open FSharp.Collections.ParallelSeq
