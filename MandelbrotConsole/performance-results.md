@@ -26,3 +26,16 @@ At zoom 0–5, most tiles are on or near the boundary so the gain is modest here
 real    1m7.196s
 user    2m16.160s
 sys     0m44.410s
+
+## 2026-03-02 — FirstOrDefaultAsync in TileRepository
+
+Replace `.ToListAsync().SingleOrDefault()` with `.FirstOrDefaultAsync()` in `TryGetTileAsync`,
+and `.Limit(1).ToList().SingleOrDefault()` with `.FirstOrDefault()` in `TryGetTile`.
+
+Note: this benchmark uses the console app's synchronous path (`TryGetTile`), not the async
+web path (`TryGetTileAsync`), so the result below reflects system noise rather than the change.
+
+```time dotnet run -- 5```
+real    1m7.215s
+user    2m23.305s
+sys     0m30.196s

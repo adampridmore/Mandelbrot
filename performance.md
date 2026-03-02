@@ -55,8 +55,8 @@ Fix: `IMemoryCache` wrapper in front of `TileRepository` for a fast in-process p
 
 ### Medium
 
-**5. `FirstOrDefaultAsync` in TileRepository**
-`TryGetTileAsync` materialises a list with `.ToListAsync()` then calls `.SingleOrDefault()`. Use `.FirstOrDefaultAsync()` directly. Same applies to the sync `TryGetTile` at [TileRepository.cs:74](Repository/TileRepository.cs).
+**5. `FirstOrDefaultAsync` in TileRepository** ✅ Done
+`TryGetTileAsync` materialises a list with `.ToListAsync()` then calls `.SingleOrDefault()`. Replaced with `.FirstOrDefaultAsync()` directly. Same applied to the sync `TryGetTile`. See [TileRepository.cs](Repository/TileRepository.cs).
 
 ### Lower
 
