@@ -64,9 +64,16 @@ let renderZoomLevel zoom =
 
 [<EntryPoint>]
 let main argv =
-    // printfn "Hello World from F#!"
+    let maxZoom =
+        if argv.Length > 0 then
+            match System.Int32.TryParse(argv[0]) with
+            | true, n -> n
+            | _ ->
+                eprintfn "Invalid argument '%s', using default max zoom 30" argv[0]
+                30
+        else 30
 
-    seq{0..30} |> Seq.iter renderZoomLevel
+    seq{0..maxZoom} |> Seq.iter renderZoomLevel
     //renderZoomLevel 0
     //renderZoomLevel 1
     //renderZoomLevel 2
