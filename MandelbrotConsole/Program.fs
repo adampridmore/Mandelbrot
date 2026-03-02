@@ -3,7 +3,6 @@
 open System
 open Mandelbrot
 open Mandelbrot.MandelbrotCalculator
-open FSharp.Collections.ParallelSeq
 open Repository.Domain
 open MapTileGenerator
 open System.Configuration
@@ -49,21 +48,15 @@ let private repository = Repository.TileRepository("mongodb://localhost/tiles")
 
 let tilesetName = "Mandelbrot" 
 
-let renderZoomLevel zoom = 
+let renderZoomLevel zoom =
     let cellCount = zoom |> zoomToCellCount |> int
-    seq{
-        for x in 0 .. (cellCount - 1) do
-            for y in 0 .. (cellCount - 1) do
-                yield (x,y)
-    }
-    |> Seq.map (fun (x,y) -> {X=x;Y=y;Filename=(toFilename x y zoom);Zoom=zoom})
-    // |> PSeq.withDegreeOfParallelism 3
-    |> PSeq.map (fun t ->    
-        let tile = getTileImageByte (t.X, t.Y, t.Zoom, tilesetName, repository)
-        printfn "%s" (t.Filename) 
-        tile
+    [| for x in 0 .. (cellCount - 1) do
+           for y in 0 .. (cellCount - 1) do
+               yield (x, y) |]
+    |> Array.Parallel.iter (fun (x, y) ->
+        getTileImageByteSequential (x, y, zoom, tilesetName, repository) |> ignore
+        printfn "%s" (toFilename x y zoom)
     )
-    |> PSeq.iter ignore
 
     
 // #time "on"

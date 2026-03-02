@@ -56,3 +56,6 @@ let fn iterationsToCheck (value:PointD) =
 
 let renderSet iterationsToCheck (graph: Graph) =
     graph.IterateGraph (fn iterationsToCheck)
+
+let renderSetSequential iterationsToCheck (graph: Graph) =
+    graph.IterateGraphSequential (fn iterationsToCheck)
