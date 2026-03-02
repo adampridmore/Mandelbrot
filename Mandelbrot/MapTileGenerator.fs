@@ -8,7 +8,8 @@ open Repository.Domain
 open Repository
 
 let private tileSize = 256
-let private iterations = 400
+
+let iterationsForZoom zoom = max 100 (zoom * 50)
 
 // let imageFormat = System.Drawing.Imaging.ImageFormat.Png
 
@@ -19,8 +20,8 @@ type TileDetails = {
         Filename: string
     }
 
-let private toDomainTile (tile:TileDetails) (duration: System.TimeSpan) (graph:Graph) = 
-    let domainTile = Tile.CreateTile(tile.X, tile.Y, tile.Zoom, iterations, Tile.MandelbrotSetName, duration)
+let private toDomainTile (tile:TileDetails) (duration: System.TimeSpan) (graph:Graph) =
+    let domainTile = Tile.CreateTile(tile.X, tile.Y, tile.Zoom, iterationsForZoom tile.Zoom, Tile.MandelbrotSetName, duration)
     
     domainTile.Id <- tile.Filename
     let ms = new System.IO.MemoryStream()
@@ -29,7 +30,7 @@ let private toDomainTile (tile:TileDetails) (duration: System.TimeSpan) (graph:G
     domainTile
 
 let private render iterationsToCheck (tile:TileDetails) (size:System.Drawing.Size) viewPort (repository:TileRepository) : Tile =
-    let graph = Graph(size.Width, size.Height, viewPort, iterations)
+    let graph = Graph(size.Width, size.Height, viewPort, iterationsToCheck)
 
     let stopwatch = System.Diagnostics.Stopwatch.StartNew()
 
@@ -62,9 +63,9 @@ let private toRectangleD (tile:TileDetails) =
     
 let toFilename x y zoom = sprintf @"tile_zm%d_x%d_y%d.%s" zoom x y (Mandelbrot.Image2.imageTypeExtension)
 
-let private renderCell (tile:TileDetails) (repository: TileRepository) = 
+let private renderCell (tile:TileDetails) (repository: TileRepository) =
     let rectangle = toRectangleD tile
-    render iterations tile size rectangle repository
+    render (iterationsForZoom tile.Zoom) tile size rectangle repository
 
 let private tileNeedToBeRendered (tile:TileDetails) (repository:TileRepository) = 
     repository.DoesTileExist(tile.X, tile.Y, tile.Zoom, Tile.MandelbrotSetName) |> not
@@ -75,6 +76,28 @@ let private generateAndSaveTile x y zoom tileSetName =
 
 let getTileImageByte (x, y, zoom, tileSetName, (repository:TileRepository)) : byte[] =
     let image = repository.TryGetTileImageByte (x, y, zoom, tileSetName )
-    match image with 
+    match image with
     | null -> (generateAndSaveTile x y zoom tileSetName repository).Data
     | _ -> image
+
+let private renderAsync (tile:TileDetails) (repository:TileRepository) =
+    task {
+        let tileIterations = iterationsForZoom tile.Zoom
+        let graph = Graph(tileSize, tileSize, toRectangleD tile, tileIterations)
+        let stopwatch = System.Diagnostics.Stopwatch.StartNew()
+        graph |> renderSet tileIterations
+        stopwatch.Stop()
+        let domainTile = graph |> toDomainTile tile stopwatch.Elapsed
+        do! repository.SaveAsync(domainTile)
+        return domainTile
+    }
+
+let getTileImageByteAsync (x, y, zoom, tileSetName, (repository:TileRepository)) =
+    task {
+        let! image = repository.TryGetTileImageByteAsync(x, y, zoom, tileSetName)
+        if isNull image then
+            let! tile = renderAsync {X=x; Y=y; Filename=(toFilename x y zoom); Zoom=zoom} repository
+            return tile.Data
+        else
+            return image
+    }

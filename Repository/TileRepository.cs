@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Linq;
+using System.Threading.Tasks;
 using MongoDB.Bson;
 using MongoDB.Driver;
 using Repository.Domain;
@@ -24,6 +25,12 @@ namespace Repository
             return TryGetTile(x, y, zoom, tileSetName)?.Data;
         }
 
+        public async Task<byte[]> TryGetTileImageByteAsync(int x, int y, int zoom, string tileSetName)
+        {
+            var tile = await TryGetTileAsync(x, y, zoom, tileSetName);
+            return tile?.Data;
+        }
+
         public int CountTiles()
         {
             return (int)_collection.EstimatedDocumentCount();
@@ -31,21 +38,28 @@ namespace Repository
 
         public void Save(Tile tile)
         {
-            // TODO - Check created TS is populated
-
             if (string.IsNullOrWhiteSpace(tile.Id))
-            {
                 tile.Id = ObjectId.GenerateNewId().ToString();
-            }
 
             if (string.IsNullOrWhiteSpace(tile.TileSetName))
-            {
                 throw new ArgumentException("Must specify a TileSetName", nameof(tile));
-            }
 
             var query = Builders<Tile>.Filter.Eq(t => t.Id, tile.Id);
             var options = new ReplaceOptions { IsUpsert = true };
             _collection.ReplaceOne(query, tile, options);
+        }
+
+        public async Task SaveAsync(Tile tile)
+        {
+            if (string.IsNullOrWhiteSpace(tile.Id))
+                tile.Id = ObjectId.GenerateNewId().ToString();
+
+            if (string.IsNullOrWhiteSpace(tile.TileSetName))
+                throw new ArgumentException("Must specify a TileSetName", nameof(tile));
+
+            var query = Builders<Tile>.Filter.Eq(t => t.Id, tile.Id);
+            var options = new ReplaceOptions { IsUpsert = true };
+            await _collection.ReplaceOneAsync(query, tile, options);
         }
 
         public Tile TryGetTile(int x, int y, int zoom, string tileSetName)
@@ -56,9 +70,21 @@ namespace Repository
                 filterBuilder.Eq("Y", y) &
                 filterBuilder.Eq("Zoom", zoom) &
                 filterBuilder.Eq("TileSetName", tileSetName);
-            var results = _collection.Find(filter);
 
-            return results.Limit(1).ToList().SingleOrDefault();
+            return _collection.Find(filter).Limit(1).ToList().SingleOrDefault();
+        }
+
+        private async Task<Tile> TryGetTileAsync(int x, int y, int zoom, string tileSetName)
+        {
+            var filterBuilder = Builders<Tile>.Filter;
+            var filter =
+                filterBuilder.Eq("X", x) &
+                filterBuilder.Eq("Y", y) &
+                filterBuilder.Eq("Zoom", zoom) &
+                filterBuilder.Eq("TileSetName", tileSetName);
+
+            var results = await _collection.Find(filter).Limit(1).ToListAsync();
+            return results.SingleOrDefault();
         }
 
         public bool DoesTileExist(int x, int y, int zoom, string tileSetName)
