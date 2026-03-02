@@ -71,7 +71,7 @@ let renderZoomLevel zoom =
 let main argv =
     // printfn "Hello World from F#!"
 
-    // seq{0..30} |> Seq.iter renderZoomLevel
+    seq{0..30} |> Seq.iter renderZoomLevel
     //renderZoomLevel 0
     //renderZoomLevel 1
     //renderZoomLevel 2
@@ -86,7 +86,7 @@ let main argv =
     //renderZoomLevel 11
 
 
-    drawImage()
+    // drawImage()
 
     0 // return an integer exit code
 
