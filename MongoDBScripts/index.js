@@ -1,6 +1,6 @@
-db.tiles.ensureIndex({
-    "TileSetName" : 1.0,
-    "Zoom" : 1.0,
-    "X" : 1.0,
-    "Y" : 1.0
-});
+db.tiles.createIndex({
+    TileSetName: 1,
+    Zoom: 1,
+    X: 1,
+    Y: 1,     
+}, { unique: true });

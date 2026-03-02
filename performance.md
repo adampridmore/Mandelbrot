@@ -36,13 +36,8 @@ dotnet test Mandelbrot/Mandelbrot.fsproj --filter "performance" --logger "consol
 
 Fix: Add a `ConcurrentDictionary<string, Task<byte[]>>` generation gate so only one render per tile key ever runs concurrently.
 
-**2. Missing MongoDB compound index**
-[TileRepository.cs](Repository/TileRepository.cs) queries on `(X, Y, Zoom, TileSetName)` with no compound index — full collection scan as tiles accumulate.
-
-Fix: Create index at startup:
-```javascript
-db.tiles.createIndex({ X: 1, Y: 1, Zoom: 1, TileSetName: 1 }, { unique: true })
-```
+**2. Missing MongoDB compound index** ✅ Done
+Index created manually on `(TileSetName, Zoom, X, Y)`. Field order doesn't matter for equality queries so this covers all lookups in [TileRepository.cs](Repository/TileRepository.cs) efficiently. Note: created without `unique: true` — add that constraint if duplicate-tile prevention is desired.
 
 **3. New `TileRepository` instantiated per HTTP request**
 [MapTileController.cs](MandelbrotWeb/Controllers/MapTileController.cs) creates a new MongoDB connection pool slot on every request.
@@ -61,10 +56,8 @@ Fix: `IMemoryCache` wrapper in front of `TileRepository` for a fast in-process p
 
 ### Medium
 
-**6. Synchronous I/O throughout**
-[TileRepository.cs](Repository/TileRepository.cs) uses blocking MongoDB driver calls, starving ASP.NET thread pool threads under concurrent load.
-
-Fix: `ToListAsync`, `CountDocumentsAsync`, async controller action.
+**6. Synchronous I/O throughout** ✅ Done
+`TileRepository` now exposes `TryGetTileImageByteAsync`, `SaveAsync`, and `TryGetTileAsync` using the async MongoDB driver. `MapTileGenerator` adds `renderAsync` / `getTileImageByteAsync` via F# `task { }`. `MapTileController.Index` is now `async Task<IActionResult>`. See [TileRepository.cs](Repository/TileRepository.cs), [MapTileGenerator.fs](Mandelbrot/MapTileGenerator.fs), and [MapTileController.cs](MandelbrotWeb/Controllers/MapTileController.cs).
 
 ### Lower
 
