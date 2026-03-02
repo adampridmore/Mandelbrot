@@ -40,5 +40,13 @@ run.bat
 ```
 
 ### All
-Then open 
+Then open
 http://localhost:5000
+
+## Running the performance tests
+
+```
+dotnet test Mandelbrot/Mandelbrot.fsproj --filter "performance" --logger "console;verbosity=normal"
+```
+
+Output is printed to the console during the run, showing per-zoom tile counts, elapsed time, and average time per tile.
