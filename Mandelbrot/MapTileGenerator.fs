@@ -75,6 +75,27 @@ let private generateAndSaveTile x y zoom tileSetName =
 
 let getTileImageByte (x, y, zoom, tileSetName, (repository:TileRepository)) : byte[] =
     let image = repository.TryGetTileImageByte (x, y, zoom, tileSetName )
-    match image with 
+    match image with
     | null -> (generateAndSaveTile x y zoom tileSetName repository).Data
     | _ -> image
+
+let private renderAsync (tile:TileDetails) (repository:TileRepository) =
+    task {
+        let graph = Graph(tileSize, tileSize, toRectangleD tile, iterations)
+        let stopwatch = System.Diagnostics.Stopwatch.StartNew()
+        graph |> renderSet iterations
+        stopwatch.Stop()
+        let domainTile = graph |> toDomainTile tile stopwatch.Elapsed
+        do! repository.SaveAsync(domainTile)
+        return domainTile
+    }
+
+let getTileImageByteAsync (x, y, zoom, tileSetName, (repository:TileRepository)) =
+    task {
+        let! image = repository.TryGetTileImageByteAsync(x, y, zoom, tileSetName)
+        if isNull image then
+            let! tile = renderAsync {X=x; Y=y; Filename=(toFilename x y zoom); Zoom=zoom} repository
+            return tile.Data
+        else
+            return image
+    }

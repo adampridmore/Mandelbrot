@@ -1,7 +1,5 @@
-﻿using System.Configuration;
-using System.Drawing;
-using System.Drawing.Imaging;
-using System.IO;
+﻿using System.IO;
+using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Mandelbrot;
 using Repository;
@@ -17,50 +15,25 @@ namespace MandelbrotWeb.Controllers
 
         public MapTileController(IConfiguration config) {
             _config = config;
-            _tileRepository = Create();
-        }
-        
-        public TileRepository Create()
-        {
-            var mongoUri = _config.GetConnectionString("MongoDb");
-            
-            return new TileRepository(mongoUri);
+            _tileRepository = new TileRepository(_config.GetConnectionString("MongoDb"));
         }
 
         [ResponseCache(VaryByHeader = "User-Agent", Duration = 3600)]
-        public ActionResult Index(string x, string y, string z, string tileSetName)
+        public async Task<IActionResult> Index(string x, string y, string z, string tileSetName)
         {
             if (string.IsNullOrWhiteSpace(tileSetName))
-            {
                 tileSetName = Tile.DefaultSetName;
-            }
 
             var xVal = int.Parse(x);
             var yVal = int.Parse(y);
             var zoom = int.Parse(z);
 
-            return LoadFromDb(tileSetName, xVal, yVal, zoom);
-        }
-
-        private ActionResult LoadFromDb(string tileSetName, int x, int y, int zoom)
-        {
-            var tile = LoadTile(x, y, zoom, tileSetName);
+            var tile = await MapTileGenerator.getTileImageByteAsync(xVal, yVal, zoom, tileSetName, _tileRepository);
             if (tile == null)
-            {
                 return NotFound();
-            }
 
-            var imageFormat = Mandelbrot.Image2.imageTypeExtension;
-
-            var memoryStream = new MemoryStream(tile);
-
-            var contentType = $"image/{imageFormat.ToLowerInvariant()}";
-            return new FileStreamResult(memoryStream, contentType);
-        }
-
-        private byte[] LoadTile(int x, int y, int zoom, string tileSetName)
-        {
-            return MapTileGenerator.getTileImageByte(x, y, zoom, tileSetName, _tileRepository);
+            var contentType = $"image/{Mandelbrot.Image2.imageTypeExtension.ToLowerInvariant()}";
+            return new FileStreamResult(new MemoryStream(tile), contentType);
         }
     }
 }
