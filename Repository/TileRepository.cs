@@ -71,7 +71,7 @@ namespace Repository
                 filterBuilder.Eq("Zoom", zoom) &
                 filterBuilder.Eq("TileSetName", tileSetName);
 
-            return _collection.Find(filter).Limit(1).ToList().SingleOrDefault();
+            return _collection.Find(filter).FirstOrDefault();
         }
 
         private async Task<Tile> TryGetTileAsync(int x, int y, int zoom, string tileSetName)
@@ -83,8 +83,7 @@ namespace Repository
                 filterBuilder.Eq("Zoom", zoom) &
                 filterBuilder.Eq("TileSetName", tileSetName);
 
-            var results = await _collection.Find(filter).Limit(1).ToListAsync();
-            return results.SingleOrDefault();
+            return await _collection.Find(filter).FirstOrDefaultAsync();
         }
 
         public bool DoesTileExist(int x, int y, int zoom, string tileSetName)
