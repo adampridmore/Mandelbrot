@@ -28,8 +28,8 @@ type Bitmap3(width: int32, height: int32) =
 
   member this.Bitmap = image
 
-  member this.setPixel(x :int, y:int, c: Color2) : Unit =
-    lock this.Bitmap (fun () -> image[x,y] <- Rgba32(c.R(),c.G(),c.B()))
+  member _.setPixel(x :int, y:int, c: Color2) : Unit =
+    image[x,y] <- Rgba32(c.R(),c.G(),c.B())
 
   member this.Save(stream: Stream) : Unit = 
     image.Save(stream, encoder)
