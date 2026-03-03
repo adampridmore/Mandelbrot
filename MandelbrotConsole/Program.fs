@@ -1,6 +1,7 @@
 ﻿module MandelbrotConsole.Program
 
 open System
+open System.Threading.Tasks
 open Mandelbrot
 open Mandelbrot.MandelbrotCalculator
 open Repository.Domain
@@ -55,13 +56,14 @@ let tilesetName = "Mandelbrot"
 
 let renderZoomLevel zoom =
     let cellCount = zoom |> zoomToCellCount |> int
-    [| for x in 0 .. (cellCount - 1) do
-           for y in 0 .. (cellCount - 1) do
-               yield (x, y) |]
-    |> Array.Parallel.iter (fun (x, y) ->
+    let tiles = [| for x in 0 .. (cellCount - 1) do
+                       for y in 0 .. (cellCount - 1) do
+                           yield (x, y) |]
+    let options = ParallelOptions(MaxDegreeOfParallelism = Environment.ProcessorCount)
+    Parallel.ForEach(tiles, options, fun (x, y) ->
         getTileImageByteSequential (x, y, zoom, tilesetName, repository) |> ignore
         printfn "%s" (toFilename x y zoom)
-    )
+    ) |> ignore
 
     
 // #time "on"
