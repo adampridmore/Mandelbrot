@@ -6,10 +6,12 @@ COPY Mandelbrot/Mandelbrot.fsproj       Mandelbrot/
 COPY Repository/Repository.csproj       Repository/
 COPY MandelbrotWeb/MandelbrotWeb.csproj  MandelbrotWeb/
 COPY MandelbrotConsole/MandelbrotConsole.fsproj MandelbrotConsole/
+COPY MandelbrotGpu/MandelbrotGpu.csproj MandelbrotGpu/
 
 COPY Mandelbrot/    Mandelbrot/
 COPY Repository/    Repository/
 COPY MandelbrotWeb/ MandelbrotWeb/
+COPY MandelbrotGpu/ MandelbrotGpu/
 
 RUN dotnet publish MandelbrotWeb/MandelbrotWeb.csproj \
     -c Release -o /app/publish \
