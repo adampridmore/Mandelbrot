@@ -6,6 +6,7 @@ open Mandelbrot.Image2
 open Microsoft.FSharp.Collections
 open Repository.Domain
 open Repository
+open MandelbrotGpu
 
 let private tileSize = 256
 
@@ -34,7 +35,11 @@ let private render iterationsToCheck (tile:TileDetails) (size:System.Drawing.Siz
 
     let stopwatch = System.Diagnostics.Stopwatch.StartNew()
 
-    graph |> renderSet iterationsToCheck
+    if GpuRenderer.IsAvailable then
+        let results = GpuRenderer.RenderTile(size.Width, size.Height, viewPort.XMin, viewPort.XMax, viewPort.YMin, viewPort.YMax, iterationsToCheck)
+        graph.IterateGraphWithIterations(results)
+    else
+        graph |> renderSet iterationsToCheck
 
     stopwatch.Stop()
 
@@ -85,7 +90,11 @@ let private renderCellSequential (tile:TileDetails) (repository: TileRepository)
     let tileIterations = iterationsForZoom tile.Zoom
     let graph = Graph(size.Width, size.Height, rectangle, tileIterations)
     let stopwatch = System.Diagnostics.Stopwatch.StartNew()
-    graph |> renderSetSequential tileIterations
+    if GpuRenderer.IsAvailable then
+        let results = GpuRenderer.RenderTile(size.Width, size.Height, rectangle.XMin, rectangle.XMax, rectangle.YMin, rectangle.YMax, tileIterations)
+        graph.IterateGraphWithIterations(results)
+    else
+        graph |> renderSetSequential tileIterations
     stopwatch.Stop()
     let t = graph |> toDomainTile tile stopwatch.Elapsed
     t |> repository.Save
@@ -104,9 +113,14 @@ let getTileImageByteSequential (x, y, zoom, tileSetName, (repository:TileReposit
 let private renderAsync (tile:TileDetails) (repository:TileRepository) =
     task {
         let tileIterations = iterationsForZoom tile.Zoom
-        let graph = Graph(tileSize, tileSize, toRectangleD tile, tileIterations)
+        let viewPort = toRectangleD tile
+        let graph = Graph(tileSize, tileSize, viewPort, tileIterations)
         let stopwatch = System.Diagnostics.Stopwatch.StartNew()
-        graph |> renderSet tileIterations
+        if GpuRenderer.IsAvailable then
+            let results = GpuRenderer.RenderTile(tileSize, tileSize, viewPort.XMin, viewPort.XMax, viewPort.YMin, viewPort.YMax, tileIterations)
+            graph.IterateGraphWithIterations(results)
+        else
+            graph |> renderSet tileIterations
         stopwatch.Stop()
         let domainTile = graph |> toDomainTile tile stopwatch.Elapsed
         do! repository.SaveAsync(domainTile)

@@ -75,6 +75,17 @@ type Graph(width:int, height:int, viewPortal:RectangleD, iterations:int) =
             | Some v -> this.DrawPointAtPixelWithMagnitude pixel v
             | None -> this.DrawPointAtPixelWithColor pixel Black
 
+    member this.IterateGraphWithIterations(iterationResults: int[]) =
+        for i in 0 .. (width * height - 1) do
+            let px = i % width
+            let py = i / width
+            let pixel = { Pixel.X = px; Pixel.Y = py }
+            let v = iterationResults.[i]
+            if v = -1 then
+                this.DrawPointAtPixelWithColor pixel Black
+            else
+                this.DrawPointAtPixelWithMagnitude pixel v
+
     member this.IterateGraphSequential (fn: PointD -> int option) =
         let results =
             Array.init (width * height) (fun i ->
