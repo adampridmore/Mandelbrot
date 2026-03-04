@@ -16,9 +16,6 @@ let performance (name : string) (fn: (Unit -> Unit) ) : System.TimeSpan =
     let stopwatch = System.Diagnostics.Stopwatch.StartNew()
     fn() |> ignore
     stopwatch.Stop()
-   
-    // testPrint(sprintf "Duration : %A" (stopwatch.Elapsed))
-   
     stopwatch.Elapsed
   
     

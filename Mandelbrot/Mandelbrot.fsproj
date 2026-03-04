@@ -16,7 +16,6 @@
     <Compile Include="Mandelbrot.fs" />
     <Compile Include="MapTileGenerator.fs" />
     <Content Include="packages.config" />
-    <Compile Include="TileGenerator.fs" />
     <Compile Include="tests/GraphTests.fs" />
     <Compile Include="tests/MandelbrotTests.fs" />
     <Compile Include="tests/MapTileGeneratorTests.fs" />

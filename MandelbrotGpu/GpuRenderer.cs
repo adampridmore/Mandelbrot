@@ -7,12 +7,19 @@ namespace MandelbrotGpu;
 
 public static class GpuRenderer
 {
-    private static readonly Lazy<(Accelerator? accelerator, Action<Index1D, ArrayView1D<int, Stride1D.Dense>, int, int, double, double, double, double, int>? kernel)> _state =
+    private sealed record GpuState(
+        Context Context,
+        Accelerator Accelerator,
+        Action<Index1D, ArrayView1D<int, Stride1D.Dense>, int, int, double, double, double, double, int> Kernel);
+
+    private static readonly Lazy<GpuState?> _state =
         new(InitialiseGpu, LazyThreadSafetyMode.ExecutionAndPublication);
 
-    public static bool IsAvailable => _state.Value.accelerator is not null;
+    private static readonly SemaphoreSlim _lock = new(1, 1);
 
-    private static (Accelerator?, Action<Index1D, ArrayView1D<int, Stride1D.Dense>, int, int, double, double, double, double, int>?) InitialiseGpu()
+    public static bool IsAvailable => _state.Value is not null;
+
+    private static GpuState? InitialiseGpu()
     {
         try
         {
@@ -20,7 +27,7 @@ public static class GpuRenderer
             var accelerator = context.GetPreferredDevice(preferCPU: false).CreateAccelerator(context);
             Console.WriteLine($"[GpuRenderer] Using CUDA: {accelerator.Name}");
             var kernel = accelerator.LoadAutoGroupedStreamKernel<Index1D, ArrayView1D<int, Stride1D.Dense>, int, int, double, double, double, double, int>(MandelbrotKernel);
-            return (accelerator, kernel);
+            return new GpuState(context, accelerator, kernel);
         }
         catch
         {
@@ -33,7 +40,7 @@ public static class GpuRenderer
             var accelerator = context.GetPreferredDevice(preferCPU: false).CreateAccelerator(context);
             Console.WriteLine($"[GpuRenderer] Using OpenCL: {accelerator.Name}");
             var kernel = accelerator.LoadAutoGroupedStreamKernel<Index1D, ArrayView1D<int, Stride1D.Dense>, int, int, double, double, double, double, int>(MandelbrotKernel);
-            return (accelerator, kernel);
+            return new GpuState(context, accelerator, kernel);
         }
         catch
         {
@@ -41,7 +48,7 @@ public static class GpuRenderer
         }
 
         Console.WriteLine("[GpuRenderer] No GPU backend available, falling back to CPU renderer.");
-        return (null, null);
+        return null;
     }
 
     /// <summary>
@@ -54,18 +61,21 @@ public static class GpuRenderer
         double xMin, double xMax, double yMin, double yMax,
         int maxIterations)
     {
-        var (accelerator, kernel) = _state.Value;
-        if (accelerator is null || kernel is null)
-            throw new InvalidOperationException("GPU is not available.");
-
+        var state = _state.Value ?? throw new InvalidOperationException("GPU is not available.");
         int pixelCount = width * height;
 
-        using var outputBuffer = accelerator.Allocate1D<int>(pixelCount);
-
-        kernel(pixelCount, outputBuffer.View, width, height, xMin, xMax, yMin, yMax, maxIterations);
-        accelerator.Synchronize();
-
-        return outputBuffer.GetAsArray1D();
+        _lock.Wait();
+        try
+        {
+            using var outputBuffer = state.Accelerator.Allocate1D<int>(pixelCount);
+            state.Kernel(pixelCount, outputBuffer.View, width, height, xMin, xMax, yMin, yMax, maxIterations);
+            state.Accelerator.Synchronize();
+            return outputBuffer.GetAsArray1D();
+        }
+        finally
+        {
+            _lock.Release();
+        }
     }
 
     private static void MandelbrotKernel(

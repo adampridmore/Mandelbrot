@@ -12,8 +12,6 @@ let private tileSize = 256
 
 let iterationsForZoom zoom = max 100 (zoom * 50)
 
-// let imageFormat = System.Drawing.Imaging.ImageFormat.Png
-
 type TileDetails = {
         X: int;
         Y: int;
